@@ -1,0 +1,128 @@
+{
+  "index1.html": {
+    "refer": [
+      "setting.html",
+      "shop.html",
+      "a.html",
+      "goodsManage.html"
+    ],
+    "resources": []
+  },
+  "a.html": {
+    "refer": [
+      "salesindent/salesindent_add_1.html",
+      "salesindent/salesindent_list_headerAndtab.html",
+      "remittance/remittance_list_headerAndtab.html",
+      "sales/sales_list_headerAndtab.html",
+      "customerrecharge/customerrecharge_list_headerAndtab.html",
+      "stock/stock_list_headerAndtab.html",
+      "sales/sales_add_1.html"
+    ],
+    "resources": [
+      "css/mui.min.css"
+    ]
+  },
+  "salesindent/salesindent_add_1.html": {
+    "resources": [
+      "salesindent/salesindent_add_2.html"
+    ],
+    "refer": [
+      "salesindent/salesindent_add_2.html"
+    ]
+  },
+  "goodsManage.html": {
+    "refer": [
+      "goodsAdd.html"
+    ],
+    "resources": []
+  },
+  "salesindent/salesindent_list_headerAndtab.html": {
+    "resources": [
+      "salesindent/salesindent_list.html"
+    ],
+    "refer": [
+      "salesindent/salesindent_list.html",
+      "salesindent/salesindent_add_1.html"
+    ]
+  },
+  "remittance/remittance_list_headerAndtab.html": {
+    "resources": [
+      "remittance/remittance_list.html"
+    ],
+    "refer": [
+      "remittance/remittance_list.html"
+    ]
+  },
+  "sales/sales_list_headerAndtab.html": {
+    "resources": [
+      "sales/sales_list.html"
+    ],
+    "refer": [
+      "sales/sales_list.html"
+    ]
+  },
+  "customerrecharge/customerrecharge_list_headerAndtab.html": {
+    "resources": [
+      "customerrecharge/customerrecharge_list.html"
+    ],
+    "refer": [
+      "customerrecharge/customerrecharge_list.html"
+    ]
+  },
+  "stock/stock_list_headerAndtab.html": {
+    "resources": [
+      "stock/stock_list.html"
+    ],
+    "refer": [
+      "stock/stock_list.html"
+    ]
+  },
+  "index.html": {
+    "refer": [
+      "User_admin.html",
+      "a.html",
+      "goodsManage_h.html"
+    ],
+    "resources": [
+      "css/mui.min.css"
+    ]
+  },
+  "goodsManage_h.html": {
+    "resources": [
+      "goods/goodsManage.html",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "goods/goodsManage.html"
+    ]
+  },
+  "sales/sales_add_1.html": {
+    "resources": [
+      "sales/sales_add_2.html"
+    ],
+    "refer": [
+      "sales/sales_add_2.html"
+    ]
+  },
+  "salesindent/salesindent_add_2.html": {
+    "refer": [
+      "salesindent/client.html"
+    ],
+    "resources": []
+  },
+  "User_admin.html": {
+    "refer": [
+      "customer/add_client.html"
+    ],
+    "resources": [
+      "css/User_admin.css",
+      "css/mui.min.css",
+      "css/mui.indexedlist.css"
+    ]
+  },
+  "goods/goodsManage.html": {
+    "resources": [
+      "css/mui.min.css"
+    ]
+  }
+}

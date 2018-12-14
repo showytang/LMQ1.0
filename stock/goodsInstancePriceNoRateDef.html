@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>货物价格</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.css" />
+	</head>
+
+	<body>
+		<form class="mui-input-group">
+			<input type="hidden" v-bind:value="goodsInstance.goodsInstanceId"  name="goodsInstanceId">
+			<div class="mui-input-row" v-if="goodsInstance.standardName!=null">
+				<label>货物名称</label>
+				<input type="text" v-bind:value="goodsInstance.goodsName+goodsInstance.standardName" class="mui-input-clear"   placeholder="">
+			</div>
+			<div class="mui-input-row" v-if="goodsInstance.standardName==null">
+				<label>货物名称</label>
+				<input type="text" v-bind:value="goodsInstance.goodsName" class="mui-input-clear" placeholder="">
+			</div>
+			<div class="mui-input-row">
+				<label>数量</label>
+				<input type="number" name="count" value="1" class="mui-input-clear"  placeholder="">
+			</div>
+			<div class="mui-input-row">
+				<label>单位</label>
+				<input type="text" disabled="disabled" v-bind:value="goodsInstance.bitName" class="mui-input-clear"  placeholder="">
+			</div>
+			<div class="mui-input-row">
+				<label>单价(￥)</label>
+				<input type="number" name="price" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" placeholder="">
+			</div>
+			<div class="mui-input-row">
+				<label>金额(￥)</label>
+				<input type="number" name="totalPrice" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" placeholder="">
+			</div>
+			<div class="mui-input-row">
+				<label>备注</label>
+				<input type="text" class="mui-input-clear" value="" placeholder="">
+			</div>
+
+		</form>
+
+		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			var vue;
+			mui.plusReady(function () {
+			    var goodsInstance = eval("("+plus.webview.currentWebview().goodsInstance+")");
+			    vue = new Vue({
+			    	el:".mui-input-group",
+			    	data:{
+			    		goodsInstance:goodsInstance
+			    	}
+			    })
+			    //总金额
+			    mui('body').on('change','[name=totalPrice]',function(){
+			      var count = document.querySelector("[name=count]");
+			      var price = document.querySelector("[name=price]");
+			      var totalPrice = document.querySelector("[name=totalPrice]");
+			      price.value = (totalPrice.value / count.value).toFixed(2);
+			      totalPrice.value = (totalPrice.value *1).toFixed(2);
+			    })
+			    //数量
+			    mui('body').on('change','[name=count]',function(){
+			      var count = document.querySelector("[name=count]");
+			      var price = document.querySelector("[name=price]");
+			      var totalPrice = document.querySelector("[name=totalPrice]");
+			      totalPrice.value = (count.value * price.value).toFixed(2);
+			    })
+			    //单价
+			    mui('body').on('change','[name=price]',function(){
+			      var count = document.querySelector("[name=count]");
+			      var price = document.querySelector("[name=price]");
+			      var totalPrice = document.querySelector("[name=totalPrice]");
+			      totalPrice.value = (count.value * price.value).toFixed(2);
+			      price.value = (price.value * 1).toFixed(2);
+			    })
+			})
+		</script>
+		
+		<script type="text/javascript">
+			function getInfo() {
+				var json = {};
+				json.goodsinstanceid = vue.goodsInstance.goodsInstanceId
+				json.count = document.querySelector("[name='count']").value;
+				json.price = vue.goodsInstance.price;
+				json.sum = json.count * json.price;
+				json.gname = vue.goodsInstance.goodsName;
+				if(vue.goodsInstance.standardName){
+					json.gname+=vue.goodsInstance.standardName;
+				}
+				console.log(JSON.stringify(json));
+				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().opener().id).evalJS("getgoodsInfo(" + JSON.stringify(json) + ")");
+				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().id).close();
+				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().id).close();
+				plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close();
+				plus.webview.currentWebview().close();
+			}
+		</script>
+	</body>
+
+</html>

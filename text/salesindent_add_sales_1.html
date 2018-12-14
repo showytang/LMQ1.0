@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增关联销售表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-bar-tab {
+			height: 65px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新增关联销售表</h1>
+		</header>
+
+		<nav id="tab" class="mui-bar mui-bar-tab">
+			<div class="mui-row" style="font-size: 0.7em;">
+				<div class="mui-col-xs-6 mui-row">
+					<div class="mui-col-xs-6">客户欠款:</div>
+					<div class="mui-col-xs-6">0.00</div>
+				</div>
+				<div class="mui-col-xs-6 mui-row">
+					<div class="mui-col-xs-6">客户欠款:</div>
+					<div class="mui-col-xs-6">0.00</div>
+				</div>
+			</div>
+			<div class="mui-row" style="text-align: center;">
+				<div class="mui-col-xs-6">赊账</div>
+				<div class="mui-col-xs-6" id="submit">收款</div>
+			</div>
+		</nav>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.init({
+				subpages: [{
+					url: 'salesindent_add_sales_2.html',
+					id: 'salesindent_add_sales_2.html',
+					styles: {
+						top: "45px",
+						bottom: document.querySelector("#tab").offsetHeight
+					},
+					extras: {
+						Salesindent:plus.webview.currentWebview().Salesindent
+					}
+				}]
+			})
+			
+			mui.plusReady(function() {
+				mui('#tab').on('tap','#submit',function(){
+					plus.webview.getWebviewById("salesindent_add_sales_2.html").evalJS("ajaxSubmit()");
+				})
+			})
+		</script>
+	</body>
+
+</html>

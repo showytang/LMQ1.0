@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>选择打印单品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">打印</h1>
+			<span class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="submitBtn"></span>
+		</header>
+		<div class="mui-content">
+		    
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			 mui.ready(function () {
+			 	var goodsIds = plus.webview.currentWebview().goodsIds;
+			   	var webview = plus.webview.create("goodsSelectInstance.html","goodsSelectInstance.html",{top:45},{goodsIds:goodsIds});
+			   	webview.show();
+			 })
+			 mui.plusReady(function () {
+			 	//打印
+			     mui('body').on('tap','#submitBtn',function(){
+		   		    var webview = plus.webview.getWebviewById("goodsSelectInstance.html");
+		   		    if(webview){
+		   		    	webview.evalJS("getPara()");
+		   		    }
+		   		    //隐藏打印按鈕
+				  	var webview = plus.webview.getWebviewById("goodsManage_h.html");
+					if(webview!=null){
+						webview.evalJS("hidePrint('')");
+					}
+			     }) 
+			 })
+			 //重写返回
+			  mui.back = function back(){
+			  	// 銷毀子頁面
+			  	plus.webview.getWebviewById("goodsSelectInstance.html").close("slide-out-right");
+			  	//本頁面銷毀
+			  	plus.webview.currentWebview().close("slide-out-right");
+			  	//隐藏打印按鈕
+			  	var webview = plus.webview.getWebviewById("goodsManage_h.html");
+				if(webview!=null){
+					webview.evalJS("hidePrint('')");
+				}
+			  };
+			
+		</script>
+	</body>
+
+</html>

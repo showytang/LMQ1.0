@@ -1,0 +1,17 @@
+#segmentedControl a{
+	height: 42px;
+	color: white;
+}
+.mui-bar{
+	background-color: #1E7DFA;
+}
+.mui-action-back{
+	color: white;
+}
+#client_name{
+	float: right;
+}
+#goods_name{
+	float: right;
+}
+

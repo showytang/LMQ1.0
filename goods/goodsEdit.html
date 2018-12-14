@@ -1,0 +1,614 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加商品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.simImg {
+				/*max-width: 60px;*/
+				width: 190px;
+				height: 190px;
+			}
+			
+			.noImg {
+				width: 190px;
+				height: 190px;
+				font-size: 10em;
+			}
+			
+			.goodsTitle {
+				font-size: 0.85em;
+				word-break: normal;
+				width: 100%;
+				white-space: pre-wrap;
+				/*word-wrap : break-word ;*/
+				overflow: hidden;
+				line-height: 1.2em;
+				margin-bottom: 2px;
+			}
+			
+			.titleSec {
+				border-bottom: 1px solid #d4d4d4;
+			}
+			
+			.textLabel {
+				line-height: 3em;
+				margin-right: 10px;
+				float: right;
+			}
+			
+			.codeText {
+				font-size: 1em;
+				color: #000000;
+			}
+			
+			.label {
+				line-height: 3em;
+				color: blue;
+				margin-left: 8px;
+			}
+			
+			.propSec {
+				background-color: #FFFFFF;
+			}
+			
+			.icoBtn {
+				line-height: 2em;
+				margin-right: 10px;
+				float: right;
+			}
+			
+			#editBtn {
+				float: right;
+			}
+			
+			.detailText {
+				text-indent: 1em;
+			}
+			
+			.title {
+			background-color: #d4d4d4;
+			}
+			
+			input[type=number] {
+				line-height: 21px;
+				width: 70%;
+				height: 40px;
+				margin-top: 4px;
+				margin-bottom: 4px;
+				padding: 10px 15px;
+				-webkit-user-select: text;
+				border: 1px solid rgba(0, 0, 0, .2);
+				border-radius: 3px;
+				outline: 0;
+				background-color: #fff;
+				-webkit-appearance: none;
+			}
+			
+			.standardSec {
+				/*display: flex;
+				justify-content: space-around;*/
+			}
+			
+			.input {
+				text-align: center;
+				font-size: 0.8em;
+				padding: 10px;
+				margin-top: 0;
+				margin-bottom: 0px;
+				color: #000000;
+				line-height: 20px;
+			}
+			
+			.errorInput {
+				border: 1px solid red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">修改货物</h1>
+			<span id="addGoodsBtn" style="float: right;" class="mui-icon mui-icon-checkmarkempty"></span>
+		</header>-->
+
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" class="" data-goodsId="1" style="display: flex;justify-content: center;">
+						<img class="simImg" v-bind:src="url+goods.imgUrl" style="display: block">
+						<span class="noImg mui-icon mui-icon-camera"></span>
+						<!--名称-->
+					</a>
+				</li>
+			</ul>
+			<!--规格部分-->
+			<div class="propSec">
+				<div class="title">基本信息</div>
+				<div class="titleSec">
+					<label class="label">商品名称</label>
+					<input id="goodsName" name="name" style="width: 75%;" v-bind:value="goods.name" class="input" type="text" placeholder="请输入商品名称">
+				</div>
+				<div class="titleSec">
+					<label class="label">商品编码</label>
+					<input id="goodsCode" name="code" class="input" v-bind:value="goods.code" type="number" placeholder="请输入商品编码">
+					<span class="mui-icon mui-icon-camera"></span>
+				</div>
+				<div class="titleSec">
+					<label class="label">进货价格</label>
+					<input id="basePrice" name="basePrice" style="width: 75%;" v-bind:value="goods.basePrice.toFixed(2)" class="input" type="number" placeholder="请输入进货价">
+				</div>
+				<div class="titleSec">
+					<label class="label">商品价格</label><!--一口价-->
+					<input id="fristPrice" name="user1" v-bind:value="goods.user1" style="width: 75%;" value="0.00" class="input" type="number" placeholder="请输入一口价">
+				</div>
+				
+				<!--各种价格-->
+				<div id="priceSec" v-if="!goods.priceList">
+					<div class="titleSec" v-for="(p,index) in goods.priceTypeList">
+						<label class="label">{{p.name}}</label>
+						<input v-bind:data-agio="p.agio" v-bind:data-id="p.id" value="0.00" style="width: 75%;" class="input" type="number" placeholder="请输入价格">
+					</div>
+					<div class="mui-text-center">
+						<span class="mui-icon mui-icon-arrowdown" id="priceArrow"></span>
+					</div>
+				</div>
+				<!--各种价格-->
+				<div id="priceSec" v-if="goods.priceList">
+					<div class="titleSec" v-for="(p,index) in goods.priceList">
+						<label class="label">{{p.pName}}</label>
+						<input v-bind:data-agio="p.agio" v-bind:data-id="p.ptype" v-bind:value="p.price.toFixed(2)" style="width: 75%;" class="input" type="number" placeholder="请输入价格">
+					</div>
+					<div class="mui-text-center">
+						<span class="mui-icon mui-icon-arrowdown" id="priceArrow"></span>
+					</div>
+				</div>
+				
+				<div class="titleSec">
+					<label class="label">商品存量</label>
+					<input id="count" name="count" style="width: 75%;" v-bind:value="goods.count" class="input" type="number" placeholder="请输入库存">
+				</div>
+				<div class="titleSec" id="goodsStypeBtn">
+					<label class="label">{{goods.tName}}</label>
+					<span class="icoBtn mui-icon mui-icon-forward"></span>
+					<input id="goodsTid" type="hidden" name="tid" v-bind:value="goods.tid" />
+				</div>
+				<div class="titleSec" id="goodsBitBtn">
+					<label class="label">{{goods.bitName}}</label>
+					<span class="icoBtn mui-icon mui-icon-forward"></span>
+					<input id="goodsBid" type="hidden" name="bid" v-bind:value="goods.bid" />
+				</div>
+				
+				<div class="titleSec" id="goodsStandardBtn">
+					<label class="label">规格设置（可选）</label>
+					<span class="icoBtn mui-icon mui-icon-forward"></span>
+				</div>
+				<div class="titleSec">
+					<label class="label">货物详细</label>
+					<textarea id="goodsDetail" name="detail" v-bind:value="goods.detail" placeholder="描述货物信息..."></textarea>
+				</div>
+				<!--<div class="title">规格</div>-->
+
+			</div>
+		</div>
+		<div class="mui-content">
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			 
+			mui.init();
+			
+			function initData(){
+				var gId = plus.webview.currentWebview().gId;
+				standardJson = plus.webview.currentWebview().gInList;
+				console.log("修改商品id为"+gId);
+				//初始化
+				mui.ajax(n.url+'/goods/queryGoodsInfo',{
+			   		data:{
+			   			gId:gId
+			   		},
+			   		dataType:'json',//服务器返回json格式数据
+			   		type:'post',//HTTP请求类型
+			   		timeout:10000,//超时时间设置为10秒；
+			   		success:function(data){
+			   			console.log(JSON.stringify(data));
+			   			var vue = new Vue({
+			   				el:".mui-content",
+			   				data:{
+			   					goods:data,
+			   					url:n.url
+			   				}
+			   			})
+			   		},
+			   		error:function(xhr,type,errorThrown){
+			   			
+			   		}
+			   	});
+			}
+			mui.plusReady(function() {
+				
+				initData();
+				
+				
+				//返回按钮
+				mui.back = closeWin;
+				mui('body').on('tap', '#goodsStypeBtn', function() {
+					var webview = plus.webview.create("goodsStype_h.html", "goodsStype_h.html", {}, {});
+					webview.show("slide-in-right");
+				})
+				mui('body').on('tap', '#goodsBitBtn', function() {
+					var webview = plus.webview.create("goodsBit_h.html", "goodsBit_h.html", {}, {});
+					webview.show("slide-in-right");
+				})
+				//打开规格选择
+				mui('body').on('tap', '#goodsStandardBtn', function() {
+					var tId = document.querySelector("#goodsTid").value;
+					var basePrice = "0";
+					if(document.querySelector("#basePrice"))
+						basePrice = document.querySelector("#basePrice").value;
+					var price = "0";
+					if(document.querySelector("#fristPrice"))
+						price = document.querySelector("#fristPrice").value;
+					var count = "0";
+					if(document.querySelector("#count"))
+						count = document.querySelector("#count").value;
+					if(tId.trim() != "" && price.trim() != "" && count.trim() != "" && basePrice.trim() != "") {
+						if(plus.webview.getWebviewById("goodsEditStandard_h.html")) {
+							plus.webview.getWebviewById("goodsEditStandard_h.html").show("slide-in-right");
+							plus.webview.getWebviewById("goodsEditStandard.html").show("slide-in-right");
+						} else {
+							var webview = plus.webview.create("goodsEditStandard_h.html", "goodsEditStandard_h.html", {}, {
+								'tid': tId,
+								"price": price,
+								"basePrice": basePrice,
+								"count": count,
+								"gId":plus.webview.currentWebview().gId,
+								"gInList":plus.webview.currentWebview().gInList//商品规格数据
+							});
+							webview.show("slide-in-right");
+						}
+					} else {
+						plus.nativeUI.toast("温馨提示:请选择货物类别、一口价格、进货价格、库存数量，方可设置规格");
+					}
+
+				})
+
+				//照片上传
+				mui('body').on('tap', '.noImg', function() {
+					//原生底部弹窗
+					plus.nativeUI.actionSheet({
+						title: "",
+						buttons: [{
+							title: "拍照"
+						}, {
+							title: "从相册中选取"
+						}],
+						cancel: "取消"
+					}, function(e) {
+						if(e.index == 1) { //拍照
+							plus.camera.getCamera().captureImage(function(e) {
+									//成功回调
+									plus.io.resolveLocalFileSystemURL(e, function(entry) {
+										if(imgs.length == 5){
+											plus.nativeUI.toast("温馨提示：添加图片失败，最多能添加5张图片");
+											return
+										}
+										var path = entry.toLocalURL();
+										//console.log(path);
+										imgs.push(path);
+										document.querySelector(".simImg").setAttribute("src", path);
+									}, function(e) {
+										mui.toast("读取拍照文件错误：" + e.message);
+									});
+								},
+								function() {
+									//失败回调
+								}, {
+									index: "1"
+								}) //参数
+						} else if(e.index == 2) { //相册
+							plus.gallery.pick(function(path) {
+								console.log(JSON.stringify(path));
+								imgs = [];
+								//显示第一章
+								document.querySelector(".simImg").src = path.files[0];
+								//添加图片集合中
+								for(var i = 0; i < path.files.length; i++) {
+									imgs.push(path.files[i]);
+								}
+							}, function(e) {
+
+							}, {
+								filename: "_doc/img/",
+								filter: "image",
+								maximum: 5,
+								multiple: true,
+								system: false
+							})
+						}
+					})
+				})
+				//检测输入
+				mui('body').on('input', 'input', function() {
+					isChineseOrNumber(this);
+				})
+				//商品修改按钮
+				/*mui('body').on('tap', '#addGoodsBtn', function() {
+					
+				})*/
+				//价格改变
+				mui('body').on('change','#fristPrice',function(){
+				  var priceInputs = document.querySelector("#priceSec").querySelectorAll("input");
+				  for (var i = 0;i<priceInputs.length;i++) {
+				  	priceInputs[i].value = (priceInputs[i].getAttribute("data-agio") * this.value / 10).toFixed(2);
+				  }
+				  this.value = (this.value / 1).toFixed(2);
+				}) 
+				//价格下拉
+				mui('body').on('tap','#priceArrow',function(){
+					this.classList.toggle("mui-icon-arrowdown");
+					this.classList.toggle("mui-icon-arrowup");
+					var priceDivs = document.querySelector("#priceSec").querySelectorAll(".titleSec");
+					for (var i=0;i<priceDivs.length;i++) {
+						if(this.classList.contains("mui-icon-arrowup")){
+							priceDivs[i].style.display="none";
+						}else{
+							priceDivs[i].style.display="block";
+						}
+						
+					}
+				}) 
+			}) //plusReady结束
+			//商品修改按钮
+			function addGoodsBtn(){
+				//检查是否输入完整性
+					var isInput = checkSubmit();
+					if(isInput) {
+						//提交
+						var goodsVo = {};
+						//商品基本信息
+						goodsVo.goods = n.getParam(".propSec");
+						//单品集合（数组）
+						goodsVo.gInList = standardJson;
+						//无规格商品价格集合
+						goodsVo.priceList = getPriceJSON();
+						
+						//添加商品和图片
+						addImgs(goodsVo);
+						//console.log(JSON.stringify(goodsVo));
+						/*mui.ajax(n.url + '/goods/addGoods', {
+							data: JSON.stringify(goodsVo),
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							contentType: "application/json",
+							success: function(data) {
+								//console.log("----lalala----"+JSON.stringify(data));//JSON.stringify(data)
+								if(data.status == "200") {
+									addImgs(data.gid);
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+								console.log(type);
+							}
+						});*/
+					}
+			}
+
+
+
+			//验证是否中文或者数字
+			function isChineseOrNumber(selector) {
+				var type = selector.getAttribute("type");
+				var value = selector.value;
+				var reg;
+				if(type == "number") {
+					//数字
+					reg = /^[0-9]+$/;
+				} else if(type == "text") {
+					//中文、字母、数字
+					reg = /^[a-zA-Z0-9\u4e00-\u9fa5]+$/;
+				} else {
+					//其他类型不检测
+					return true;
+				}
+				if(!reg.test(value)) {
+					//输入错误
+					selector.style.border = "1px solid red"
+					return false;
+				} else {
+
+					selector.style.border = "1px solid #cccccc";
+					return true;
+				}
+			}
+			//完整行检测
+			function checkSubmit() {
+				//是否不合法DOTO
+				//图片
+				if(imgs.length==0){
+					plus.nativeUI.toast("温馨提示：至少上传一张照片");
+					return false;
+				}
+				//商品名称
+				var goodsName = document.querySelector("#goodsName");
+				if(goodsName.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请填写货物名称");
+					goodsName.focus();
+					return false;
+				}
+				//商品编号
+				var goodsCode = document.querySelector("#goodsCode");
+				if(goodsCode.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请填写货物编号");
+					goodsCode.focus();
+					return false;
+				}
+				//进货价
+				var basePrice = document.querySelector("#basePrice");
+				if(basePrice && basePrice.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请填写货物一口价格");
+					basePrice.focus();
+					return false;
+				}
+				//一口价fristPrice
+				var fristPrice = document.querySelector("#fristPrice");
+				if(fristPrice && fristPrice.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请填写货物进货价格");
+					fristPrice.focus();
+					return false;
+				}
+				//库存count
+				var count = document.querySelector("#count");
+				if(count && count.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请填写货物库存");
+					count.focus();
+					return false;
+				}
+				//类目和id
+				var Tid = document.querySelector("#goodsTid");
+				if(Tid.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请选择货物类别");
+					return false;
+				}
+				//单位
+				var Bid = document.querySelector("#goodsBid");
+				if(Bid.value.trim() == "") {
+					plus.nativeUI.toast("温馨提示：请选择货物单位");
+					return false;
+				}
+				//商品详情（选填）
+				//var goodsDetail = document.querySelector("#goodsDetail").value;
+				return true;
+			}
+			//设置类别
+			function setGoodsType(type) { //typeName,typeId
+				//设置名称
+				document.querySelector("#goodsStypeBtn").children[0].innerText = type.typeName;
+				//设置id
+				document.querySelector("#goodsTid").value = type.typeId;
+
+			}
+			//设置单位
+			function setBit(bit) { //bitName,bitId
+				//设置名称
+				document.querySelector("#goodsBitBtn").children[0].innerText = bit.bitName;
+				//设置id
+				document.querySelector("#goodsBid").value = bit.bitId;
+			}
+			var standardJson;
+			//设置规格
+			function setStandard(standardInArr) {
+				//[{"ids":"2,6","priceList":[{"priceId":"1","price":"180.00"},{"priceId":"2","price":"160.00"},{"priceId":"3","price":"140.00"}]}]
+				var t = document.querySelector("#goodsStandardBtn");
+				standardJson = standardInArr;
+				//console.log("---"+standardJson);
+				t.querySelector("label").innerText = "规格设置（已选择）";
+			}
+
+			//图片上传方法和商品添加
+			var imgs = [];
+			var zipImgs = [];
+			var imgCount = 0; //上传文件数量
+			var upload = null;
+
+			function addImgs(goodsVo) {
+				imgCount = imgs.length;
+				var size = imgCount;
+				//等待提示
+				var wt = plus.nativeUI.showWaiting("温馨提示：照片正在上传中...");
+				upload = plus.uploader.createUpload(n.url + "/goods/updateGoods", {
+					method: "post"
+				}, function(p, status) {
+					if(status == 200) {
+						wt.close();
+						closeWin();
+						plus.nativeUI.toast("温馨提示：货物修改成功！");
+						var webview = plus.webview.getWebviewById("goodsManage.html");
+						if(webview)
+							webview.evalJS("getData('')");
+						//修改
+						plus.webview.getWebviewById("goodsEdit.html").close();
+						plus.webview.getWebviewById("goodsEdit_h.html").close();
+						//
+						plus.webview.getWebviewById("goodsInfo_h.html").close();
+						plus.webview.getWebviewById("goodsInfo.html").close();
+					} else {
+						//console.log(t.state+"上传失败");
+					}
+				});
+				compressImage(imgs[0], goodsVo);
+
+			}
+			var imgIndex = 0;
+			function compressImage(img, goodsVo) {
+				plus.zip.compressImage({
+					src: img,
+					dst: img,
+					overwrite: true,
+					quality: 20
+				}, function(e) {
+					//将压缩的图片加入数组
+					zipImgs.push(e.target);
+					imgIndex = imgIndex + 1;
+					if(imgs[imgIndex]) {
+						compressImage(imgs[imgIndex], goodsVo);
+					} else {
+						upload.addData("goodsV", JSON.stringify(goodsVo));
+						upload.addData("gId",plus.webview.currentWebview().gId+"");
+						zipUpload(goodsVo);
+					}
+				}, function(e) {
+					//失败
+					console.log("压缩失败" + e.message)
+				});
+			}
+			
+			//压缩图片你上传
+			function zipUpload() {
+				for(var i = 0; i < zipImgs.length; i++) {
+					upload.addFile(zipImgs[i], {
+						key: "file" + (i + 1),
+						name: "file" + (i + 1)
+					});
+				}
+				upload.start();
+			}
+			
+			//关闭当前窗体
+			function closeWin() {
+				//修改货物界面
+				plus.webview.currentWebview().close("slide-out-right");
+				//修改规格界面
+				if(plus.webview.getWebviewById("goodsEditStandard.html")) {
+					plus.webview.getWebviewById("goodsEditStandard.html").close("slide-out-right");
+				}
+				//关闭查询界面
+				if(plus.webview.getWebviewById("goodsInfo.html")){
+					plus.webview.getWebviewById("goodsInfo.html").close();
+				}
+			}
+			//获取价格参数JSON
+			function getPriceJSON(){
+				var priceInputs = document.querySelector("#priceSec").querySelectorAll("input");
+				var priceList = [];
+				for(var i = 0;i<priceInputs.length;i++){
+					var Goodsinstanceprice = {};
+					Goodsinstanceprice.ptype = priceInputs[i].getAttribute("data-id");
+					Goodsinstanceprice.price = priceInputs[i].value;
+					priceList.push(Goodsinstanceprice);
+				}
+				//console.log(JSON.stringify(priceList));
+				return priceList;
+			}
+		</script>
+	</body>
+
+</html>

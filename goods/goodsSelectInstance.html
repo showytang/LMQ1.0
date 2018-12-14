@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>选择打印单品</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-switch {
+			float: right;
+		}
+	</style>
+
+	<body>
+
+		<div class="mui-content">
+			<ul class="mui-table-view" v-for="(g,index) in goodsList">
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">{{g.name}}</a>
+					<div class="mui-collapse-content" v-for="(gIn,index1) in g.gInList">
+						<!--单品-->
+						<input type="hidden" name="goodsName" v-bind:value="g.name" />
+						<input type="hidden" name="goodsInstanceId" v-bind:value="gIn.id" />
+						<span name = "standardName">{{gIn.standardName}}</span>
+						<div class="mui-switch mui-switch-mini" data-switch="4" style="transition-duration: 0.2s;">
+							<div class="mui-switch-handle" style="transition-duration: 0.2s; transform: translate(0px, 0px);"></div>
+						</div>
+						<p name= "costPrice" v-bind:data-costPrice="gIn.costPrice">出售价格:￥{{gIn.costPrice}}</p>
+						<input name="defPriceName" v-bind:value="gIn.defPriceName" type="hidden" />
+						<input name="defPrice" v-bind:value="gIn.defPrice" type="hidden" />
+						<p>{{gIn.defPriceName}}￥{{gIn.defPrice}}</p>
+						<div class="mui-collapse-content">
+							<div style="display: none;" class="mui-switch mui-switch-mini" data-switch="4" style="transition-duration: 0.2s;">
+								<div class="mui-switch-handle" style="transition-duration: 0.2s; transform: translate(0px, 0px);"></div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/news.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.ready(function() {
+				//所要查询的商品id数据
+			 	var goodsIds = plus.webview.currentWebview().goodsIds;
+				mui.ajax(n.url + '/goods/queryGoodsAboutPrinter', {
+					data: {
+						goodsIds:goodsIds
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					traditional:true,
+					success: function(data) {
+						console.log(JSON.stringify(data));
+						var vue = new Vue({
+							el:".mui-content",
+							data:{
+								goodsList:data
+							}
+						});
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+				mui('body').on('tap','.mui-switch',function(){
+				  this.classList.toggle("mui-active");
+				}) 
+			})
+			
+			function getPara(){
+				var goodsInstanceArr = [];
+				//选中的打印
+				var selectArr = document.querySelectorAll("div.mui-active");//mui-table-view-cell
+				
+				for (var i=0;i<selectArr.length;i++) {
+					var temParent = selectArr[i].parentElement.parentElement;
+					var goodsInstance = {};
+					//商品名称
+					goodsInstance.goodsName = temParent.querySelector("[name=goodsName]").value;
+					//goodsInstance.goodsId = ;
+					//出售价格
+					goodsInstance.costPrice = temParent.querySelector("[name=costPrice]").getAttribute("data-costPrice");
+					//默认价格（例如零售价）
+					goodsInstance.defPrice = temParent.querySelector("[name=defPrice]").value;
+					//单品id
+					goodsInstance.goodsInstanceId = temParent.querySelector("[name=goodsInstanceId]").value;
+					//规格值组成名称
+					goodsInstance.standardName = temParent.querySelector("[name=standardName]").innerText;
+
+					
+					goodsInstanceArr.push(goodsInstance);
+				}
+				console.log("打印JSON"+JSON.stringify(goodsInstanceArr));
+				
+				//关闭
+				plus.webview.getWebviewById("goodsSelectInstance_h.html").close("slide-out-right");
+				plus.webview.currentWebview().close("slide-out-right");
+			}
+		</script>
+	</body>
+
+</html>

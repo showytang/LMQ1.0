@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>折后应收款</label>
+					<input type="number" v-model="user5" onfocus="user5Focus()" onblur="user5Blur()" name="user5" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>折扣率</label>
+					<input type="number" v-model="user6" onfocus="user6Focus()" onblur="user6Blur()" name="user6" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>实收金额</label>
+					<input type="number" v-model="takeinmoney" onfocus="takeinmoneyFocus()" onblur="takeinmoneyBlur()"  name="takeinmoney" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>本次欠款</label>
+					<input type="number" v-model="balance" readonly="readonly" name="balance" placeholder="">
+
+				</div>
+
+			</form>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					sales: {},
+					user5: 0,
+					user6: 100.0,
+					takeinmoney: 0,
+					money: 0,
+					balance: 0,
+					user5key: false,
+					user6key: false,
+					takeinmoneykey: false
+				},
+				watch: {
+					user5: function(val) {
+						if(this.user5key) {
+							this.user6 = val / this.money * 100;
+							this.takeinmoney = val;
+							this.balance=0;
+						}
+					},
+					user6: function(val) {
+						if(this.user6key) {
+							this.user5 = val * this.money / 100;
+							this.takeinmoney=this.user5;
+							this.balance=0;
+						}
+					},
+					takeinmoney: function(val) {
+						if(this.takeinmoneykey) {
+							this.balance = this.user5 - val;
+						}
+					}
+				}
+			});
+			mui.plusReady(function() {
+				plus.webview.getWebviewById("salesindent_add_sales_2.html").evalJS("getInfoByProceeds()");
+			});
+
+			function setInfo(salesinfo) {
+				var sales = JSON.parse(salesinfo);
+				v.sales = sales;
+				v.user5 = sales.takeinmoney;
+				v.money = sales.takeinmoney;
+				v.takeinmoney = sales.takeinmoney;
+				console.log("这是传过来的" + salesinfo);
+			}
+
+			function ajaxSubmit(status) {
+				var json = v.sales;
+				json.money=v.takeinmoney;
+				json.takeinmoney = v.money;
+				json.user5 = v.user5;
+				json.status = status;
+				console.log("传入数据" + JSON.stringify(json));
+				
+				mui.ajax(n.url + "/s/addSales", {
+					data: JSON.stringify(json),
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					contentType: "application/json",
+					success: function(data) {
+						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+						//隐藏详情表
+						plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close();
+						plus.webview.getWebviewById("salesindent_add_sales_1.html").hide();
+						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
+					},
+					error: function(xhr, type, errorThrown) {}
+				});
+			}
+		</script>
+		<script type="text/javascript">
+			function user5Focus(){
+				v.user5key=true;
+			}
+			function user5Blur(){
+				v.user5key=false;
+			}
+			function user6Focus(){
+				v.user6key=true;
+			}
+			function user6Blur(){
+				v.user6key=false;
+			}
+			function takeinmoneyFocus(){
+				v.takeinmoneykey=true;
+			}
+			function takeinmoneyBlur(){
+				v.takeinmoneykey=false;
+			}
+		</script>
+	</body>
+
+</html>

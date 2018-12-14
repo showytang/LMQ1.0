@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增销售订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新增销售订单</h1>
+			<a style="font-size: 2.2em;" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+		</header>
+
+		<script src="js/mui.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				subpages: [{
+					url: 'salesindent_add_2.html',
+					id: 'salesindent_add_2.html',
+					styles: {
+						top: "45px",
+						bottom: "0px"
+					},
+					extras: {}
+				}],
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.ready(function() {
+				mui.back = function() {
+					var btnArray = ['取消', '确认'];
+					//首次按键，提示‘再按一次退出应用’
+					mui.confirm('销售订单内容已改，是否放弃编辑', '', btnArray, function(e) {
+						if(e.index == 0) {
+							return;
+						} else {
+							plus.webview.currentWebview().close("slide-out-right");
+						}
+					});
+				};
+			});
+			mui.plusReady(function() {
+				mui('header').on('tap', '.mui-icon-checkmarkempty', function() {
+					var v = plus.webview.getWebviewById("salesindent_add_2.html");
+					v.evalJS("addAjax()");
+					console.log(1)
+					plus.webview.currentWebview().close("slide-out-right");
+					var vw=plus.webview.getWebviewById("salesindent_list_headerAndtab.html");
+					if(vw){
+						vw.show("slide-in-right");
+						return;
+					}
+					vw=plus.webview.create("salesindent_list_headerAndtab.html","salesindent_list_headerAndtab.html",{},{});
+					vw.show("slide-in-right");
+				});
+			})
+		</script>
+	</body>
+
+</html>

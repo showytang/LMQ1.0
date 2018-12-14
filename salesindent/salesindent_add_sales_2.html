@@ -1,0 +1,418 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增关联销售表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-bar-tab {
+			height: 65px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<input type="hidden" name="siId" id="" v-bind:value="Salesindent.id" />
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>单据编号</label>
+								<input type="text" name='user1' disabled="disabled" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input name="user2" type="text" disabled="disabled" v-bind:value="Salesindent.salesindentnub" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>日期</label>
+							<input name="user4" type="date" v-bind:value="Salesindent.stime" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell" id="customer">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="hidden" name="cid" v-bind:value="Salesindent.cid" />
+								<input type="text" readonly="readonly" v-bind:value="Salesindent.cname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-3">
+							货品
+						</div>
+						<div name="count" class="mui-col-xs-6">{{Salesindent.salesindentdetails.length}}</div>
+						<div name="takeinmoney" class="mui-col-xs-3">{{Salesindent.user2}}</div>
+					</li>
+					<ul id="OA_task_1" class="mui-table-view">
+						<!--<li class="mui-table-view-cell" v-for="(s,index) in Salesindent.salesindentdetails" v-on:click="updateInfo(index)">-->
+						<li class="mui-table-view-cell" v-for="(s,index) in Salesindent.salesindentdetails" v-bind:index="index">
+							<div class="mui-row">
+								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-10">
+									<span hidden="" name="id">{{s.id}}</span>
+									<span hidden="" name="user1">{{s.user1}}</span>
+									<div class="mui-row">
+										<div class="mui-col-xs-6"><span name="user2">{{s.user2}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6"><span name="money">{{s.count*s.takeinmoney}}</span></div>
+									</div>
+									<div class="mui-row">
+										<div class="mui-col-xs-6"><span name="count">{{s.count}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6"><span name="takeinmoney">{{s.takeinmoney}}</span></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<li class="mui-table-view mui-row">
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em; " class="mui-icon mui-icon-camera"></span>
+						</div>
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em;" class="mui-icon mui-icon-plusempty"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>营业员</label>
+								<input type="hidden" name="uid" />
+								<input type="text" readonly="readonly" value="" name="uname" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="payType">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="hidden" name="pid" v-bind:value="Salesindent.pid" />
+								<input type="text" name="pname" readonly="readonly" v-bind:value="Salesindent.pname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" v-bind:value="Salesindent.remark" name="user3" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="" style="height: 75px;">
+			</div>
+		</div>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var loginUser = login.getLogin();
+			var uid = loginUser.id;
+			var sid = loginUser.store.id;
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.plusReady(function() {
+				mui('body').on('tap','.mui-icon-camera',function(){
+				  plus.webview.create("barcode.html","barcode.html",{},{}).show();
+				});
+				
+				//触摸+号
+				mui('body').on('tap','.mui-icon-plusempty',function(){
+					//创建并判断是否存在列表内容窗体
+					var vw = plus.webview.getWebviewById("goodsInstanceSelect_h.html");
+					vw = plus.webview.create("goodsInstanceSelect_h.html", "goodsInstanceSelect_h.html", {}, {
+						cid:v.Salesindent.cid						
+					});
+					vw.show("slide-in-right");
+				});
+				
+				v.Salesindent = plus.webview.currentWebview().Salesindent;
+				setSalesIndentNub();
+
+				mui('body').on('tap', '[index]', function() {
+					var goodsinfo = n.getGoodsParam(this);
+					goodsinfo.index = this.getAttribute("index");
+					console.log(JSON.stringify(goodsinfo));
+					var vw = plus.webview.getWebviewById("salesindent_add_sales_goods_1.html");
+					if(vw) {
+						console.log("已经创建");
+						vw.evalJS("setH1('"+goodsinfo.user2+"')");
+						plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("setGoodsInfo('"+JSON.stringify(goodsinfo)+"')");
+						vw.show("slide-in-right");
+						return;
+					}
+					vw = plus.webview.create("salesindent_add_sales_goods_1.html", "salesindent_add_sales_goods_1.html", {}, {
+						goods: goodsinfo
+					});
+					vw.show("slide-in-right");
+
+				});
+				mui('body').on('tap', '#payType', function() {
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById("paytype.html");
+					var oldid = plus.webview.currentWebview().id;
+					console.log("当前页面id" + oldid);
+					if(vw) {
+						vw.show("slide-in-right");
+						console.log("已经创建过了页面开始传值" + oldid)
+						vw.evalJS("getOldId('" + oldid + "')");
+						return;
+					}
+					console.log("未创建过了页面开始传值" + oldid)
+					vw = plus.webview.create("../paytype.html", "paytype.html", {}, {
+						oldId: oldid
+					});
+					vw.show("slide-in-right");
+				});
+				
+				//触摸客户
+				mui('body').on('tap', '#customer', function() {
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById("client.html");
+					vw = plus.webview.create("client.html", "client.html", {}, {});
+					vw.show("slide-in-right");
+				});
+			});
+
+			mui.ready(function() {
+			})
+
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					Salesindent: {}
+				},
+				updated: function() {
+
+				},
+				methods:{
+					sumCount:function(){
+						var li=document.querySelector("#OA_task_1").querySelectorAll(".mui-table-view-cell");
+						var sum=0;
+						for(var i=0;i<li.length;i++){
+							console.log(i);
+							sum+=this.Salesindent.salesindentdetails[i].count*this.Salesindent.salesindentdetails[i].takeinmoney;
+						};
+						v.Salesindent.user2=sum;
+					}
+				}
+			});
+			
+			//获得结算账户
+			function getPay(pid, pname) {
+				console.log("传值成功:" + pid + "," + pname);
+				var id = document.querySelector("[name='pid']");
+				id.value = pid;
+				var name = document.querySelector("[name='pname']");
+				name.value = pname;
+			};
+			
+			//被goods页面调用重新赋值goodsinfo
+			function overwrite(goodsInfo){
+				
+			}
+			//销售号
+			function setSalesindent(Salesindent) {
+				console.log(Salesindent);
+				setSalesIndentNub();
+				v.Salesindent = JSON.parse(Salesindent);
+			}
+			//通过ajax弄到单据编号的编码
+			function setSalesIndentNub() {
+				console.log(uid)
+				mui.ajax(n.url + "/s/getTimeNum", {
+					data: {
+						uid: uid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data == "404") {
+
+							var myyear = now.getFullYear();
+							var mymonth = now.getMonth() + 1;
+							var myweekday = now.getDate();
+
+							if(mymonth < 10) {
+								mymonth = "0" + mymonth;
+							}
+							if(myweekday < 10) {
+								myweekday = "0" + myweekday;
+							}
+
+							document.querySelector("[name='user1']").value = "XSD" + uid + myyear + mymonth + myweekday + "0001";
+							return;
+						}
+						document.querySelector("[name='user1']").value = "XSD" + uid + data;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			//获得提交数据
+			function getInfoByProceeds(){
+				var json = n.getParam(".mui-content");
+				json.count = document.querySelector("[name='count']").innerHTML;
+				json.takeinmoney = document.querySelector("[name='takeinmoney']").innerHTML;
+				json.user5=document.querySelector("[name='takeinmoney']").innerHTML;
+				json.sid = sid;
+				json.uid = uid;
+				json.status = status;
+				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-table-view-cell");
+				console.log("我被调用了")
+				plus.webview.getWebviewById("salesindent_add_sales_proceeds_2.html").evalJS("setInfo('"+JSON.stringify(json)+"')");
+			}
+			//被父窗体调用提交收款
+			function ajaxSubmit(status) {
+				var json = n.getParam(".mui-content");
+				json.count = document.querySelector("[name='count']").innerHTML;
+				json.takeinmoney = 0;
+				json.user5=document.querySelector("[name='takeinmoney']").innerHTML;
+				json.sid = sid;
+				json.uid = uid;
+				json.status = status;
+				json.money=v.Salesindent.user2;
+				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-table-view-cell");
+				console.log(json.money);
+				console.log("传入数据" + JSON.stringify(json));
+				mui.ajax(n.url + "/s/addSales", {
+					data: JSON.stringify(json),
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					contentType: "application/json",
+					success: function(data) {
+						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+						//开始关闭窗体
+						plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).hide();
+						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
+					},
+					error: function(xhr, type, errorThrown) {}
+				});
+			}
+			var thisGoods  = 0;
+			function setGoods(goods){
+				//console.log(goods);
+				thisGoods = JSON.parse(goods);
+				console.log(thisGoods.index);
+				console.log(JSON.stringify(v.Salesindent.salesindentdetails[thisGoods.index]));
+				v.Salesindent.salesindentdetails[thisGoods.index].money=thisGoods.money;
+				v.Salesindent.salesindentdetails[thisGoods.index].count=thisGoods.count;
+				v.Salesindent.salesindentdetails[thisGoods.index].takeinmoney=thisGoods.takeinmoney;
+				v.sumCount();
+			}
+			
+			
+			//商品传值
+			function getgoodsInfo(data) {
+				console.log(JSON.stringify(data)+"这是我弄的")
+				var key = true;
+				console.log(JSON.stringify(v.Salesindent.salesindentdetails));
+				for(var i = 0; i < v.Salesindent.salesindentdetails.length; i++) {
+					if(v.Salesindent.salesindentdetails[i].user1 == data.user1) {
+						v.Salesindent.salesindentdetails[i].count = v.Salesindent.salesindentdetails[i].count - (-data.count);
+						v.Salesindent.salesindentdetails[i].takeinmoney = data.takeinmoney;
+						console.log(v.Salesindent.salesindentdetails[i].user2+":"+data.user2+"你好");
+						v.Salesindent.salesindentdetails[i].user2=data.user2;
+						v.sumCount();
+ 						key = false;
+						return;
+					}
+				}
+				if(key) {
+					console.log(JSON.stringify(data))
+					v.Salesindent.salesindentdetails.push(data);
+					v.sumCount();
+				}
+			}
+			
+			//客户传值
+			function getclientId(data){
+				v.cid=data.id;
+				v.cname=data.name;
+			}
+			
+			function scanCode(x){
+				console.log("二维码扫到了:"+x);
+				mui.ajax(n.url+"/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice",{
+					data:{
+						gInId:2,
+						sId:1,
+						cId:v.Salesindent.cid
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						console.log(JSON.stringify(data));
+						var json={};
+						json.count=1;
+						json.user1=data.goodsInstanceId;
+						json.user2=data.goodsName;
+						if(data.standardName){
+							json.user2+=data.standardName;
+						}
+						json.takeinmoney=data.price;
+						if(data.money){
+							json.price=data.money;
+						}
+						json.money=json.takeinmoney;
+						console.log(JSON.stringify(json))
+						getgoodsInfo(json);
+					},
+					error:function(xhr,type,errorThrown){
+						
+					}
+				});
+				
+			}
+		</script>
+	</body>
+
+</html>

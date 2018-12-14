@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+		<link href="css/mui.indexedlist.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/User_admin.css" />
+		<style>
+			/*客户报价商品图片*/
+			
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: 65px;
+				height: 65px;
+				float: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title" id="head_title">客管</h1>
+			<a class="add" data_client="customer/add_client.html" data_supplier="customer/add_supplier.html" data_cargo_client="customer/cargo_client_add.html"><span class="mui-icon mui-icon-plusempty"></span></a>
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">
+						客户
+					</a>
+					<a class="mui-control-item" href="#item2mobile">
+						供应商
+					</a>
+					<a class="mui-control-item" href="#item3mobile">
+						客户报价
+					</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" id="c" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<div class='list' class="mui-indexed-list">
+										<div class="mui-indexed-list-search mui-input-row mui-search">
+											<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入客户/关键字/拼音首字母">
+										</div>
+										<div class="mui-indexed-list-bar" style="height: 490px;">
+											<a>A</a>
+											<a>B</a>
+											<a>C</a>
+											<a>D</a>
+											<a>E</a>
+											<a>F</a>
+											<a>G</a>
+											<a>H</a>
+											<a>I</a>
+											<a>J</a>
+											<a>K</a>
+											<a>L</a>
+											<a>M</a>
+											<a>N</a>
+											<a>O</a>
+											<a>P</a>
+											<a>Q</a>
+											<a>R</a>
+											<a>S</a>
+											<a>T</a>
+											<a>U</a>
+											<a>V</a>
+											<a>W</a>
+											<a>X</a>
+											<a>Y</a>
+											<a>Z</a>
+										</div>
+										<div class="mui-indexed-list-alert"></div>
+										<div class="mui-indexed-list-inner">
+											<div class="mui-indexed-list-empty-alert">没有数据</div>
+											<ul class="mui-table-view data_content item1mobile1">
+												<div id="#" v-for="(obj,index) in list">
+													<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+													<li v-bind:data-tags="obj1.englishname" v-bind:data-value="obj.acronymname" v-for="(obj1,index) in obj.list" v-bind:data-id="obj1.id" v-bind:data-name="obj1.name" class="mui-table-view-cell mui-indexed-list-item" name="show_client.html">
+														<a href="#picture">
+															<!--没有联系人 客户名称就是客户名称 否则就显示联系人-->
+															<span>{{obj1.name}}</span>
+															<span class="monye_span">￥{{obj1.balance}}</span>
+															<p><span style="margin-right: 10px;color: #B6B6B6;" v-if="obj1.contactsname!=null">{{obj1.contactsname}}</span>{{obj1.phone}}</p>
+														</a>
+													</li>
+												</div>
+											</ul>
+											<div class="nullbox">
+												<!--<li></li>-->
+											</div>
+										</div>
+									</div>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class='list' class="mui-indexed-list">
+									<div class="mui-indexed-list-search mui-input-row mui-search">
+										<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入供应商/关键字/拼音首字母">
+									</div>
+									<div class="mui-indexed-list-bar" style="height: 490px;">
+										<a>A</a>
+										<a>B</a>
+										<a>C</a>
+										<a>D</a>
+										<a>E</a>
+										<a>F</a>
+										<a>G</a>
+										<a>H</a>
+										<a>I</a>
+										<a>J</a>
+										<a>K</a>
+										<a>L</a>
+										<a>M</a>
+										<a>N</a>
+										<a>O</a>
+										<a>P</a>
+										<a>Q</a>
+										<a>R</a>
+										<a>S</a>
+										<a>T</a>
+										<a>U</a>
+										<a>V</a>
+										<a>W</a>
+										<a>X</a>
+										<a>Y</a>
+										<a>Z</a>
+									</div>
+									<div class="mui-indexed-list-alert"></div>
+									<div class="mui-indexed-list-inner">
+										<div class="mui-indexed-list-empty-alert">没有数据</div>
+										<ul class="mui-table-view data_content item2mobile">
+											<div id="#" v-for="(obj,index) in list">
+												<li data-group="obj.acronymname" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+												<li v-bind:data-tags="obj1.englishname" v-bind:data-id="obj1.id" v-bind:data-name="obj1.name" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+													<a href="#supplier">
+														<span>{{obj1.name}}</span>
+														<span class="monye_span" v-if="obj1.summonye!=null">￥{{obj1.summonye}}</span>
+														<p><span>{{obj1.contacts}}</span><span style="margin: 10px;">{{obj1.phone}}</span></p>
+													</a>
+												</li>
+											</div>
+											<!--<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>-->
+										</ul>
+										<div class="nullbox">
+											<!--<li></li>-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class='list' class="mui-indexed-list">
+									<!--<div class="mui-indexed-list-search mui-input-row mui-search monye_input">
+										<div><input type="text" placeholder="全部往来单位"><span class="mui-icon mui-icon-forward" id="danwei"></span></div>
+										<div><input type="text" placeholder="全部货品"><span class="mui-icon mui-icon-forward" id="huoping"></span></div>
+									</div>-->
+									<div class="danwei_data">
+										<ul class="mui-table-view">
+											<li class="mui-table-view-cell" style="color: blue;">全部往来单位</li>
+											<li class="mui-table-view-cell">Item 1</li>
+											<li class="mui-table-view-cell">Item 2</li>
+											<li class="mui-table-view-cell">Item 3</li>
+											<li class="mui-table-view-cell">Item 2</li>
+											<li class="mui-table-view-cell">Item 3</li>
+										</ul>
+									</div>
+									<div class="huoping_data">
+										<ul class="mui-table-view">
+											<li class="mui-table-view-cell" style="color: blue;">全部货品</li>
+											<li class="mui-table-view-cell">Item 1</li>
+											<li class="mui-table-view-cell">Item 2</li>
+											<li class="mui-table-view-cell">Item 3</li>
+											<li class="mui-table-view-cell">Item 2</li>
+											<li class="mui-table-view-cell">Item 3</li>
+										</ul>
+									</div>
+									<div class="mui-indexed-list-search mui-input-row mui-search" style="display: none;">
+										<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入供应商/关键字/拼音首字母">
+									</div>
+									<div class="mui-indexed-list-bar" style="height: 490px;">
+										<a>A</a>
+										<a>B</a>
+										<a>C</a>
+										<a>D</a>
+										<a>E</a>
+										<a>F</a>
+										<a>G</a>
+										<a>H</a>
+										<a>I</a>
+										<a>J</a>
+										<a>K</a>
+										<a>L</a>
+										<a>M</a>
+										<a>N</a>
+										<a>O</a>
+										<a>P</a>
+										<a>Q</a>
+										<a>R</a>
+										<a>S</a>
+										<a>T</a>
+										<a>U</a>
+										<a>V</a>
+										<a>W</a>
+										<a>X</a>
+										<a>Y</a>
+										<a>Z</a>
+									</div>
+									<div class="mui-indexed-list-alert"></div>
+									<div class="mui-indexed-list-inner">
+										<div class="mui-indexed-list-empty-alert">没有数据</div>
+										<ul class="mui-table-view item3mobile1">
+											<div  v-for="(obj,index) in list">
+											<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>	
+											<li  data-value="AKU" data-tags="AKeSu" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item quoteData" v-bind:data-id="obj1.id">
+												<img src="http://120.78.85.230:8080/commodity/img/123.png" />
+												<p>{{obj1.name}}</p>
+												<p>{{obj1.gname}}</p>
+												<p v-for="(obj2,index) in obj1.standardlist" style="display: inline; margin-right: 10px;">
+													{{obj2.name}}
+													<span style="color: #C7C7CC;" v-for="(obj3,index) in obj2.sInList">{{obj3.name}}</span>
+												</p>
+												
+												<p style="float: right;">￥{{obj1.price}}</p>
+											</li>
+											</div>
+											
+										</ul>
+										<div class="nullbox">
+											<!--<li></li>-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="picture" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">销售单列表</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">应收对账单</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">收款</a>
+				</li>
+				<li class="mui-table-view-cell show_clientInfo" data-id="">
+					<a href="#">详情</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#picture"><b>删除</b></a>
+				</li>
+			</ul>
+		</div>
+		<div id="supplier" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">进货单列表</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">应收对账单</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">收款</a>
+				</li>
+				<li class="mui-table-view-cell show_supplierInfo" data-id="">
+					<a href="#">详情</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#picture"><b>删除</b></a>
+				</li>
+			</ul>
+		</div>
+		<!--<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-phone"></span>
+				<span class="mui-tab-label">买卖</span>
+			</a>
+			<a class="mui-tab-item" id="goods">
+				<span class="mui-icon mui-icon-email"></span>
+				<span class="mui-tab-label">货品</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">报表</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">客管</span>
+			</a>
+		</nav>-->
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.indexedlist.js"></script>
+		<script type="text/javascript" src="js/User_admin.js"></script>
+		<script src="js/openModel.js"></script>
+		<script type="text/javascript" src="js/news.js"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			(function($) {
+				/*$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});*/
+				var html2 = '<ul class="mui-table-view"><li class="mui-table-view-cell">第二个选项卡子项-1</li><li class="mui-table-view-cell">第二个选项卡子项-2</li><li class="mui-table-view-cell">第二个选项卡子项-3</li><li class="mui-table-view-cell">第二个选项卡子项-4</li><li class="mui-table-view-cell">第二个选项卡子项-5</li></ul>';
+				var html3 = '<ul class="mui-table-view"><li class="mui-table-view-cell">第三个选项卡子项-1</li><li class="mui-table-view-cell">第三个选项卡子项-2</li><li class="mui-table-view-cell">第三个选项卡子项-3</li><li class="mui-table-view-cell">第三个选项卡子项-4</li><li class="mui-table-view-cell">第三个选项卡子项-5</li></ul>';
+				var item2 = document.getElementById('item2mobile');
+				var item3 = document.getElementById('item3mobile');
+				document.getElementById('slider').addEventListener('slide', function(e) {
+					/*var transform = document.querySelectorAll(".mui-control-item")
+					for (var i=0;i<transform.length;i++) {
+						
+						var val=transform[i].getAttribute("class")
+						if(i==1 && val=="mui-control-item mui-active"){
+							
+						}
+						if(i==2 && val=="mui-control-item mui-active"){
+							alert("客户报价")
+						}
+						if(i==3 && val=="mui-control-item mui-active"){
+							alert("供应商")
+						}
+					}*/
+					/*if("translate3d(0px, 0px, 0px) translateZ(0px)" === transform) {
+						document.querySelector("#head_title").innerHTML = "客管"
+					}
+					if("translate3d(120px, 0px, 0px) translateZ(0px)" === transform) {
+						document.querySelector("#head_title").innerHTML = "供应商"
+					}
+					if("translate3d(240px, 0px, 0px) translateZ(0px)" == transform) {
+						document.querySelector("#head_title").innerHTML = "客户报价"
+					}*/
+					if(e.detail.slideNumber === 1) {
+						if(item2.querySelector('.mui-loading')) {
+							setTimeout(function() {
+								item2.querySelector('.mui-scroll').innerHTML = html2;
+							}, 500);
+						}
+					} else if(e.detail.slideNumber === 2) {
+						if(item3.querySelector('.mui-loading')) {
+							setTimeout(function() {
+								item3.querySelector('.mui-scroll').innerHTML = html3;
+							}, 500);
+						}
+					}
+				});
+				var sliderSegmentedControl = document.getElementById('sliderSegmentedControl');
+				$('.mui-input-group').on('change', 'input', function() {
+					if(this.checked) {
+						sliderSegmentedControl.className = 'mui-slider-indicator mui-segmented-control mui-segmented-control-inverted mui-segmented-control-' + this.value;
+						//force repaint
+						sliderProgressBar.setAttribute('style', sliderProgressBar.getAttribute('style'));
+					}
+				});
+			})(mui);
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			var info = document.getElementById("info");
+			var v = null;
+			var v2 = null;
+			var v3=null;
+			mui.ready(function() {
+				document.getElementById('slider').addEventListener('slide', function(e) {
+					var transform = document.querySelectorAll(".mui-control-item")
+					for(var i = 0; i < transform.length; i++) {
+
+						var val = transform[i].getAttribute("class")
+						if(i == 0 && val == "mui-control-item mui-active") {
+							document.querySelector("#head_title").innerHTML = "客管"
+						}
+						if(i == 1 && val == "mui-control-item mui-active") {
+							document.querySelector("#head_title").innerHTML = "供应商"
+						}
+						if(i == 2 && val == "mui-control-item mui-active") {
+							document.querySelector("#head_title").innerHTML = "客户报价"
+						}
+					}
+				});
+				/*查询门店下的客户*/
+				v = new Vue({
+					el: ".item1mobile1",
+					data: {
+						list: null
+					},
+					updated: function() {
+						var header = document.querySelector('header.mui-bar');
+						var list2 = document.querySelectorAll(".list")
+						for(var i = 0; i < list2.length; i++) {
+							list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+							window.indexedList = new mui.IndexedList(list2[i]);
+						}
+					}
+				})
+
+				//查询客户
+				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname?sid=1', {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						v.list = data;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+				//供应商
+				v2 = new Vue({
+					el: ".item2mobile",
+					data: {
+						list: null
+					},
+					updated: function() {
+						var header = document.querySelector('header.mui-bar');
+						var list2 = document.querySelectorAll(".list")
+						for(var i = 0; i < list2.length; i++) {
+							list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+							window.indexedList = new mui.IndexedList(list2[i]);
+						}
+					}
+				})
+				//查询供应商
+				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier?sid=1', {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						v2.list = data;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+				v3 = new Vue({
+					el: ".item3mobile1",
+					data: {
+						list: null
+					}
+				})
+				mui.ajax(obj.url+'/QuotedPrice/queryBySidAll?sid=1',{
+					data:{
+						
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						console.log(JSON.stringify(data))
+						v3.list=data
+					},
+					error:function(xhr,type,errorThrown){
+						
+					}
+				});
+				
+			});
+			mui.plusReady(function () {
+			    mui('body').on('tap','#goods',function(){
+				  plus.webview.create("goodsManage.html","goodsManage.html",{},{}).show("none")
+				}) 
+			})
+		</script>
+
+	</body>
+
+</html>

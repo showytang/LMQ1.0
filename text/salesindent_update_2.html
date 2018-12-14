@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>编辑销售订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input type="text" disabled="disabled" v-bind:value="Salesindent.salesindentnub" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row">
+								<label>日期</label>
+								<input type="date" v-bind:value="stime" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="text" disabled="disabled" v-bind:value="Salesindent.cname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-3">
+							货品
+						</div>
+						<div class="mui-col-xs-6">
+							{{Salesindent.count}}
+						</div>
+						<div class="mui-col-xs-3">
+							{{Salesindent.money}}
+						</div>
+					</li>
+					<ul id="OA_task_1" class="mui-table-view">
+						<li class="mui-table-view-cell" v-for="s in Salesindent.salesindentdetails">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-red">删除</a>
+							</div>
+							<div class="mui-slider-handle mui-row">
+								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-10">
+									<div class="mui-row">
+										<div class="mui-col-xs-6">{{s.gname}}</div>
+										<div style="text-align: right;" class="mui-col-xs-6">{{s.money}}</div>
+									</div>
+									<div class="mui-row">
+										<div class="mui-col-xs-6">{{s.count}}</div>
+										<div style="text-align: right;" class="mui-col-xs-6">{{s.takeinmoney}}</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<li class="mui-table-view mui-row">
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em; " class="mui-icon mui-icon-camera"></span>
+						</div>
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em;" class="mui-icon mui-icon-plusempty"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>定金</label>
+								<input type="number" v-bind:value="Salesindent.deposi" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="payType">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="hidden" name="pid" v-bind:value="Salesindent.pid" />
+								<input name="pname" type="text" readonly="readonly" v-bind:value="Salesindent.pname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" v-bind:value="Salesindent.remark" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/openModel.js"></script>
+		<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.ready(function() {
+			});
+			mui.plusReady(function() {
+				//触摸商品列表出现弹窗
+				mui('#OA_task_1').on('tap', '.mui-table-view-cell', function() {
+					lmqModel.open("全局设置", [{
+						title: "单22价",
+						type: "number",
+						bit: "元",
+						name: "price",
+						placeholder: ""
+					}, {
+						title: "数量",
+						type: "number",
+						bit: "件",
+						name: "count",
+						placeholder: ""
+					}, {
+						title: "金额",
+						type: "number",
+						bit: "元",
+						name: "sumPrice",
+						placeholder: ""
+					}, {
+						title: "备注",
+						type: "text",
+						bit: "",
+						name: "remark",
+						placeholder: ""
+					}], function() { //取消回调
+						//alert("取消回调");
+
+					}, function(data) { //确定回调
+						//alert(JSON.stringify(data));
+					});
+				});
+				//触摸结算账户
+				mui('body').on('tap', '#payType', function() {
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById("paytype.html");
+					var oldid = plus.webview.currentWebview().id;
+					console.log("当前页面id" + oldid);
+					if(vw) {
+						vw.show("slide-in-right");
+						vw.evalJS("getOldId(" + oldid + ")");
+						return;
+					}
+					vw = plus.webview.create("paytype.html", "paytype.html", {}, {
+						oldId: oldid
+					});
+					vw.show("slide-in-right");
+				});
+				
+				
+				
+				queryById(plus.webview.currentWebview().pid);
+			});
+			//获得结算账户
+			function getPay(pid, pname) {
+				console.log("传值成功:" + pid + "," + pname);
+				var id = document.querySelector("[name='pid']");
+				id.value = pid;
+				var name = document.querySelector("[name='pname']");
+				name.value = pname;
+			}
+		</script>
+		<script type="text/javascript">
+			(function($) {
+				var btnArray = ['确认', '取消'];
+				//$.swipeoutOpen(el,direction)//打开指定列的滑动菜单，el:指定列的dom对象，direction：取值left|right，指定打开的是左侧或右侧滑动菜单
+				//$.swipeoutClose(el);//关闭指定列的滑动菜单，el:指定列的dom对象
+				//				setTimeout(function() {
+				//					$.swipeoutOpen(document.getElementById("OA_task_1").querySelector('li:last-child'), 'left');
+				//					setTimeout(function() {
+				//						$.swipeoutClose(document.getElementById("OA_task_1").querySelector('li:last-child'));
+				//					}, 1000);
+				//				}, 1000);
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+				$('#OA_task_1').on('tap', '.mui-btn-red', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', '', btnArray, function(e) {
+						if(e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+			})(mui);
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					Salesindent: null,
+					stime: null
+				}
+			});
+			//通过ajax查询出信息并赋值vue对象
+			function queryById(id) {
+				mui.ajax(n.url + "/si/queryById", {
+					data: {
+						id: id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						
+						console.log(JSON.stringify(data))
+						v.Salesindent = data;
+						v.stime = (data.time).substring(0, 10);
+						console.log(v.Salesindent.salesindentdetails.length)
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			
+			
+		</script>
+	</body>
+
+</html>

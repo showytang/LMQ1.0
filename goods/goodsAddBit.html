@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加单位</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.Sec {
+				background-color: #FFFFFF;
+			}
+			
+			.nameSec {
+				border: 1px solid #d4d4d4;
+			}
+			
+			#submitBtn {
+				float: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加单位</h1>
+			<span class="mui-icon mui-icon-checkmarkempty" id="submitBtn"></span>
+		</header>-->
+		<div class="mui-content Sec">
+			<div class="mui-input-row nameSec">
+				<label>名称</label>
+				<input type="text" class="mui-input-clear" id="bitName" placeholder="请输单位目名称">
+			</div>
+
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				
+				
+			})
+			function addBit(){
+					var bitName = document.querySelector("#bitName");
+					if(bitName.value.length > 0) {
+						mui.ajax(n.url + '/goods/addBit', {
+							data: {
+								name:bitName.value
+							},
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								var webview = plus.webview.getWebviewById("goodsBit.html");
+								if(webview){
+									webview.evalJS("getData()");
+									 //子页面销毁
+							   	    var webview = plus.webview.getWebviewById("goodsAddBit_h.html");
+							   	    if(webview != null){
+							   	    	webview.close();
+							   	    }
+							   	    var webview = plus.webview.currentWebview();
+							   	    if(webview != null){
+							   	    	webview.close("slide-out-right");
+							   	    }
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+
+							}
+						});
+					}
+				}
+		</script>
+	</body>
+
+</html>

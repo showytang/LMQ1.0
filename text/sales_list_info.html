@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>关联销售表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-bar-tab {
+			height: 65px;
+		}
+		#topPopover {
+			position: absolute;
+			top: 16px;
+			right: 6px;
+		}
+		/*#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}*/
+		
+		.mui-popover {
+			height: 185px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">关联销售表</h1>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a>
+			
+		</header>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" id="filtrate">
+							<a href="#">浏览</a>
+						</li>
+						<li class="mui-table-view-cell" id="add">
+							<a href="#">打印</a>
+						</li>
+						<li class="mui-table-view-cell" id="add">
+							<a href="#">分享</a>
+						</li>
+						<li class="mui-table-view-cell" id="add">
+							<a href="#">打印机</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>单据编号</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>日期</label>
+							<input type="date" value="2013-09-05" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-3">
+							货品
+						</div>
+						<div class="mui-col-xs-6">
+							2
+						</div>
+						<div class="mui-col-xs-3">
+							2000000.00
+						</div>
+					</li>
+					<ul id="OA_task_1" class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<div class="mui-row">
+								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-10">
+									<div class="mui-row">
+										<div class="">Item 1</div>
+									</div>
+									<div class="mui-row">
+										<div class="mui-col-xs-4">Item 3</div>
+										<div class="mui-col-xs-4">Item 3</div>
+										<div class="mui-col-xs-4" style="text-align: right;">Item 3</div>
+									</div>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+				</ul>
+			</div>
+			<div class="mui-card mui-row">
+
+				<div class="mui-col-xs-8 mui-row">
+					<div class="mui-col-xs-6">
+						<div class="">
+							1
+						</div>
+						<div class="">
+							1
+						</div>
+					</div>
+					<div class="mui-col-xs-6">
+						<div class="">
+							1
+						</div>
+						<div class="">
+							1
+						</div>
+					</div>
+				</div>
+				<div class="mui-col-xs-4">Item 1</div>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row ">
+							<label>营业员</label>
+							<input type="text" disabled="disabled" value="" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row ">
+							<label>结算账户</label>
+							<input type="text" disabled="disabled" value="" />
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" value="" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="" style="height: 75px;">
+
+			</div>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			删除
+		</nav>
+		
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="../text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.plusReady(function() {
+				var btnArray = ['取消', '确认'];
+				mui('body').on('tap','.mui-bar-tab',function(){
+				  var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除关联销售单？', '', btnArray, function(e) {
+						if(e.index == 0) {
+							
+						} else {
+							
+						}
+					});
+				}) 
+			})
+		</script>
+	</body>
+
+</html>

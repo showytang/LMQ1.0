@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">添加货物</h1>
+		    <span id="addGoodsBtn" style="float: right;" class="mui-icon mui-icon-checkmarkempty"></span>
+		</header>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({//子页面
+				subpages: [{
+					url: 'goodsAdd.html',
+					id: 'goodsAdd.html',
+					styles: {
+						top: document.querySelector("#header").offsetHeight,
+						bottom: "0px",
+					},
+					extras: {
+						
+					}
+				}]
+			});
+			mui.plusReady(function () {
+			  //货物添加按钮
+			  mui('body').on('tap', '#addGoodsBtn', function() {
+			  	var webview = plus.webview.getWebviewById("goodsAdd.html");
+					if(webview!=null){
+						webview.evalJS("addGoods('')");
+					}
+			  })
+			})
+			//返回重写
+			 mui.ready(function () {
+			   	mui.back=function () {
+			   	    //子页面销毁
+			   	    var webview = plus.webview.getWebviewById("goodsAdd.html");
+			   	    if(webview != null){
+			   	    	webview.close();
+			   	    }
+			   	    var webview = plus.webview.currentWebview();
+			   	    if(webview != null){
+			   	    	webview.close("slide-out-right");
+			   	    }
+			   	}
+			  })
+		</script>
+	</body>
+
+</html>

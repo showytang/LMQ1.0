@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>关联销售单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-bar-tab {
+			height: 65px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">关联销售单</h1>
+		</header>
+
+		<nav id="tab" class="mui-bar mui-bar-tab">
+			删除
+		</nav>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.init({
+				subpages: [{
+					url: 'sales_list_info_0_2.html',
+					id: 'sales_list_info_0_2.html',
+					styles: {
+						top: "45px",
+						bottom: document.querySelector("#tab").offsetHeight
+					},
+					extras: {
+						pid:plus.webview.currentWebview().pid
+					}
+				}]
+			})
+			
+			mui.plusReady(function() {
+				mui('#tab').on('tap','#submit',function(){
+					plus.webview.getWebviewById("salesindent_add_sales_2.html").evalJS("ajaxSubmit()");
+				})
+			})
+		</script>
+	</body>
+
+</html>

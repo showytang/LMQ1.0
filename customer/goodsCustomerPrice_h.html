@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>设置报价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">客户报价详情</h1>
+		</header>
+
+
+		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			 mui.ready(function () {
+			 	//返回
+			   	mui.back=function () {
+			   	    var webview = plus.webview.getWebviewById("goodsCustomerPrice.html");
+			   	    if(webview){
+			   	    	webview.close("slide-out-right");
+			   	    }
+			   	    plus.webview.currentWebview().close("slide-out-right");
+			   	}
+			   })
+			mui.plusReady(function () {
+			    var webview = plus.webview.getWebviewById("goodsCustomerPrice.html");
+			    if(!webview){
+			    	webview = plus.webview.create("goodsCustomerPrice.html","goodsCustomerPrice.html",{top:45},{goodsInstance:plus.webview.currentWebview().goodsInstance});
+			    }
+			    webview.show("slide-in-right");
+			})
+			
+		</script>
+	</body>
+
+</html>

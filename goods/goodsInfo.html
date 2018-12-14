@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品实例详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.simImg {
+			/*max-width: 60px;*/
+			margin-right: 8px;
+			width: 4.5em;
+			height: 4.5em;
+		}
+		
+		.goodsTitle {
+			font-size: 0.85em;
+			word-break: normal;
+			width: 100%;
+			white-space: pre-wrap;
+			/*word-wrap : break-word ;*/
+			overflow: hidden;
+			line-height: 1.2em;
+			margin-bottom: 2px;
+		}
+		
+		.titleSec {
+			font-size: 0.9em;
+			border-bottom: 1px solid #d4d4d4;
+		}
+		
+		.textLabel {
+			line-height: 3em;
+			margin-right: 10px;
+			float: right;
+		}
+		
+		.codeText {
+			font-size: 1em;
+			color: #000000;
+		}
+		
+		.label {
+			line-height: 3em;
+			color: blue;
+			margin-left: 8px;
+		}
+		
+		.propSec {
+			background-color: #FFFFFF;
+		}
+		
+		.title {
+			background-color: #d4d4d4;
+		}
+		
+		.icoBtn {
+			line-height: 2em;
+			margin-right: 10px;
+		}
+		
+		#editBtn {
+			float: right;
+		}
+	</style>
+
+	<body>
+
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">商品详情</h1>
+			<span class="mui-icon mui-icon-compose" id="editBtn"></span>
+		</header>-->
+
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" class="mui-row" data-goodsId="1">
+						<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+goods.imgUrl">
+						<!--名称-->
+						<div class="mui-col-xs-9 mui-row">
+							<span class="mui-col-xs-12 goodsTitle">{{goods.name}}</span>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<!--规格部分-->
+			<div class="propSec">
+				<div class="title">基本信息</div>
+				<div class="titleSec">
+					<label class="label">商品编码</label>
+					<label class="textLabel">{{goods.code}}</label>
+				</div>
+				
+				<!--<div class="titleSec" v-if="goods.fristPrice">
+					<label class="label">一口价格</label>
+					<label class="textLabel">￥{{goods.fristPrice.toFixed(2)}}</label>
+				</div>-->
+				
+				
+				<div class="titleSec" v-if="goods.count">
+					<label class="label">商品库存</label>
+					<label class="textLabel">{{goods.count}}</label>
+				</div>
+				<div class="titleSec">
+					<label class="label">类别</label>
+					<label class="textLabel">{{goods.tName}}</label>
+				</div>
+				<div class="titleSec">
+					<label class="label">主单位</label>
+					<label class="textLabel">{{goods.bitName}}</label>
+				</div>
+				<div class="titleSec">
+					<label class="label">创建时间</label>
+					<label class="textLabel">{{goods.time}}</label>
+				</div>
+				<div class="titleSec">
+					<label class="label">商品详细</label>
+					<p style="text-indent: 1em;">{{goods.detail}}</p>
+				</div>
+				<div v-for="(l,index) in goods.gInList">
+					<div class="title">{{l.standardName}}</div>
+					<div class="titleSec" v-for="(pL,index1) in l.priceList">
+						<label class="label">{{pL.pName}}</label>
+						<label class="textLabel"><span>￥</span>{{pL.price.toFixed(2)}}</label>
+					</div>
+					
+					<div class="titleSec">
+						<label class="label">库存</label>
+						<label class="textLabel"><span>{{l.totalCount}}</label>
+					</div>
+					<div class="titleSec mui-row">
+						<label class="label mui-col-xs-4">二维码地址</label>
+						<label class="mui-col-xs-5 textLabel">{{l.ecode}}</label>
+						<!--<span class="mui-icon mui-icon-camera icoBtn mui-col-xs-2 mui-right"></span>-->
+					</div>
+					<div class="titleSec mui-row">
+						<label class="label mui-col-xs-4">条码地址</label>
+						<label class="mui-col-xs-5 textLabel">{{l.qcode}}</label>
+						<!--<span class="mui-icon mui-icon-camera icoBtn mui-col-xs-2 mui-right"></span>-->
+					</div>
+				</div>
+				<!--各种价格-->
+				<div id="priceSec" v-if="goods.priceList">
+					<div class="title">价格信息</div>
+					<div class="titleSec" v-for="(p,index) in goods.priceList">
+						<label class="label">{{p.pName}}</label>
+						<label class="textLabel">￥:{{p.price.toFixed(2)}}</label>
+					</div>
+					<!--<div class="mui-text-center">
+						<span class="mui-icon mui-icon-arrowdown" id="priceArrow"></span>
+					</div>-->
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/news.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				//当前窗体显示的商品id
+				var gId = plus.webview.currentWebview().gId;
+				console.log("商品id=" + gId);
+				//初始化数据
+				mui.ajax(n.url + '/goods/queryGoodsInfo', {
+					data: {
+						gId: gId
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(JSON.stringify(data));
+						gInList = data.gInList;
+						var vue = new Vue({
+							el: ".mui-content",
+							data: {
+								goods: data,
+								url: n.url+"/"
+							}
+						});
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				}); //ajax结束
+				
+				//价格下拉
+				/*mui('body').on('tap','#priceArrow',function(){
+					this.classList.toggle("mui-icon-arrowdown");
+					this.classList.toggle("mui-icon-arrowup");
+					var priceDivs = document.querySelector("#priceSec").querySelectorAll(".titleSec");
+					for (var i=0;i<priceDivs.length;i++) {
+						if(this.classList.contains("mui-icon-arrowup")){
+							priceDivs[i].style.display="none";
+						}else{
+							priceDivs[i].style.display="block";
+						}
+						
+					}
+				}) */
+			})
+			//修改商品
+			var gInList;//商品规格数据
+			function editBtn(){
+			  var webview = plus.webview.create("goodsEdit_h.html","goodsEdit_h.html",{},{gId:plus.webview.currentWebview().gId,gInList:gInList});
+			  webview.show("slide-in-right");
+			}
+		</script>
+	</body>
+
+</html>

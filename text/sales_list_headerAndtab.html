@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>销售单列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-bar-nav~.mui-content {
+			padding-top: 70px;
+		}
+		/*设置固定高度*/		
+		.hei {
+			height: 110px;
+		}
+	</style>
+
+	<body>
+		<header class="hei mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">销售单列表</h1>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#topPopover"></a>
+			<div class="mui-input-row mui-search">
+				<input type="search" class="mui-input-clear" placeholder="请输入单据号/客户/品名规格/备注">
+			</div>
+			<div>
+				<span id="startTime">
+					1
+				</span>
+				<span id="endTime">
+					1
+				</span>
+			</div>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			合计
+		</nav>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.init({
+				subpages: [{
+					url: 'sales_list.html',
+					id: 'sales_list.html',
+					styles: {
+						top: "110px",
+						bottom: "50px"
+					},
+					extras: {}
+				}]
+			})
+			mui.ready(function() {
+				mui('body').on('tap', '.mui-content', function() {
+					document.activeElement.blur();
+				})
+			})
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				console.log(self.ourl);
+
+				//触摸返回图标时，将webview隐藏
+				mui.back = function() {
+					//plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).show();
+					plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-right");
+				};
+				mui('body').on('tap', '#menu', function() {
+					document.activeElement.blur();
+					// 弹出系统选择按钮框
+					plus.nativeUI.actionSheet({
+						title: "选项",
+						cancel: "取消",
+						buttons: [{
+							title: "筛选"
+						}, {
+							title: "新增"
+						}]
+					}, function(e) {
+						if(e.index == 1) {
+							//判断筛选窗体是否存在
+							var vw = plus.webview.getWebviewById("sales_filtrate");
+							if(vw) {
+								vw.show("slide-in-right");
+								return;
+							}							
+							//显示新的筛选窗体
+							plus.webview.create("filtrate.html", "sales_filtrate", {}, {}).show("slide-in-right");
+						}
+						if(e.index == 2) {
+							//每次都将重新创建一个新的webview
+							plus.webview.create("sales_add.html", "sales_add.html", {}, {}).show("slide-in-right");
+						}
+					});
+				})
+
+			})
+			//隐藏键盘
+			function hidejp(){
+				document.activeElement.blur();  
+			}
+		</script>
+		<script type="text/javascript">
+			(function($) {
+				var btnArray = ['确认', '取消'];
+				//$.swipeoutOpen(el,direction)//打开指定列的滑动菜单，el:指定列的dom对象，direction：取值left|right，指定打开的是左侧或右侧滑动菜单
+				//$.swipeoutClose(el);//关闭指定列的滑动菜单，el:指定列的dom对象
+				//				setTimeout(function() {
+				//					$.swipeoutOpen(document.getElementById("OA_task_1").querySelector('li:last-child'), 'left');
+				//					setTimeout(function() {
+				//						$.swipeoutClose(document.getElementById("OA_task_1").querySelector('li:last-child'));
+				//					}, 1000);
+				//				}, 1000);
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+				$('#OA_task').on('tap', '.mui-btn-red', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', 'Hello MUI', btnArray, function(e) {
+						if(e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+
+				$('#OA_task').on('tap', '.mui-btn-blue', function(event) {
+					$.swipeoutClose(this.parentNode.parentNode);
+					plus.webview.create("salesindent_update.html", "salesindent_update.html", {}, {}).show("slide-in-right");
+
+				});
+			})(mui);
+		</script>
+	</body>
+
+</html>

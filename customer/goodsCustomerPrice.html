@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>设置报价</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+	</head>
+
+	<body>
+		<form class="mui-input-group">
+			<input type="hidden" v-bind:value="goodsInstance.qid" name="id">
+			<input type="hidden" v-bind:value="goodsInstance.goodsInstanceId" name="goodsInstanceId">
+			<div class="mui-input-row">
+				<label>单位</label>
+				<input type="text" disabled="disabled" v-bind:value="goodsInstance.bitName" class="mui-input-clear" name="takeinmoney" placeholder="">
+			</div>
+			<div class="mui-input-row" v-if="goodsInstance.ptype!=-1">
+				<label>价格(￥)</label>
+				<input type="number" disabled="disabled" v-bind:value="goodsInstance.price.toFixed(2)" class="mui-input-clear" name="count" placeholder="">
+			</div>
+			<div class="mui-input-row" v-if="goodsInstance.ptype==-1">
+				<label>大客户报价</label>
+				<input type="number" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" name="remark"  placeholder="">
+			</div>
+			<div class="mui-input-row" v-if="goodsInstance.ptype!=-1">
+				<label>大客户报价</label>
+				<input type="number" class="mui-input-clear" value="0.00" name="remark" placeholder="">
+			</div>
+			<button type="button" class="mui-btn mui-btn-danger mui-btn-block">提交</button>
+		</form>
+
+		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/news.js" ></script>
+		<script type="text/javascript">
+			mui.init();
+			var vue;
+			var cid;
+			function getObj(data){
+				cid=data.cid
+			}
+			mui.plusReady(function() {
+				var webview = plus.webview.getWebviewById("cargo_client_add.html");
+				webview.evalJS("getJsonObj()");
+				var goodsInstance = eval("(" + plus.webview.currentWebview().goodsInstance + ")");
+
+				vue = new Vue({
+					el: ".mui-input-group",
+					data: {
+						goodsInstance: goodsInstance
+					}
+				})
+				mui('body').on('tap', '[type=button]', function() {
+					var temp = {};
+					temp.gid = document.querySelector("[name=goodsInstanceId]").value
+					temp.cid=cid
+					temp.sid=1		//门店
+					temp.id=document.querySelector("[name=id]").value
+					temp.monye = document.querySelector("[name=remark]").value
+					if(goodsInstance.ptype==-1){
+						mui.ajax(obj.url+'/QuotedPrice/updateByIdQuoteprice',{
+							data:temp,
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								if(data>0){
+									mui.toast("修改成功！");
+									plus.webview.currentWebview().close()
+								}
+							},
+							error:function(xhr,type,errorThrown){
+								
+							}
+						});
+						return;
+					}
+					mui.ajax(obj.url+'/QuotedPrice/addQuoteprice',{
+							data:temp,
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								if(data>0){
+									mui.toast("报价成功！");
+									plus.webview.currentWebview().close()
+								}
+							},
+							error:function(xhr,type,errorThrown){
+							}
+						});
+										
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style>
+		#header {
+			height: 90px;
+		}
+	</style>
+
+	<body>
+		<header id="header" class="hei mui-bar mui-bar-nav">
+			<h1 class="mui-title">货物</h1>
+			<span class="mui-icon mui-icon-bars mui-pull-right" id="moreBtn"></span>
+			<!--打印的按钮-->
+			<span class="mui-icon mui-icon-checkmarkempty mui-pull-right" style="display: none;" id="selectBtn"></span>
+			<span class="mui-icon mui-icon-closeempty mui-pull-left" style="display: none;" id="exitBtn"></span>
+			<!--搜索-->
+			<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入货物名称或货物关键字">
+			</div>
+		</header>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init({//子页面
+				subpages: [{
+					url: 'goodsManage.html',
+					id: 'goodsManage.html',
+					styles: {
+						top: document.querySelector("#header").offsetHeight,
+						bottom: "0px",
+					},
+					extras: {
+						
+					}
+				}]
+			});
+			//搜索vue
+			var vue = new Vue({
+				el:"header",
+				data:{
+					goodsName:""
+				},
+				watch: { //搜索
+					goodsName: function() {
+						var webview = plus.webview.getWebviewById("goodsManage.html");
+						if(webview!=null){
+							webview.evalJS("getData('"+this.goodsName+"')");
+						}
+					}
+				}
+			});
+			mui.plusReady(function () {
+			    //更多功能moreBtn
+				//添加商品
+				mui('body').on('tap', '#moreBtn', function() {
+					plus.nativeUI.actionSheet({
+						title: "",
+						buttons: [{
+							title: "添加商品"
+						}, {
+							title: "打印"
+						}],
+						cancel: "取消"
+					}, function(e) {
+						if(e.index == 1) { //添加商品
+							var webview = plus.webview.create("goodsAdd_h.html", "goodsAdd_h.html", {}, {});
+							webview.show("slide-in-right");
+						} else if(e.index == 2) { //打印
+							var webview = plus.webview.getWebviewById("goodsManage.html");
+							if(webview!=null){
+								webview.evalJS("openPrint('')");
+							}
+							showPrint();
+						}
+					})
+				})
+				
+				//打印selectBtn
+				mui('body').on('tap', '#selectBtn', function() {
+					var webview = plus.webview.getWebviewById("goodsManage.html");
+					if(webview!=null){
+						webview.evalJS("selectBtnTap('')");
+					}
+				});
+				//取消打印exitBtn
+				mui('body').on('tap', '#exitBtn', function() {
+					var webview = plus.webview.getWebviewById("goodsManage.html");
+					if(webview!=null){
+						webview.evalJS("cancalPrint('')");
+					}
+					hidePrint();
+				});
+			})
+				
+				
+				
+				
+			//显示打印按钮
+			function showPrint(){
+				document.querySelector("#moreBtn").style.display = "none";
+				document.querySelector("#selectBtn").style.display = "block";
+				document.querySelector("#exitBtn").style.display = "block";
+			}
+			//隐藏打印按钮
+			function hidePrint(){
+				document.querySelector("#moreBtn").style.display = "block";
+				document.querySelector("#selectBtn").style.display = "none";
+				document.querySelector("#exitBtn").style.display = "none";
+			}
+				
+				
+		</script>
+	</body>
+
+</html>

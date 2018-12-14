@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			
+			.mui-card {
+				margin-left: 0px;
+				margin-right: 0px;
+			}
+			
+			.centerSec {
+				height: 100%;
+				border: 1px solid #0000FF;
+			}
+			
+			.circleSec {
+				display: flex;
+				justify-content: center;
+				border: 1px solid #DDDDDD;
+				height: 18em;
+			}
+			
+			#circleBtn {
+				width: 10em;
+				height: 10em;
+				/*border: 1px solid #000000;*/
+				border-radius: 50%;
+				justify-content: center;
+				/*vertical-align: middle;*/
+				margin-top: 3em;
+				transition: all 0.05s ease-out;
+			}
+			
+			.show {
+				box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.15);
+			}
+			
+			.selected {
+				/*box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.13), 0 5px 8px rgba(0, 0, 0, 0.3), 0 10px 10px 4px rgba(0, 0, 0, 0.3);*/
+				box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.1), 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 150px rgba(0, 0, 0, 0.15);
+			}
+			
+			.titleFont {
+				font-size: 0.7em;
+			}
+			
+			.moneySec {
+				border: 1px solid #DDDDDD;
+			}
+			
+			.border {
+				border-left: 1px solid #DDDDDD;
+				border-right: 1px solid #DDDDDD;
+			}
+			
+			.goAndOutSec {
+				padding-top: 2em;
+				padding-bottom: 2em;
+			}
+			
+			.centerFont {
+				position: absolute;
+				top: 8em;
+			}
+			
+			.mui-slider-indicator {
+				bottom: 0;
+			}
+			
+			.mui-slider {
+				background-color: #f2f2f2;
+			}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-object {
+				max-width: 100px;
+				height: 100px;
+				border: 1px solid red;
+				border-radius: 50%;
+			}
+			
+			#cp_div {
+				height: 165px;
+			}
+			/*门店弹层*/
+			
+			.mui-plus .plus {
+				display: inline;
+			}
+			
+			.plus {
+				display: none;
+			}
+			
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+			
+			p {
+				text-indent: 22px;
+			}
+			
+			/*span.mui-icon {
+				font-size: 14px;
+				margin-left: -15px;
+				padding-right: 10px;
+			}*/
+			
+			.mui-popover {
+				height: 300px;
+			}
+			
+			.mui-content {
+				padding: 10px;
+			}
+			
+			.mui-popover {
+				position: absolute;
+				z-index: 999;
+				display: none;
+				width: 280px;
+				-webkit-transition: opacity .3s;
+				transition: opacity .3s;
+				-webkit-transition-property: opacity;
+				transition-property: opacity;
+				-webkit-transform: none;
+				transform: none;
+				opacity: 0;
+				border-radius: 7px;
+				background-color: #f7f7f7;
+				-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+				box-shadow: 0 0 15px rgba(0, 0, 0, .1);
+			}
+			
+			.mui-control-content {
+				min-height: 600px;
+			}
+			
+			.mui-card {
+				margin-left: 0px;
+				margin-right: 0px;
+			}
+		</style>
+		<style>
+			.lmq-circle {
+				width: 15rem;
+				height: 15rem;
+				border-radius: 50%;
+				border: 2rem solid #5ab1ce;
+			}
+			
+			.lmq-circle-01 {
+				border-radius: 50%;
+				border: 1rem solid #DDDDDD;
+				height: 100%;
+				width: 100%;
+				padding-top: 35%;
+				text-align: center;
+				color: #fff;
+				font-size: 1rem;
+			}
+			
+			.lmq-header .mui-col-xs-12 {
+				display: flex;
+				justify-content: space-around;
+			}
+			
+			.lmq-header {
+				height: 23rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-around;
+				/*background-color: #306eaa;*/
+				background: -webkit-linear-gradient(135deg, #2fcdce, #306eaa);
+				/*background-image: url(../images/bg.jpg);*/
+				background-repeat: no-repeat;
+				background-size: cover;
+			}
+			
+			.lmq-content {
+				display: flex;
+				justify-content: space-between;
+				background: -webkit-linear-gradient(135deg, #2fcdce, #2d9cb7);
+				color: #fff;
+				/*font-size: 1rem;*/
+				align-items: stretch;
+				align-content: stretch;
+			}
+			
+			.lmq-content div {
+				flex-grow: 1;
+			}
+			
+			.lmq-footer {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 2rem;
+				text-align: center;
+				color: #2fcdce
+			}
+			
+			.lmq-footer .lmq-footer-circle {
+				width: 5rem;
+				height: 5rem;
+				background-color: #32bfc6;
+				border-radius: 50%;
+				margin-bottom: 0.5rem;
+				display: flex;
+				justify-content: space-around;
+				flex-direction: column;
+				text-align: center;
+			}
+			
+			.lmq-footer .lmq-footer-menu {
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+			
+			body,
+			.mui-content {
+				background-color: #fff;
+				padding:0px;
+			}
+			
+			.lmq-content-bg {
+				text-align: center;
+				padding: 0.3rem 0px;
+			}
+			
+			.lmq-content-bg:nth-child(1) {
+				border-right: 1px solid #2fcdce;
+			}
+			
+			.lmq-content-bg:nth-child(2) {
+				border-left: 1px solid #2fcdce;
+			}
+			
+			.lmq-content-bg div {
+				padding: 0.2rem 0px;
+			}
+			
+			.lmq-header-select div {
+				width: 5rem;
+				height: 1rem;
+				background-color: rgba(0, 0, 0, 0.2);
+			}
+			
+			.lmq-header .lmq-header-select {
+				justify-content: center;
+			}
+			
+			.lmq-header .lmq-header-select div:nth-child(1) {
+				border-radius: 10px 0px 0px 10px;
+			}
+			
+			.lmq-header .lmq-header-select div:nth-child(2) {
+				border-radius: 0px 10px 10px 0px;
+			}
+			
+			.lmq-header-select div:hover {
+				background-color: rgba(0, 0, 0, 0.5);
+			}
+			
+			.mui-bar-nav {
+				position: absolute;
+				color: #fff;
+				background: rgba(0, 0, 0, 0);
+			}
+			
+			.mui-bar-nav input {
+				font-size: 0.5rem;
+			}
+			
+			.mui-content header {
+				-webkit-box-shadow: 0 0px 0px #ccc;
+				box-shadow: 0 0px 0px #ccc;
+			}
+			
+			.lmq-footer-circle span {
+				color: #fff;
+			}
+			
+			header .mui-input-row {
+				padding-top: 2px;
+			}
+			
+			header div:nth-child(2) span {
+				font-size: 1.2rem;
+			}
+			.mui-table-view:after{
+				height: 0px;
+			}
+			.mui-table-view-cell:after{
+				height: 0px;
+			}
+			.mui-table-view-cell.mui-collapse .mui-table-view .mui-table-view-cell:after{
+				height: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<!-- 主界面菜单同时移动 -->
+	    <!-- 侧滑导航根容器 -->
+	    <div class="mui-off-canvas-wrap mui-draggable">
+	        <!-- 主页面容器 -->
+	        <div class="mui-inner-wrap">
+	            <!-- 菜单容器 -->
+	            <aside class="mui-off-canvas-left" id="offCanvasSide">
+	                <div class="mui-scroll-wrapper">
+	                    <div class="mui-scroll" >
+	                        <!-- 菜单具体展示内容 -->
+	                        <div class="mui-content outo-scroll" id="cp_caidan">
+							<div>
+								<ul class="mui-table-view mui-grid-view">
+									<li class="mui-table-view-cell mui-media mui-col-xs-12">
+										<a href="#">
+											<div class="cp_opp">
+												<img class="mui-media-object" src="http://placehold.it/400x300">
+											</div>
+											<div class="mui-media-body cp_div">
+												<a href="#" class="cp_head">1111111111</a>
+											</div>
+										</a>
+									</li>
+								</ul>
+								<div class="mui-card cp_classname">
+									<ul class="mui-table-view mui-table-view-chevron">
+										<li class="mui-table-view-cell mui-collapse">
+											<a class="mui-navigate-right" href="#">切换用户</a>
+											<ul class="mui-table-view mui-table-view-chevron" id="cp_ul">
+												<li class="mui-table-view-cell" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+													<a href="#">{{obj.name}}</a>
+												</li>
+												<!--<li class="mui-table-view-cell"><a href="#">赵举峰</a>
+											</li>
+											<li class="mui-table-view-cell"><a href="#">今天脚脚也要开心</a>
+											</li>-->
+											</ul>
+										</li>
+										<li class="mui-table-view-cell mui-collapse">
+											<a class="mui-navigate-right" href="#">支付管理</a>
+											<ul class="mui-table-view mui-table-view-chevron">
+												<li class="mui-table-view-cell" id="cp_payment">
+													<a href="#">支付类型</a>
+												</li>
+												<li class="mui-table-view-cell">
+													<a href="#">指纹设置</a>
+												</li>
+												<li class="mui-table-view-cell">
+													<a href="#">添加银行卡</a>
+												</li>
+											</ul>
+										</li>
+										<li class="mui-table-view-cell" id="cp_setting">
+											<a href="#">设置</a>
+
+										</li>
+										
+										<li class="mui-table-view-cell mui-collapse cp_outlet">
+											<a class="mui-navigate-right" href="#">切换门店</a>
+											<ul class="mui-table-view mui-table-view-chevron store cp_shop">
+											</ul>
+										</li>
+										
+										<li class="mui-table-view-cell" id="cp_insertshop">
+											<a style="text-align: center;color: #FF3B30;">
+												新增门店
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+	                    </div>
+	                </div>
+	            </aside>
+	            <nav class="mui-bar mui-bar-tab lmq-menu">
+	    		    <a class="mui-tab-item mui-active" name="home">
+	    		        <span class="mui-icon mui-icon-home"></span>
+	    		        <span class="mui-tab-label">首页</span>
+	    		    </a>
+	    		    <a class="mui-tab-item">
+	    		        <span class="mui-icon mui-icon-phone"></span>
+	    		        <span class="mui-tab-label">电话</span>
+	    		    </a>
+	    		    <a class="mui-tab-item">
+	    		        <span class="mui-icon mui-icon-email"></span>
+	    		        <span class="mui-tab-label">邮件</span>
+	    		    </a>
+	    		    <a class="mui-tab-item">
+	    		        <span class="mui-icon mui-icon-gear"></span>
+	    		        <span class="mui-tab-label">设置</span>
+	    		    </a>
+	    		</nav>
+	            <!-- 主页面内容容器 -->
+	            <div class="mui-content mui-scroll-wrapper">
+	                <div class="mui-scroll">
+	                	 <!-- 主页面标题 -->
+			            <header class="mui-bar mui-bar-nav">
+							<span class="mui-icon iconfont icon-saomiao mui-pull-right"></span>
+							<div class="mui-input-row mui-col-xs-11 mui-search">
+								<input type="search" readonly="" class="mui-input-clear" placeholder="" value="请输入货品名称或者关键字">
+							</div>
+						</header>
+	                    <!-- 主界面具体展示内容 -->
+	                    <div class="mui-row lmq-header">
+							<div class="mui-col-xs-12">
+								<div class="lmq-circle">
+									<div class="lmq-circle-01">
+										<div style="padding-bottom: 1rem;">￥<span class="todaysales">加载中...</span></div>
+										<div>今日销售额</div>
+									</div>
+								</div>
+			
+							</div>
+							<div class="mui-col-xs-12 lmq-header-select">
+								<div></div>
+								<div></div>
+							</div>
+						</div>
+						<div class="mui-row lmq-content">
+							<div class="lmq-content-bg">
+								<div class="monthsales">加载中...</div>
+								<div>本月销售</div>
+							</div>
+							<div class="lmq-content-bg">
+								<div class="stock">加载中...</div>
+								<div>库存数量</div>
+							</div>
+						</div>
+						<div class="mui-row lmq-footer">
+							<div class="lmq-footer-menu viewsales">
+								<div class="lmq-footer-circle">
+									<span class="mui-icon mui-icon-search"></span>
+								</div>
+								<div>查看订单</div>
+							</div>
+							<div class="lmq-footer-menu addsale">
+								<div class="lmq-footer-circle">
+									<span class="mui-icon mui-icon-compose"></span>
+								</div>
+								<div>开单</div>
+							</div>
+							<div class="lmq-footer-menu">
+								<div class="lmq-footer-circle">
+									<span class="mui-icon mui-icon-plus"></span>
+								</div>
+								<div>创建商品</div>
+							</div>
+						</div>
+	                </div>
+	            </div>
+	       	 <div class="mui-off-canvas-backdrop"></div>
+	        </div>
+	    </div>
+	</body>
+
+</html>
+<script src="js/mui.min.js"></script>
+<script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="js/loginUser.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/userSwitch.js"></script>
+<script type="text/javascript" src="js/enter.js"></script>
+<script type="text/javascript" charset="utf-8">
+	async(function*() {
+		//当如果存在时不会创建表，更新版本时会在次创建
+		var db = yield new DB("LMQ", function(a) {
+			createTable(a.target.result);
+		}, 1);
+	});
+	mui.init();
+	var v = new Vue({
+		el: ".cp_classname",
+		data: {
+			list: null,
+		}
+	})
+
+	window.onload = function() {
+		var height = window.screen.height;
+		document.querySelector(".outo-scroll").style.height = height+"px";
+	}
+	async(function*() { //同步
+			login.getLogin();
+			var db = yield new DB("LMQ");
+			//获取当前使用的用户
+			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+			var alluser = yield db.get("user"); //获取全部登入用户
+			if(!alluser || alluser.length==0){
+				
+				return;
+			}
+			v.list = alluser;
+			/*ajax发送登入的用户到服务端 以JSON格式*/
+			var sid=JSON.stringify(alluser[0].id);
+			/*switchs.getswitch(sid)*/
+			mui.ajax(n.url + '/Store/queryByUserId', {
+				data: {
+					id: atuser[0].id
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					eachStore(data);
+				},
+				error: function(xhr, type, errorThrown) {}
+			});
+			var name=JSON.stringify(atuser[0].name)
+			document.querySelector(".cp_head").innerHTML=name;
+	});
+	function eachStore(slist) {
+		for(var i = 0; i < slist.length; i++) {
+			if(slist[i].list) {
+				eachStore(slist[i].list);
+			}
+			var aa=document.createElement("li")
+			aa.classList.add("mui-table-view-cell");
+			var a = document.createElement("a");
+			a.innerHTML = slist[i].name;
+			a.setAttribute("attrid",slist[i].id);
+			console.log("秀" + JSON.stringify(slist[i]))
+			aa.appendChild(a);
+			document.querySelector(".store").appendChild(aa);
+		}
+	}
+	function initTab() {
+		var a = document.querySelectorAll(".lmq-menu a");
+		for(var i = 1; i < a.length; i++) {
+			if(!menuListName[i-1]){
+				continue;
+			}
+			a[i].setAttribute("name", menuListName[i-1]);
+		}
+		
+		for(var i = 0; i < menuListName.length; i++) {
+			var a = plus.webview.create(
+			menuListName[i] + ".html",
+			menuListName[i], {
+				top: "0px",
+				bottom: "45px",
+				left:"100%"//,
+//				zindex : 100
+			});
+			a.show("none");
+		}
+	}
+	var menuListName = ["a", "goodsManage_h","User_admin"];
+	mui.plusReady(function() {
+		initTab();
+		/*cpp*/
+		/*新增页面*/
+		mui('body').on('tap', '#cp_insertshop', function(e) {
+			plus.webview.create("shop.html", "shop.html", {}, {}).show("none")
+		});
+		/*设置页面*/
+		mui('body').on('tap', '#cp_setting', function(e) {
+			plus.webview.create("setting.html", "setting.html", {}, {}).show("none")
+		});
+		var currentWebView = null;
+		//选项卡切换
+		mui('body').on('tap', '.mui-tab-item', function() {
+			var name = this.getAttribute("name");
+			console.log(name)
+			if(name=="home"){
+				if(currentWebView){
+					//currentWebView.hide("none");
+					currentWebView.setStyle({left:"100%"})
+				}
+				currentWebView = null;
+				return;				
+			}
+//			plus.webview.currentWebview().hide();
+			var webview = plus.webview.getWebviewById(name);
+			if(webview) {
+				if(currentWebView && currentWebView.id == webview.id){
+					return;
+				}
+				webview.setStyle({left:"0px"});
+				if(currentWebView){
+					currentWebView.setStyle({left:"100%"});
+				}
+				/*webview.show("none",0,function(){
+						if(currentWebView){
+							//currentWebView.hide("slide-in-right",1000);
+						}
+				});*/
+				currentWebView = webview;
+				
+				
+				return;
+			}
+		})
+		/*点击切换用户*/
+		mui('#cp_ul').on('tap', '#cp_ul li', function() {
+			var dataid = this.getAttribute("data-id");
+			async(function*() {
+				var db = yield new DB("LMQ");
+				var atuser = yield db.index("user", "active", "true");
+				atuser[0].active = "false"; //把当前登入用户改为false
+				db.put("user", atuser[0]);
+				var alluser = yield db.get("user", parseInt(dataid));
+				if(alluser) {
+					alluser.active = "true";
+					yield db.put("user", alluser);
+					var name=alluser.name;
+					var pwd=alluser.pwd;
+					loginenter.Login(name,pwd);
+				}
+			})
+		})
+		/*点击切换门店*/
+		mui('.cp_outlet').on('tap','.cp_shop a',function(){
+			var attrid = this.getAttribute("attrid");
+		  	mui.ajax(n.url + '/User/queryuser1',{
+		  		data:{
+		  			user1:attrid
+		  		},
+		  		dataType:'json',//服务器返回json格式数据
+		  		type:'post',//HTTP请求类型
+		  		timeout:10000,//超时时间设置为10秒；
+		  		success:function(data){
+	  				async(function*() {
+					var db = yield new DB("LMQ");
+					var atuser = yield db.index("user", "active", "true");
+					atuser[0].active = "false"; //把当前登入用户改为false
+					db.put("user", atuser[0]);
+						if(data) {
+							data.active = "true";
+							yield db.put("user", data);
+							var name=data.name;
+							var pwd=data.pwd;
+							loginenter.Login(name,pwd);
+						}
+					})
+		  			var name= data.name;
+		  			var pwd = data.pwd;
+		  			alert(name+"aaa"+pwd)
+		  			loginenter.Login(name,pwd);
+		  		},
+		  		error:function(xhr,type,errorThrown){
+		  			
+		  		}
+		  	});
+		  	
+		}) 
+	})
+</script>

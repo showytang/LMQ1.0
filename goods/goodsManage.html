@@ -1,0 +1,268 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				/*border: 1px solid #000000;*/
+			}
+			
+			#addGoodBtn {
+				float: right;
+			}
+			
+			.simImg {
+				/*max-width: 60px;*/
+				margin-right: 8px;
+				width: 4.5em;
+				height: 4.5em;
+			}
+			
+			.goodsTitle {
+				font-size: 0.85em;
+				word-break: normal;
+				width: 100%;
+				white-space: pre-wrap;
+				/*word-wrap : break-word ;*/
+				overflow: hidden;
+				line-height: 1.2em;
+				margin-bottom: 2px;
+			}
+			
+			.goodsPrice {
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
+			
+			.goodsNum {
+				font-size: 0.7em;
+				line-height: 1.2em;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">货物</h1>
+			<span class="mui-icon mui-icon-bars mui-pull-right" id="moreBtn"></span>
+		</header>-->
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="mui-content">
+					<div id="">
+						<!--<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入货物名称或货物关键字">-->
+					</div>
+					<div>
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-media" v-for="(l,index) in list">
+								<a href="javascript:;" class="mui-row simGoods" v-bind:data-goodsId="l.gId">
+									<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+l.url">
+									<div class="mui-col-xs-9 mui-row">
+										<span class="mui-col-xs-12 goodsTitle">{{l.name}}</span>
+										<span class="mui-col-xs-5 goodsPrice" v-for="(priceList,index) in l.priceList">
+											<span v-if="priceList.name">{{priceList.name}}</span>
+										<span v-else="priceList.id">{{priceList.id}}</span> :￥{{priceList.price}}
+										</span>
+										<span class="mui-col-xs-12 goodsNum">{{l.totalCount}}{{l.bitName}}</span>
+									</div>
+								</a>
+								<div v-bind:data-goodsId="l.gId" style="display: none;" class="mui-switch mui-switch-mini" data-switch="4" style="transition-duration: 0.2s;">
+									<div class="mui-switch-handle" style="transition-duration: 0.2s; transform: translate(0px, 0px);"></div>
+								</div>
+							</li>
+							<!--<li class="mui-table-view-cell mui-media" v-for="list">
+						<a href="javascript:;" class="mui-row simGoods" data-goodsId="1">
+							<img class="mui-pull-left simImg mui-col-xs-4" src="img/good.jpg">
+							<div class="mui-col-xs-9 mui-row">
+								<span class="mui-col-xs-12 goodsTitle">马丁靴女2018新款女鞋真皮短靴子春秋粗跟5CM高跟鞋冬季加绒英伦</span>
+								<span class="mui-col-xs-6 goodsPrice">进货价：￥10000.00</span>
+								<span class="mui-col-xs-6 goodsPrice">零售价：￥10000.00</span>
+								<span class="mui-col-xs-6 goodsPrice">批发价：￥10000.0</span>
+								<span class="mui-col-xs-12 goodsNum">9台</span>
+							</div>
+						</a>
+					</li>-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						contentrefresh: '正在加载...',
+						callback: pulldownRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				getData("");
+			}
+			//vue
+			vue = new Vue({
+				el: ".mui-content",
+				data: {
+					list: "",
+					/*goodsName: "",*/
+					url: n.url+"/"
+				}
+			});
+			mui.ready(function() {
+				//数据初始化
+				getData("");
+			})
+			mui.plusReady(function() {
+				//查看商品详细
+				mui('body').on('tap', '.simGoods', function() {
+					var gId = this.getAttribute("data-goodsId");
+					var webview = plus.webview.create("goodsInfo_h.html", "goodsInfo_h.html", {}, {
+						'gId': gId
+					});
+					webview.show("slide-in-right");
+				})
+				
+				/*//选中打印selectBtn
+				mui('body').on('tap', '#selectBtn', function() {
+					
+				})*/
+				//打开打印
+				
+				
+				mui('body').on('tap', '.mui-switch', function() {
+					this.classList.toggle("mui-active");
+				})
+			})
+
+			//打开打印
+			function openPrint(){
+				var selectArr = document.querySelectorAll(".mui-switch");
+				for (var i = 0;i<selectArr.length;i++) {
+					selectArr[i].style.display = "block";
+				}
+				
+			}
+			//数据初始化
+			function getData(name) {
+				mui.ajax(n.url + '/goods/queryGoodsHome', {
+					data: {
+						goodsName: name
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//为空判断
+						if(data != null) {
+							vue.list = changeGoodsObject(data);
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			//商品数据的转换
+			function changeGoodsObject(data) {
+				//console.log(JSON.stringify(data));
+				if(data.length <= 0)
+					return [];
+				var goodsObject = [];
+				var currentId = data[0].id;
+				var tem = {};
+				var isOver = false;
+				for(var i = 0; i < data.length; ++i) {
+					if(i == 0) {
+						tem = {};
+						tem.gId = data[i].gid;
+						tem.name = data[i].name;
+						tem.totalCount = data[i].totalCount;
+						tem.bitName = data[i].bitName;
+						tem.url = data[i].url;
+						tem.priceList = [];
+					}
+					if(data[i].id == currentId) {
+
+					} else {
+						goodsObject.push(tem);
+						currentId = data[i].id;
+						//新
+						tem = {};
+						tem.gId = data[i].gid;
+						tem.name = data[i].name;
+						tem.totalCount = data[i].totalCount;
+						tem.bitName = data[i].bitName;
+						tem.url = data[i].url;
+						tem.priceList = [];
+					}
+					//多个价格
+					var price = {};
+					price.name = data[i].pName;
+					price.id = data[i].ptype;
+					price.price = data[i].price;
+					tem.priceList.push(price);
+					//提交
+					if(i == data.length - 1)
+						goodsObject.push(tem);
+				}
+				console.log(JSON.stringify(goodsObject));
+				return goodsObject;
+			}
+			
+			
+			
+			function selectBtnTap(){
+				//获取需要打印的goods
+				var goodsIds = [];
+				var selectArr = document.querySelectorAll(".mui-active");
+				for (var i = 0;i<selectArr.length;i++) {
+					var id = selectArr[i].getAttribute("data-goodsId");
+					goodsIds.push(id);
+				}
+				//打来打印单品界面
+				if(goodsIds.length<=0)
+					plus.nativeUI.toast("温馨提示：至少选择一个需要打印的商品");
+				else{
+					var webview = plus.webview.create("goodsSelectInstance_h.html","goodsSelectInstance_h.html",{},{goodsIds:goodsIds});
+					webview.show("slide-in-right");
+					selectArr = document.querySelectorAll(".mui-switch");
+					for (var i = 0;i<selectArr.length;i++) {
+						selectArr[i].style.display = "none";
+						selectArr[i].classList.remove("mui-active");
+					}
+					var webview = plus.webview.getWebviewById("goodsManage_h.html");
+					if(webview!=null){
+						webview.evalJS("showHide('')");
+					}
+				}
+			}
+			//取消打印exitBtn
+			function cancalPrint(){
+				var selectArr = document.querySelectorAll(".mui-switch");
+				for (var i = 0;i<selectArr.length;i++) {
+					selectArr[i].style.display = "none";
+					selectArr[i].classList.remove("mui-active");
+				}
+			}
+		</script>
+	</body>
+
+</html>

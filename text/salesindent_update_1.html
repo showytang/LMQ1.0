@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>编辑销售订单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑销售订单</h1>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/openModel.js"></script>
+		<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init({
+				subpages:[{
+				  url:'salesindent_update_2.html',
+			      id:'salesindent_update_2.html',
+			     styles: {
+						top: "45px",
+						bottom: "0px"
+					},
+					extras: {
+						pid: plus.webview.currentWebview().pid
+					}
+				}]
+			})
+			mui.ready(function() {
+				mui.back = function() {
+
+					var btnArray = ['取消', '确认'];
+					//首次按键，提示‘再按一次退出应用’
+					mui.confirm('销售订单内容已改，是否放弃编辑', '', btnArray, function(e) {
+						if(e.index == 0) {
+							return;
+						} else {
+							plus.webview.currentWebview().close("slide-out-right");
+						}
+					});
+				};
+			});
+			mui.plusReady(function () {
+			    mui('body').on('tap', '#menu', function() {
+					document.activeElement.blur();
+					// 弹出系统选择按钮框
+					plus.nativeUI.actionSheet({
+						title: "选项",
+						cancel: "取消",
+						buttons: [{
+							title: "保存"
+						}, {
+							title: "预览"
+						}]
+					}, function(e) {
+						if(e.index == 1) {
+							//保存
+							
+						}
+						if(e.index == 2) {
+							//预览
+						}
+					});
+				});
+			})
+		</script>
+	</body>
+
+</html>

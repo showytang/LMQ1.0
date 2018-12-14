@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>添加规格</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../css/mui.css" />
+		<style type="text/css">
+			.standardTitle {
+				color: #000000;
+				font-weight: bold;
+				font-size: 0.8em;
+			}
+			
+			.bgGraw {
+				background-color: #DDDDDD;
+				font-weight: bold;
+			}
+			
+			.simStandard {
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}
+			.simStandardValue{
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}
+			
+			.arrowBtn {
+				text-align: center;
+				padding: -1em 0 1em 0;
+				border: 1px solid #D4D4D4;
+			}
+			
+			.allSetBtn {
+				font-weight: 200;
+				float: right;
+				margin-right: 1em;
+			}
+			
+			.simGoods {
+				padding-bottom: 1em;
+			}
+			
+			.priceArrowBtn {
+				width: 100%;
+				text-align: center;
+				color: #000000;
+				border: 1px solid #D4D4D4;
+			}
+			
+			.priceLabel {
+				font-size: 14px;
+				color: #8f8f94;
+			}
+			
+			input[type=number] {
+				line-height: 21px;
+				width: 70%;
+				height: 40px;
+				margin-top: 4px;
+				margin-bottom: 4px;
+				padding: 10px 15px;
+				-webkit-user-select: text;
+				border: 1px solid rgba(0, 0, 0, .2);
+				border-radius: 3px;
+				outline: 0;
+				background-color: #fff;
+				-webkit-appearance: none;
+			}
+			
+			.title {
+				background-color: #d4d4d4;
+			}
+			
+			.standardSelected {
+				border: 1px solid #0000FF;
+			}
+			
+			.input {
+				text-align: center;
+				font-size: 0.8em;
+				padding: 10px;
+				margin-top: 0;
+				margin-bottom: 0px;
+				color: #000000;
+				line-height: 20px;
+			}
+			
+			.closeStandardBtn {
+				/*border: 1px solid #0000FF;*/
+				position: absolute;
+				right: 0px;
+				top: 0px;
+				width: 1em;
+				height: 1em;
+				z-index: 99;
+			}
+			#allGoodsIntance {
+				background-color: #FFFFFF;
+			}
+			.StandardCloseBtn{
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">修改规格</h1>
+			<span class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="addBtn"></span>
+		</header>-->
+		<div class="mui-content">
+			<!--规格选取规格值-->
+			<div id="standardTop">
+				<form class="mui-input-group" v-for="(l,index) in list">
+					<p class="standardTitle" v-bind:data-sId="l.id">{{l.name}}规格</p>
+					<!--规格集合-->
+					<div class="standardSec mui-row">
+						<div class="simStandard bgGraw mui-col-xs-4" v-bind:data-standardId="l.id">
+							<input class="input" type="text" value="" v-bind:placeholder="'自定义'+ l.name" />
+						</div>
+						<div class="simStandardValue mui-col-xs-4 standardTap" v-for="(k,index1) in l.sInList" v-bind:standardinstanceid="k.id">
+							<p class="input">{{k.name}}</p>
+						</div>
+						<!--下拉控件-->
+						<div class="arrowBtn mui-icon mui-icon-arrowdown mui-col-xs-12"></div>
+					</div>
+				</form>
+			</div>
+			<!--自定义规格-->
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>自定义规格</label>
+					<input id="addStandard" type="text" class="mui-input-clear" placeholder="自定义规格">
+				</div>
+			</form>
+			<!--价格/库存-->
+			<div id="allGoodsIntance">
+				<div class="title">价格/库存 <span class="allSetBtn">批量设置</span></div>
+				<div id="goodsSec">
+					<p id="tipTitle">&nbsp;&nbsp;您需要选择相应的销售属性，才能组合成完整的规格信息</p>
+				</div>
+			</div>
+
+		</div>
+		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/openModel.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				//初始化数据
+				var webview = plus.webview.getWebviewById("goodsAddStandard_h.html");
+				webview.evalJS("Init()");
+				//添加自定义属性
+				mui('body').on('change', '#addStandard', function() {
+					if(addStandard.value.length != 0) {
+						//最顶层规格div id=standardTop
+						var target = document.querySelector("#standardTop");
+						//新增自定义规格部分
+						var form = document.createElement("form");
+						form.className = "mui-input-group";
+						//删除按钮
+						var deleteSpan = document.createElement("span");
+						deleteSpan.className = "mui-icon mui-icon-closeempty StandardCloseBtn";
+						form.appendChild(deleteSpan);
+						//标题<p class="standardTitle">颜色分类</p> 可修改
+						var titleInput = document.createElement("input");
+						titleInput.setAttribute("type", "text");
+						titleInput.className = "standardTitle";
+						titleInput.value = this.value + "分类";
+						titleInput.style.margin = "0px";
+						titleInput.style.padding = "0px";
+						var div = document.createElement("div");
+						div.className = "tandardSec mui-row";
+						var div1 = document.createElement("div");
+						div1.className = "simStandard bgGraw mui-col-xs-4";
+						var input = document.createElement("input");
+						input.className = "input";
+						input.setAttribute("type", "text");
+						input.setAttribute("placeholder", "自定义颜色");
+						//下拉控件<div class="arrowBtn mui-icon mui-icon-arrowdown mui-col-xs-12"></div>
+						var div2 = document.createElement("div");
+						div2.className = "arrowBtn mui-icon mui-icon-arrowdown mui-col-xs-12";
+						form.appendChild(titleInput);
+						form.appendChild(div);
+						div.appendChild(div1);
+						div1.appendChild(input);
+						div.appendChild(div2);
+						target.appendChild(form);
+					}
+					this.value = "";
+				})
+				//返回按钮
+				mui.back=function () {
+				 	plus.webview.currentWebview().hide("slide-out-right");   	
+				}
+				//添加自定义属性值
+				mui('body').on('input', '.bgGraw', function() {
+					this.classList.add("divStandard"); //自定义规格标记
+					this.classList.remove("bgGraw");
+					this.classList.add("standardSelected"); //选中样式
+					this.style.borderColor = "#0000FF";
+					this.style.borderStyle = "solid";
+					var span = document.createElement("span");
+					span.className = "closeStandardBtn mui-icon mui-icon-closeempty";
+					this.appendChild(span);
+					//新节点（自定义规格值）
+					var div = document.createElement("div");
+					div.className = "simStandardValue bgGraw mui-col-xs-4";
+					var input = document.createElement("input");
+					input.className = "input";
+					input.placeholder = "自定义颜色";
+					input.type = "text";
+					div.appendChild(input);
+					//console.log(this.parentElement.children[0].value);
+					this.parentElement.insertBefore(div, this.parentElement.children[0]);
+				})
+				//自定义规格和自定义规格值id赋值到ids
+				mui('body').on('change','.standardSelected',function(){
+				  	//规格id
+					var standardid = this.getAttribute("data-standardid");
+					var standardInstanceName = this.children[0].value;
+					//是否为自定义规格
+					if(standardid == null){
+						var standardName = this.parentElement.parentElement.querySelector(".standardTitle").value.replace("分类","");
+						this.setAttribute("standardinstanceid","--"+standardName+"/"+"--"+standardInstanceName);//规格id/规格值 --不能少作为一个标识
+					}else{
+						this.setAttribute("standardinstanceid",standardid+"/"+"--"+standardInstanceName);//规格id/规格值
+					}
+					
+				}) 
+				//standardTap（class）只做事件标记，不做样式
+				mui('body').on('tap', '.standardTap', function() {
+					//doto添加样式无效
+					this.classList.toggle("standardSelected");
+					if(this.classList.contains("standardSelected"))
+						this.style["border-color"] = "#0000ff"; //"#"+getColor(bd.toString());
+					else
+						this.style["border-color"] = "#D4D4D4";
+					//穷举所有可能规划组合
+					initStandardinstance();
+				})
+				//规格下拉按钮
+				mui('body').on('tap', '.arrowBtn', function() {
+					var childs = this.parentElement.children;
+					var length = childs.length;
+					mui.each(childs, function(index, element) {
+						//显示
+						element.style.display = "block";
+						//隐藏
+						if(index > 5 && index + 1 != length) {
+							if(childs[length - 1].classList.contains("mui-icon-arrowup")) { //当前状态为隐藏
+								//显示
+								element.style.display = "block";
+							} else {
+								element.style.display = "none";
+							}
+						}
+						//最后一个对象去除
+						if(length - 1 == index) {
+							element.classList.toggle("mui-icon-arrowdown"); //当前状态显示
+							element.classList.toggle("mui-icon-arrowup"); //当前状态为隐藏
+							return;
+						}
+					})
+				})
+				//规格删除按钮
+				mui('body').on('tap', '.closeStandardBtn', function(e) {
+					e.stopPropagation();
+					this.parentElement.remove();
+					initStandardinstance();
+				})
+
+				//自定义规格值 自动删 （divStandard标记，没有样式）
+				mui('body').on('change', '.divStandard', function() {
+					var length = this.firstElementChild.value.length;
+					if(length == 0)
+						this.remove();
+					initStandardinstance();
+				})
+				//自定义规格删除按钮
+				mui('body').on('tap','.StandardCloseBtn',function(e){
+				  e.stopPropagation();
+				  this.parentElement.remove();
+				  initStandardinstance();
+				}) 
+				//价格展开按钮
+				mui('body').on('tap', '.priceArrowBtn', function() {
+					if(this.classList.contains("mui-icon-arrowdown")) { //当前状态为隐藏
+						this.nextElementSibling.style.display = "block";
+					} else {
+						this.nextElementSibling.style.display = "none";
+					}
+					this.classList.toggle("mui-icon-arrowdown");
+					this.classList.toggle("mui-icon-arrowup");
+				})
+				//批量设置按钮
+				mui('body').on('tap', '.allSetBtn', function() {
+					lmqModel.open("全局设置", [{
+						title: "价格",
+						type: "number",
+						bit: "元",
+						name: "price",
+						placeholder: "统一输入价格"
+					}, {
+						title: "库存",
+						type: "number",
+						bit: "个",
+						name: "count",
+						placeholder: "统一输入价格"
+					}], function() { //取消回调
+
+					}, function(data) { //确定回调
+						var priceAndCount = data;
+						//设置价格和库存
+						var allPrice = document.querySelectorAll("[data-agio]");
+						var allCount = document.querySelectorAll(".simCountValue");
+						console.log(allCount.length);
+						if(allPrice.length > 0 && priceAndCount.price != ""){
+							for(var i = 0; i<allPrice.length;i++){
+								allPrice[i].value = (priceAndCount.price *1.0).toFixed(2);
+								
+							}
+						}
+						if(data.count!=""){
+							for(var i = 0;i< allCount.length;i++){
+								allCount[i].value = priceAndCount.count;
+							}
+						}
+							
+						
+						
+					});
+				})
+				//进货价改变事件
+				mui('body').on('change', '.fristPrice', function() {
+					var eleArr = this.parentElement.children;
+					for(var i = 0; i < eleArr.length; i++) {
+						//价格类型标签
+						if(eleArr[i].classList.contains("priceSec")) {
+							for(var j = 0; j < eleArr[i].children.length; j++) {
+								if(eleArr[i].children[j].classList.contains("priceInput")) {
+									eleArr[i].children[j].value = (this.value * eleArr[i].children[j].getAttribute("data-agio")/10).toFixed(2);
+								} //if
+							} //内for
+						return;
+						}
+					}
+				})
+				//价格失效
+				mui('body').on('tap','.simPriceCloseBtn',function(){
+					if(this.classList.contains("mui-icon-closeempty")){
+						this.previousElementSibling.removeAttribute("disabled");
+						this.className = "mui-icon mui-icon-checkmarkempty simPriceCloseBtn";
+					}else if(this.classList.contains("mui-icon-checkmarkempty")){
+						this.previousElementSibling.setAttribute("disabled","disabled");
+						this.className = "mui-icon mui-icon-closeempty simPriceCloseBtn";
+					}
+				}) 
+				
+				/*mui('body').on('tap','#addBtn',function(){
+				  
+				  
+				}) */
+			})//结束
+			//提交属性
+			function addBtn(){
+				var standardInArr = [];
+				  var standards = document.querySelectorAll("[ids]");
+				  //规格值
+				  for(var i = 0;i< standards.length;i++){
+				  		var simStandIn = {};
+				  		var ids = standards[i].getAttribute("ids");
+				  		simStandIn.ids = ids;
+				  		//进货价和库存
+					  	var totalCount = standards[i].querySelector(".simCountValue").value;//simCountValue
+					  	var basePrice = document.querySelectorAll(".basePrice")[i].value;
+				  		simStandIn.totalCount = totalCount;
+				  		simStandIn.basePrice = basePrice;
+				  	  //价格集合
+					  var priceInputs =standards[i].querySelectorAll("input[data-agio]");
+					  simStandIn.priceList = [];
+					  for(var j = 0;j< priceInputs.length;j++){
+					  	//var name = priceInputs[j].previousElementSibling.innerText;
+					  	var ptype = priceInputs[j].getAttribute("data-id");
+					  	//有效价格
+					  	if(!priceInputs[j].getAttribute("disabled")){
+					  		//console.log(priceInputs[j].value +"---"+priceInputs[j].getAttribute("data-id"));
+					  		var tem = {
+					  			"id":priceInputs[j].getAttribute("data-id"),
+					  			"ptype":ptype,
+					  			"price":priceInputs[j].value
+					  		};
+					  		simStandIn.priceList.push(tem);
+					  	}
+					  }
+					  standardInArr.push(simStandIn);
+				  }//for结束
+				  console.log(JSON.stringify(standardInArr));
+				  //隐藏当前窗体
+				  plus.webview.getWebviewById("goodsAddStandard_h.html").hide("slide-out-right");
+				  plus.webview.currentWebview().hide("slide-out-right");
+				  //改变主窗体状态
+				  if(standardInArr.length>0){
+				  	var webview = plus.webview.getWebviewById("goodsAdd.html");
+				  	webview.evalJS("setStandard("+JSON.stringify(standardInArr)+")");
+				  }
+			}
+			//-----------------------穷举所有规格值组成的商品方法-------------------------------
+			function initStandardinstance() {
+				var standardinstance = findStandard();
+				if(standardinstance != "") {
+					//standardinstance ： 数组结构，里面有实例编号组 规格的名称和规格实例名称
+					createStandardinstance(standardinstance);
+					//显示提示
+					document.querySelector("#tipTitle").style.display = "none";
+				} else {
+					document.querySelector("#goodsSec").innerHTML = "<p id='tipTitle'>&nbsp;&nbsp;您需要选择相应的销售属性，才能组合成完整的规格信息</p>";
+				}
+			}
+			//是否选全规格值
+			function isSelectedFinish() {
+				var isOk = true;
+				//规格集合
+				var standardArr = document.querySelectorAll("#standardTop form");
+				mui(standardArr).each(function(index, element) {
+					//当前规格下的规格值集合
+					var standardValueArr = element.getElementsByClassName("standardSelected");
+					if(standardValueArr.length > 0)
+					;
+					else {
+						isOk = false;
+						return;
+					}
+				})
+				return isOk;
+			}
+
+			function findStandard() {
+				var isCheckedDl = 0;
+				var isCheckedDlArray = [];
+				var allIndex = 1;
+				//获取standardTop =》（子规格节点）form
+				mui('#standardTop form').each(function(index, element) { //element为单个规格
+					//是否选中standardSelected
+					var isChecked = element.querySelectorAll(".standardSelected"); //单个规格下被选中的规格值集合
+					if(isChecked.length != 0) {
+						var checkedTag = [];
+						//isChecked规格值集合
+						mui.each(isChecked, function(i, obj) { //obj单个规格值
+							var name = obj.children[0].innerText;
+							if(name == "")
+								name = obj.children[0].value;
+							checkedTag.push({
+								//获取规格值id
+								id: obj.getAttribute("standardinstanceid"),
+								//规格实例名称
+								name: name
+							});
+						});
+						allIndex *= isChecked.length; //当前规格下的选中个数
+						isCheckedDlArray[isCheckedDl] = {
+							num: allIndex / isChecked.length,
+							index: isCheckedDl,
+							checkedInput: isChecked.length,
+							tag: checkedTag,
+							//规格名称
+							thName: element.querySelector(".standardTitle").innerText
+						};
+						isCheckedDl++;
+					}
+				})
+				var tagObject = {
+					allIndex: allIndex,
+					isCheckedDlArray: isCheckedDlArray
+				}
+				//console.log(JSON.stringify(tagObject));
+				return standardinstanceList(tagObject);
+			}
+
+			//根据选中的开关渲染出实力列表
+			function standardinstanceList(tagObject) {
+				var standardinstance = [];
+				var indexRow = 0;
+				for(var i = tagObject.isCheckedDlArray.length - 1; i >= 0; i--) {
+					var stepIndex = 0;
+					for(var x = 0; x < tagObject.isCheckedDlArray[i].num; x++) {
+						for(var j = 0; j < tagObject.isCheckedDlArray[i].tag.length; j++) {
+							var tempstandardinstance = {
+								id: tagObject.isCheckedDlArray[i].tag[j].id,
+								name: tagObject.isCheckedDlArray[i].tag[j].name
+							};
+							if(i == tagObject.isCheckedDlArray.length - 1) {
+								standardinstance[indexRow] = [];
+								standardinstance[indexRow].push(tempstandardinstance);
+								indexRow++;
+							} else {
+								var prevIndex = stepIndex;
+								var rowspan = tagObject.allIndex /
+									tagObject.isCheckedDlArray[i + 1].num;
+								var tempIndex = tagObject.allIndex /
+									(tagObject.isCheckedDlArray[i].tag.length * tagObject.isCheckedDlArray[i].num);
+								stepIndex += tempIndex;
+								for(var p = prevIndex; p < stepIndex; p++) {
+									standardinstance[p].push(tempstandardinstance);
+								}
+							}
+						}
+
+					}
+				};
+				//console.log(JSON.stringify(standardinstance));
+				return standardinstance;
+			}
+			//价格折扣数组
+			var PriceArr = [];
+
+			function createStandardinstance(standardinstance) {
+				/*mui('.lmq-standard-list>li:not(.openmodal)').each(function(index, element) {
+					element.remove();
+				})*/
+				//目标节点
+				var target = document.querySelector("#goodsSec");
+				target.innerHTML = "<p id='tipTitle' style='display: none;' >&nbsp;&nbsp;您需要选择相应的销售属性，才能组合成完整的规格信息</p>";
+				mui.each(standardinstance, function(i, obj) {
+					//单品规格值组成的名称 例如"红色"+"160A"
+					var standardinstanceName = "";
+					//规格值集合字符串 例如 1,6,7 用于数据提交
+					var ids = "";
+					for(var i = obj.length - 1; i >= 0; i--) {
+						//拼接标题格式（自定义）
+						standardinstanceName += "“" + obj[i].name + "”" + "+";
+						ids += obj[i].id + ",";
+					}
+					standardinstanceName = standardinstanceName.substring(0, standardinstanceName.length - 1);
+					//去除多余的逗号
+					ids = ids.substring(0, ids.length - 1);
+					//UI渲染
+					var div = document.createElement("div");
+					div.className = "simGoods";
+					div.setAttribute("ids", ids);
+
+					var htmlStr = "<p class=''>" + standardinstanceName + "</p>" +
+						"<input class='input priceInput fristPrice' style='width: 33%;' type='number' value=" + (defPrice * 100 / 100).toFixed(2) + " placeholder='一口价格' />" +
+						"<input class='input priceInput basePrice' style='width: 33%;' type='number' value=" + (defBasePrice * 100 / 100).toFixed(2) + " placeholder='进货价格' />" +
+						"<input class='input priceInput simCountValue' style='width: 33%;' type='number' value=" + defCount + " placeholder='库存数量' />" +
+						"<p class='priceArrowBtn mui-icon mui-icon-arrowup'></p>";
+					//价格折扣部分
+					htmlStr += "<div class='priceSec' style='display:block'>";
+					for(var i = 0; i < PriceArr.length; i++) {
+						var priceNode ="<span class='priceLabel' >" + PriceArr[i].name + "</span>" +
+							"<input data-id=" + PriceArr[i].id + " data-agio=" + PriceArr[i].agio + " class='input priceInput' style='width: 40%;' type='number' value=" + (defPrice * PriceArr[i].agio/10).toFixed(2) + " placeholder='输入价格' />";
+
+							if(PriceArr[i].defaultprice == 1){
+								
+							}else{
+								priceNode+="<span class='mui-icon mui-icon-checkmarkempty simPriceCloseBtn'></span>";
+								//htmlStr+="<span class='mui-icon mui-icon-checkmarkempty simPriceCloseBtn'></span>";
+							}
+						htmlStr+="<br>"
+						htmlStr += priceNode;
+						//id PriceArr[i].id
+						//折扣 agio 
+					}
+					htmlStr += "</div>";
+					div.innerHTML = htmlStr;
+					target.appendChild(div);
+					//console.log(div.innerHTML);
+					
+				});
+			}
+			//默认价格和库存
+			var defPrice = 0.0;//一口价
+			var defCount = 0;//库存
+			var defBasePrice;//进价
+			var tid;
+			function initStandardSec(para) {
+				//初始化价格（一口价）
+				defPrice = para.price;
+				//进价
+				defBasePrice = para.basePrice;
+				//默认库存
+				defCount = para.count;
+				
+				//价格折扣初始化
+				mui.ajax(n.url + '/goods/queryPriceTypeBySid', {
+					data: {
+						
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						PriceArr = data;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+				//初始化规格和规格值
+				mui.ajax(n.url + '/goods/queryStandardsBytId', {
+					data: {
+						tId: para.tId
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						var vue = new Vue({
+							el: ".mui-content",
+							data: {
+								list: data
+							}
+						});
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

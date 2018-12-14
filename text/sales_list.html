@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		/*#OA_task {
+			padding-top: 20px;
+		}*/
+		
+		#OA_task li:last-child {
+			background-color: #efeff4;
+		}
+		
+		#OA_task:after {
+			bottom: 45px;
+		}
+	</style>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+
+				<ul id="OA_task" class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-red">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="mui-row">
+							<div class="mui-col-xs-6">Item 1</div>
+							<div class="mui-col-xs-6" style="text-align: right;">Item 2</div>
+						</div>
+						<div class="mui-row">
+							<div class="mui-col-xs-6 mui-row">
+								<div class="mui-col-xs-8">Item 1</div>
+								<div class="mui-col-xs-4">Item 1</div>
+								
+							</div>
+							<div class="mui-col-xs-6" style="text-align: right;">Item 4</div>
+						</div>
+					</div>
+				</li>
+				
+				
+				<li style="height: 45px;"></li>
+			</ul>
+			
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能 ,
+				pullRefresh: {
+					container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down: {
+						height: 50, //可选,默认50.触发下拉刷新拖动距离,
+						auto: true, //可选,默认false.首次加载自动下拉刷新一次
+						contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+						contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+						contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						callback: function(){}
+						//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+		</script>
+
+		<script type="text/javascript">
+			(function($) {
+				var btnArray = ['确认', '取消'];
+				//$.swipeoutOpen(el,direction)//打开指定列的滑动菜单，el:指定列的dom对象，direction：取值left|right，指定打开的是左侧或右侧滑动菜单
+				//$.swipeoutClose(el);//关闭指定列的滑动菜单，el:指定列的dom对象
+				//				setTimeout(function() {
+				//					$.swipeoutOpen(document.getElementById("OA_task_1").querySelector('li:last-child'), 'left');
+				//					setTimeout(function() {
+				//						$.swipeoutClose(document.getElementById("OA_task_1").querySelector('li:last-child'));
+				//					}, 1000);
+				//				}, 1000);
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+				$('#OA_task').on('tap', '.mui-btn-red', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', 'Hello MUI', btnArray, function(e) {
+						if(e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				//触摸列表出现订单信息
+				mui('#OA_task').on('tap', '.mui-table-view-cell', function() {
+					plus.webview.create("sales_list_info.html", "sales_list_info.html", {}, {}).show("slide-in-right")
+				});
+				mui('body').on('tap','#refreshContainer',function(){
+				  
+				  var a= plus.webview.currentWebview().opener();
+				  a.evalJS("hidejp()");
+				  
+				})
+			})(mui);
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+		<link href="../css/mui.indexedlist.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/User_admin.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="head_title">供应商</h1>
+			<a class="add" data_client="add_client.html" data_supplier="add_supplier.html" data_cargo_client="cargo_client_add.html"></a>
+		</header>
+		<div class="mui-content">
+			<!--<div id="slider" class="mui-slider">-->
+			<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+			<div class="mui-slider-group">
+				<div id="item2mobile" class="mui-slider-item mui-control-content" style="display: block;">
+					<div id="scroll2" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div class='list' class="mui-indexed-list">
+								<div class="mui-indexed-list-search mui-input-row mui-search">
+									<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入供应商/关键字/拼音首字母">
+								</div>
+								<div class="mui-indexed-list-bar" style="height: 490px;">
+									<a>A</a>
+									<a>B</a>
+									<a>C</a>
+									<a>D</a>
+									<a>E</a>
+									<a>F</a>
+									<a>G</a>
+									<a>H</a>
+									<a>I</a>
+									<a>J</a>
+									<a>K</a>
+									<a>L</a>
+									<a>M</a>
+									<a>N</a>
+									<a>O</a>
+									<a>P</a>
+									<a>Q</a>
+									<a>R</a>
+									<a>S</a>
+									<a>T</a>
+									<a>U</a>
+									<a>V</a>
+									<a>W</a>
+									<a>X</a>
+									<a>Y</a>
+									<a>Z</a>
+								</div>
+								<div class="mui-indexed-list-alert"></div>
+								<div class="mui-indexed-list-inner">
+									<div class="mui-indexed-list-empty-alert">没有数据</div>
+									<ul class="mui-table-view data_content item2mobile">
+										<div id="#" v-for="(obj,index) in list">
+											<li data-group="obj.acronymname" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+											<li v-bind:data-tags="obj1.englishname" v-bind:data-id="obj1.id" v-bind:data-name="obj1.name" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<a href="#supplier">
+													<span>{{obj1.name}}</span>
+													<span class="monye_span" v-if="obj1.summonye!=null">￥{{obj1.summonye}}</span>
+													<p><span>{{obj1.contacts}}</span><span style="margin: 10px;">{{obj1.phone}}</span></p>
+												</a>
+											</li>
+										</div>
+										<!--<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>-->
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<!--<div id="supplier" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">进货单列表</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">应收对账单</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">收款</a>
+				</li>
+				<li class="mui-table-view-cell show_supplierInfo" data-id="">
+					<a href="#">详情</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#picture"><b>删除</b></a>
+				</li>
+			</ul>
+		</div>-->
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.indexedlist.js"></script>
+		<script type="text/javascript" src="../js/User_admin.js"></script>
+		<script type="text/javascript" src="../js/news.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			var info = document.getElementById("info");
+			mui.ready(function() {
+				var header = document.querySelector('header.mui-bar');
+				var list2 = document.querySelectorAll(".list")
+				for(var i = 0; i < list2.length; i++) {
+					list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+					window.indexedList = new mui.IndexedList(list2[i]);
+				}
+
+			});
+			var v = null
+			mui.plusReady(function() {
+				/*查询门店下的客户*/
+				v = new Vue({
+					el: ".item2mobile",
+					data: {
+						list: null
+					},
+					updated: function() {
+						var header = document.querySelector('header.mui-bar');
+						var list2 = document.querySelectorAll(".list")
+						for(var i = 0; i < list2.length; i++) {
+							list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+							window.indexedList = new mui.IndexedList(list2[i]);
+						}
+					}
+				})
+				//查询供应商
+				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier?sid=1', {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						v.list = data;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+				mui('body').on('tap', '.item2mobile .mui-indexed-list-item', function() {
+					var id = this.getAttribute("data-id")
+					mui.ajax(obj.url + '/Supplier/querySupplierById', {
+						data: {
+							id: id
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							console.log(JSON.stringify(data));
+							//上一个页面想要拿到这个对象  需要为上一个一面添加方法getclientId(obj)
+							var webviewid = plus.webview.currentWebview().opener().id;
+							var webview = plus.webview.getWebviewById(webviewid)
+							/*需要在子页面上创建getSupperObj方法 可获得对象*/
+							webview.evalJS("getSupperObj(" + JSON.stringify(data) + ")")
+							plus.webview.currentWebview().hide()
+						},
+						error: function(xhr, type, errorThrown) {}
+					});
+				})
+
+			})
+		</script>
+	</body>
+
+</html>

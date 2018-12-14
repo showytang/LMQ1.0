@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		/*#OA_task {
+			padding-top: 20px;
+		}*/
+		
+		#OA_task li:last-child {
+			background-color: #efeff4;
+		}
+		
+		#OA_task:after {
+			bottom: 45px;
+		}
+	</style>
+
+	<body>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+
+				<ul id="OA_task" class="mui-table-view">
+					<!--利用vue循环出数据 if判断是否为null 这里是用于做删除处理，删除之后是将删除的s赋值未null 利用vue重新渲染一次-->
+					<li v-if="s!=null" class="mui-table-view-cell" v-for="(s,index) in slist" v-bind:pid="s.id" v-bind:status="s.status">
+						<div class="mui-slider-right mui-disabled">
+							<a v-if="s.status==0" class="mui-btn mui-btn-blue">编辑</a>
+							<a class="mui-btn mui-btn-red" v-bind:index="index">删除</a>
+						</div>
+						<div class="mui-slider-handle">
+							<div class="mui-row">
+								<div class="mui-col-xs-6">{{s.cname}}</div>
+								<div class="mui-col-xs-6" style="text-align: right;">{{s.status==0?'可执行':'已完成'}}</div>
+							</div>
+							<div class="mui-row">
+								<div class="mui-col-xs-6">{{s.salesindentnub}}</div>
+								<div class="mui-col-xs-6" style="text-align: right;">${{s.money}}</div>
+							</div>
+						</div>
+					</li>
+					<li style="height: 45px;"></li>
+				</ul>
+			</div>
+		</div>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var v = new Vue({
+				el: "#OA_task",
+				data: {
+					slist: null
+				},
+				computed: {
+					countSumMoney: function() {
+						var sum = 0;
+						for(var i = 0; i < this.slist.length; i++) {
+							sum += this.slist[i].money;
+						}
+						return sum;
+					}
+				}
+			});
+			var vm = null;
+			var startTime = null;
+			var endTime = null;
+			var filtrate = null;
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能 ,
+				pullRefresh: {
+					container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+					down: {
+						height: 50, //可选,默认50.触发下拉刷新拖动距离,
+						auto: true, //可选,默认false.首次加载自动下拉刷新一次
+						contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+						contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+						contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						callback: function() {
+							console.log("刷新")
+						}
+						//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+					}
+				}
+			});
+			mui.ready(function() {
+
+			})
+			mui.plusReady(function() {
+				vm = plus.webview.currentWebview();
+				startTime = vm.startTime;
+				endTime = vm.endTime;
+				ajaxList(startTime, endTime, filtrate);
+				//触摸列表出现订单信息
+				mui('#OA_task').on('tap', '.mui-table-view-cell', function() {
+					console.log(this.getAttribute("status"))
+					if(this.getAttribute("status") == 0) {
+						plus.webview.create("salesindent_list_info_unfinished_1.html", "salesindent_list_info_unfinished_1.html", {}, {
+							pid: this.getAttribute("pid")
+						}).show("slide-in-right")
+					} else {
+						plus.webview.create("salesindent_list_info_finish_1.html", "salesindent_list_info_finish_1.html", {}, {
+							pid: this.getAttribute("pid")
+						}).show("slide-in-right")
+					}
+				});
+				mui('body').on('tap', '#refreshContainer', function() {
+
+					var a = plus.webview.currentWebview().opener();
+					a.evalJS("hidejp()");
+
+				});
+
+			});
+			//被调用的方法用来传值
+			function getCondition(start, end, f) {
+				startTime = start;
+				endTime = end;
+				filtrate = f;
+			}
+
+			//ajax取值
+			function ajaxList(start, end, f) {
+				console.log("当你看到我的时候，我就开始调用了ajax开始查询加载数据了")
+				console.log("这里是子页面:" + f);
+				console.log("这里是子页面:" + start);
+				console.log("这里是子页面:" + end);
+				mui.ajax(n.url + "/si/queryList", {
+					data: {
+						startTime: start,
+						endTime: end,
+						filtrate: f == 'undefined' || f == '' ? null : f
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						v.slist = data;
+						mui(v.slist).each(function(index, element) {
+							console.log("循环遍历出的id:" + element.id);
+
+						});
+						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).evalJS("setSumMoney(" + v.countSumMoney + ")")
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			//更新状态的方法通过ajax
+			function deleteById(pid) {
+				console.log(pid);
+				mui.ajax(n.url + "/si/deleteById", {
+					data: {
+						id: pid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+		</script>
+
+		<script type="text/javascript">
+			(function($) {
+				var btnArray = ['确认', '取消'];
+				//$.swipeoutOpen(el,direction)//打开指定列的滑动菜单，el:指定列的dom对象，direction：取值left|right，指定打开的是左侧或右侧滑动菜单
+				//$.swipeoutClose(el);//关闭指定列的滑动菜单，el:指定列的dom对象
+				//				setTimeout(function() {
+				//					$.swipeoutOpen(document.getElementById("OA_task_1").querySelector('li:last-child'), 'left');
+				//					setTimeout(function() {
+				//						$.swipeoutClose(document.getElementById("OA_task_1").querySelector('li:last-child'));
+				//					}, 1000);
+				//				}, 1000);
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+
+				//触摸删除
+				$('#OA_task').on('tap', '.mui-btn-red', function(event) {
+
+					var elem = this;
+					console.log(this.getAttribute("index"));
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条记录？', '', btnArray, function(e) {
+						if(e.index == 0) {
+							//先将当前节点的money值清0
+							//v.slist[elem.getAttribute("index")].money = 0;
+							v.slist.splice(elem.getAttribute("index"),1);
+							console.log(JSON.stringify(v.slist));
+							deleteById(li.getAttribute("pid"));
+							//再利用v.countSumMoney重新计算一遍合计通过evalJS传值到父窗体
+							plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).evalJS("setSumMoney(" + v.countSumMoney + ")")
+							//最后将当前阶段对应的slist赋值未null，slis发生改变 vue重新渲染
+							//li.style.display="none";
+							$.swipeoutClose(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				//触摸编辑
+				$('#OA_task').on('tap', '.mui-btn-blue', function(event) {
+					$.swipeoutClose(this.parentNode.parentNode);
+					console.log(this.parentNode.parentNode.getAttribute("pid"));
+					plus.webview.create("salesindent_update_1.html", "salesindent_update_1.html", {}, {
+						pid: this.parentNode.parentNode.getAttribute("pid")
+					}).show("slide-in-right");
+
+				});
+
+			})(mui);
+		</script>
+	</body>
+
+</html>

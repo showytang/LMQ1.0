@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>筛选</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/mui.css" />
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="../css/app.css" />
+		<!--<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.dtpicker.css" rel="stylesheet" />-->
+		<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />
+	</head>
+	<style type="text/css">
+		.iconAd {
+			position: absolute;
+			top: 20px;
+			right: 15px;
+			/* -webkit-transform: translateY(-50%); */
+			transform: translateY(-50%);
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">筛选</h1>
+			<!--<a class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+-->
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li id="all" class="mui-table-view-cell">全部<span class="iconAd mui-icon"></span></li>
+				<li id="getDay" class="mui-table-view-cell">本日<span class="iconAd mui-icon"></span></li>
+				<li id="getWeek" class="mui-table-view-cell">本周<span class="iconAd mui-icon"></span></li>
+				<li id="getYesterDay" class="mui-table-view-cell">昨日<span class="iconAd mui-icon"></span></li>
+				<li id="getMonth" class="mui-table-view-cell">本月<span class="iconAd mui-icon mui-icon-location"></span></li>
+				<li id="getLastMonth" class="mui-table-view-cell">上月<span class="iconAd mui-icon"></span></li>
+				<li id="getYear" class="mui-table-view-cell">本年<span class="iconAd mui-icon"></span></li>
+				<li id="diy" class="mui-table-view-cell mui-collapse">
+					<span class="iconAd mui-icon"></span>
+					<a class="" href="#">自定义时间</a>
+					<div class="mui-collapse-content">
+						<div class="mui-input-row">
+							<label>开始时间</label>
+							<input type="date" name="startTime" id="" value="2013-09-05" />
+						</div>
+
+						<div class="mui-input-row">
+							<label>结束时间</label>
+							<input type="date" name="endTime" id="" value="2013-09-05" />
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<script src="js/mui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.picker.min.js"></script>
+		<script src="js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var startTime = null;
+			var endTime = null;
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.ready(function() {
+				document.querySelector("[name='startTime']").value=eval("formatNowDate()");
+				document.querySelector("[name='endTime']").value=eval("formatNowDate()");
+
+			})
+			mui.plusReady(function() {
+				mui('.mui-table-view').on('tap', '.mui-table-view-cell', function() {
+					document.querySelector(".mui-icon-location").classList.remove("mui-icon-location");
+					this.children[0].classList.add("mui-icon-location");
+					
+				});
+				//滑动隐藏
+				mui.back = function() {
+					var li = document.querySelector(".mui-icon-location").parentNode;
+					var start=document.querySelector("[name='startTime']").value;
+					var end=document.querySelector("[name='endTime']").value;
+					if(li.id != "diy") {
+						console.log(eval(li.id + "StartDate()"));
+						console.log(eval(li.id + "EndDate()"));
+						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).evalJS("getFiltrate('" + eval(li.id + "StartDate()") + "','" + eval(li.id + "EndDate()") + "')");
+						plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-right");
+						return;
+					}
+					plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).evalJS("getFiltrate('" + start + "','" + end + "')");
+					plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-right");
+				}
+				
+			});
+
+			//获得传过来的条件
+			function getCondition(start, end) {
+				startTime = start;
+				endTime = end;
+			}
+		</script>
+
+	</body>
+
+</html>

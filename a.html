@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-card {
+				margin-left: 0px;
+				margin-right: 0px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+			<header class="mui-bar mui-bar-nav">
+				<h1 class="mui-title">买卖</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" ct="salesindent/salesindent_list_headerAndtab.html">
+							<p><span class="mui-icon mui-icon-person">			
+							</span>销售订单</p>
+							<button type="button" ct="salesindent/salesindent_add_1.html" class="mui-btn mui-btn-primary">
+							<span class="mui-icon mui-icon-plusempty">
+								新增
+							</span>
+							</button>
+						</li>
+						<li class="mui-table-view-cell" ct="sales/sales_list_headerAndtab.html">
+							<p><span class="mui-icon mui-icon-person">			
+							</span>销售单</p>
+							<button type="button" ct="sales/sales_add_1.html" class="mui-btn mui-btn-primary">
+							<span class="mui-icon mui-icon-plusempty">
+								新增
+							</span>
+						</button>
+						</li>
+					</ul>
+				</div>
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" ct="stock/stock_list_headerAndtab.html">
+							<p><span class="mui-icon mui-icon-person">			
+							</span>采购进货单</p>
+							<button type="button" ct="stock/stock_add_1.html" class="mui-btn mui-btn-primary">
+							<span class="mui-icon mui-icon-plusempty">
+								新增
+							</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell" ct="customerrecharge/customerrecharge_list_headerAndtab.html">
+							<p><span class="mui-icon mui-icon-person">			
+							</span>收款单</p>
+							<button type="button" ct="customerrecharge/customerrecharge_add_1.html" class="mui-btn mui-btn-primary">
+							<span class="mui-icon mui-icon-plusempty">
+								新增
+							</span>
+							</button>
+						</li>
+
+						<li class="mui-table-view-cell" ct="remittance/remittance_list_headerAndtab.html">
+							<p><span class="mui-icon mui-icon-person">			
+							</span>付款单</p>
+							<button type="button" ct="remittance/remittance_add_1.html" class="mui-btn mui-btn-primary">
+							<span class="mui-icon mui-icon-plusempty">
+								新增
+							</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.ready(function () {
+			   	mui.back = function() {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit();
+						}
+					}
+				};
+			})
+			mui.plusReady(function() {
+				//触摸新增创建新增的窗体并显示
+				mui('body').on('tap', '[type="button"]', function(e) {
+					//防止事件冒泡
+					e.stopPropagation();
+					console.log("新增");
+					//获得自定义属性ct
+					var url = this.getAttribute("ct");
+					var a1 = plus.webview.create(url, url, {}, {});
+					a1.show("slide-in-right");
+				});
+				//触摸列表选项出现内容
+				mui('body').on('tap', '.mui-table-view-cell', function() {
+					console.log("内容");
+					//获得自定义属性ct
+					var url = this.getAttribute("ct");
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById(url);
+					if(vw) {
+						vw.evalJS("F5()");
+						vw.show("slide-in-right");
+						return;
+					}
+					vw = plus.webview.create(url, url, {}, {});
+					vw.show("slide-in-right");
+				});
+
+				/*mui('body').on('tap', '.mui-title', function() {
+					var wv = plus.webview.create("a-1.html", "a-1", {}, {
+						mid: 5
+					});
+					wv.show("slide-in-right");
+					console.log(123);
+					//wv.evalJS("a()")
+					//wv.evalJS("into1(2)");
+				})*/
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>根据客户选择价格</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				/*border: 1px solid #000000;*/
+			}
+			
+			#addGoodBtn {
+				float: right;
+			}
+			
+			.goodsPrice {
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
+			
+			.goodsNum {
+				font-size: 0.7em;
+				line-height: 1.2em;
+				color: red;
+			}
+			
+			.simImg {
+				/*max-width: 60px;*/
+				margin-right: 8px;
+				width: 4.5em;
+				height: 4.5em;
+			}
+			
+			.goodsTitle {
+				font-size: 0.85em;
+				word-break: normal;
+				width: 100%;
+				white-space: pre-wrap;
+				/*word-wrap : break-word ;*/
+				overflow: hidden;
+				line-height: 1.2em;
+				margin-bottom: 2px;
+			}
+			
+			.userName {
+				color: #0062CC;
+			}
+			
+			.mui-bar-nav~.mui-content {
+				padding-top: 45px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">客户报价</h1>
+			<span class="mui-icon mui-icon-plus mui-pull-right" id="addBtn"></span>
+			<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入用户名称">
+		</header>-->
+		<input value="" type="hidden" v-model="gName" />
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="mui-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media" v-for="(gIn,index) in list">
+							<a href="javascript:;" v-bind:goodsInstanceId="gIn.goodsInstanceId" class="mui-row simGoodsInstance">
+								<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+gIn.url">
+								<div class="mui-col-xs-9 mui-row">
+									<span class="mui-col-xs-12 goodsTitle">{{gIn.name}}</span>
+									<span class="mui-col-xs-6 goodsPrice">{{gIn.priceName}}：￥{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
+									<!--<span class="mui-col-xs-12 goodsNum">9台</span>-->
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					auto: true,
+					down: {
+						contentrefresh: '正在加载...',
+						callback: pulldownRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				getData("");
+			}
+			//vue
+			var vue = new Vue({
+				el: ".mui-content",
+				data: {
+					list: "",
+					gName:"",
+					url: n.url+"/"
+				},
+				watch: { //搜索
+					gName: function() {
+						getData(cId,this.gName);
+					}
+				}
+			});
+			var cId;
+			var cId;
+			mui.plusReady(function() {
+				mui('body').on('tap','.simGoodsInstance',function(){
+					//参数
+					var goodsInstanceId = this.getAttribute("goodsInstanceId");
+					var goodsInstance;
+					for(var i = 0;i<vue.list.length;i++){
+						if(vue.list[i].goodsInstanceId == goodsInstanceId){
+							goodsInstance = vue.list[i];
+							break;
+						}
+					}
+					//console.log("66"+JSON.stringify(goodsInstance));
+					
+					
+				  	var webview = plus.webview.getWebviewById("goodsCustomerPrice_h.html");
+				  	var webviewId = 1;
+				  	var webviewName = "";
+				  	switch(webviewId){
+				  		case 1://折扣
+				  		webviewName = "goodsInstancePriceRate_h.html";
+				  		break;
+				  		case 2://无折扣
+				  		webviewName = "goodsInstancePriceNoRate_h.html";
+				  		break;
+				  	}
+				    if(!webview){
+				    	webview = plus.webview.create(webviewName,webviewName,{top:0},{
+				    		"goodsInstance":JSON.stringify(goodsInstance)
+				    		}
+				    	);
+				    }
+				    webview.show("slide-in-right");
+				}) 
+				
+				var self = plus.webview.currentWebview();
+				cId = self.cid;
+				//根据用户cid查询pid客户类型
+				mui.ajax(n.url+'/Customer/queryByIdResultPid',{
+					data:{
+						id:self.cid
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						pId = data;
+						//console.log("入口id"+pId);
+					},
+					error:function(xhr,type,errorThrown){
+						
+					}
+				});
+				getData("");
+			})
+
+			
+			
+			//数据初始化
+			function getData(gName) {
+			   	//获取cId 和pId（必须获取防止pId下拉刷新后，出现undefined）
+				////getWebviewById("goodsInstanceSelect_h.html");
+				mui.ajax(n.url + '/goods/queryGoodsInstanceVoList', {
+					data: {
+						cId: cId,
+						gName: gName
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//为空判断
+						if(data != null) {
+							vue.list = changeData(data);
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
+			}
+			function changeData(data) {
+				//用户类型
+				var goodsInstanceArr = [];
+				var goodsInstance = {};
+				var id = -1; //特殊值
+				for(var i = 0; i < data.length; i++) {
+					if(i == 0)
+						id = data[i].goodsInstanceId;
+					else if(id == data[i].goodsInstanceId) {
+						//是为同一个单品
+
+					} else {
+						//不是为同一个单品
+						id = data[i].goodsInstanceId;
+						goodsInstanceArr.push(goodsInstance);
+						goodsInstance = {};
+					}
+					
+					
+					
+					//名称单品新名称
+					if(data[i].standardName)
+						goodsInstance.name = data[i].goodsName + "-" + data[i].standardName;
+					else
+						goodsInstance.name = data[i].goodsName;
+					//单品id
+					goodsInstance.goodsInstanceId = data[i].goodsInstanceId;
+					//图片地址
+					goodsInstance.url = data[i].url;
+					//单位名称
+					goodsInstance.bitName = data[i].bitName;
+					
+					//单品价格
+					if(data[i].money) { //有报价
+						goodsInstance.price = data[i].money;
+						goodsInstance.ptype = -1;//报价
+						goodsInstance.priceName = "报价";
+					} else if(!data[i].money) { //无报价
+						//获取默认价格
+						if(data[i].defaultPrice == 1){
+							goodsInstance.price = data[i].price;
+							goodsInstance.ptype = data[i].ptype;
+						goodsInstance.priceName = data[i].priceName;
+						}else if(data[i].ptype == pId){//用户类型id
+							goodsInstance.price = data[i].price;
+							goodsInstance.ptype = data[i].ptype;
+						goodsInstance.priceName = data[i].priceName;
+						}
+					}
+					//最后一次
+					if(i == data.length-1){
+						goodsInstanceArr.push(goodsInstance);
+					}
+						
+				}
+				console.log(JSON.stringify(goodsInstanceArr));
+				return goodsInstanceArr;
+			}
+			
+		</script>
+	</body>
+
+</html>

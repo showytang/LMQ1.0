@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>单价</label>
+					<input type="number" v-model="takeinmoney" class="mui-input-clear" name="takeinmoney" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>数量</label>
+					<input type="number" v-model="count" class="mui-input-clear" name="count" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>金额</label>
+					<input type="number" v-model="money" class="mui-input-clear" name="money" placeholder="">
+				</div>
+				<div class="mui-input-row">
+					<label>备注</label>
+					<input type="text" class="mui-input-clear" name="remark" placeholder="">
+
+				</div>
+
+			</form>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					goods: plus.webview.currentWebview().goods,
+					takeinmoney: plus.webview.currentWebview().goods.takeinmoney,
+					count: plus.webview.currentWebview().goods.count,
+					money: plus.webview.currentWebview().goods.money
+				},
+				watch:{
+					takeinmoney:function(val){
+						this.money=val*this.count;
+					},
+					count:function(val){
+						if(val<0||val==""){
+							this.count=1;
+						}
+						this.money=val*this.takeinmoney;
+					},
+					money:function(val){
+						this.takeinmoney=val/this.count;
+					}
+				}
+			});
+			function setGoodsInfo(goodsinfo){
+				console.log("传过来"+goodsinfo)
+				var goods=JSON.parse(goodsinfo);
+				v.goods=goods;
+				v.takeinmoney=goods.takeinmoney;
+				v.money=goods.money;
+				v.count=goods.count;
+			}
+		</script>
+		<script type="text/javascript">
+			function getGoodsInfo(){
+				v.goods.takeinmoney=v.takeinmoney;
+				v.goods.money=v.money;
+				v.goods.count=v.count;
+				console.log("赋值过去"+JSON.stringify(plus.webview.currentWebview().goods));
+				plus.webview.getWebviewById("sales_add_2.html").evalJS("setGoods('"+JSON.stringify(v.goods)+"')");
+			}
+			function hidejp(){
+				document.activeElement.blur();
+			}
+		</script>
+	</body>
+
+</html>

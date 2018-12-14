@@ -1,0 +1,361 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.Sec {
+				background-color: #FFFFFF;
+			}
+			
+			.stypeName {
+				margin-left: 1em;
+				line-height: 2.5em;
+			}
+			
+			.arrowBtn {
+				font-size: 1em;
+				float: right;
+				line-height: 2.5em;
+				margin-right: 14px;
+				padding: 0px 1em;
+			}
+			
+			.LastStypeSec {
+				border: 1px solid #d4d4d4;
+			}
+			
+			.nameSec {
+				border: 1px solid #d4d4d4;
+			}
+			
+			#submitBtn {
+				float: right;
+			}
+			div .title{
+				margin-top: 20px;
+			}
+			.StandardCloseBtn{
+				position: absolute;
+				right: 0px;
+				top: 0px;
+			}
+			.standardTitle {
+				color: #000000;
+				font-weight: bold;
+				font-size: 0.8em;
+			}
+			.input {
+				text-align: center;
+				font-size: 0.8em;
+				padding: 10px;
+				margin-top: 0;
+				margin-bottom: 0px;
+				color: #000000;
+				line-height: 20px;
+			}
+			/*.arrowBtn {
+				text-align: center;
+				padding: -1em 0 1em 0;
+				border: 1px solid #D4D4D4;
+			}*/
+			/*.standardSelected {
+				border: 1px solid #0000FF;
+			}*/
+			.closeStandardBtn {
+				/*border: 1px solid #0000FF;*/
+				position: absolute;
+				right: 0px;
+				top: 0px;
+				width: 1em;
+				height: 1em;
+				z-index: 99;
+			}
+			.standardTitle {
+				color: #000000;
+				font-weight: bold;
+				font-size: 0.8em;
+			}
+			
+			.bgGraw {
+				background-color: #DDDDDD;
+				font-weight: bold;
+			}
+			
+			.simStandard {
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}
+			.simStandardValue{
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加类目</h1>
+			<span class="mui-icon mui-icon-checkmarkempty" id="submitBtn"></span>
+		</header>-->
+		<div class="mui-content Sec">
+			<div class="LastStypeSec">
+				<span class="stypeName">上级类目</span>
+				<span class="arrowBtn mui-icon mui-icon mui-icon-arrowright"></span>
+			</div>
+			<div class="mui-input-row nameSec">
+				<label>名称</label>
+				<input type="text" class="mui-input-clear" placeholder="请输入类目名称">
+			</div>
+			<!--规格部分-->
+			<div id="standardTop">
+				<div class="title">类目下的规格</div>
+				<form class="mui-input-group" v-if="list" v-for="(l,index) in list">
+					<span class="mui-icon mui-icon-closeempty StandardCloseBtn" ></span>
+					<!--规格名称-->
+					<input type="text"
+					 class="standardTitle" style="margin: 0px; padding: 0px;" v-bind:value="l.name">
+					 <!--规格值-->
+					<div class="tandardSec mui-row" v-bind:data-standardId="l.id">
+						<div class="simStandardValue bgGraw mui-col-xs-4"><input class="input" placeholder="规格值名称" type="text"></div>
+						<div class="simStandard mui-col-xs-4 divStandard standardSelected" v-bind:data-standardInsId="sI.id" v-for="(sI,index1) in l.sInList" style="border-style: solid;">
+							<input class="input" type="text" placeholder="规格名称" v-bind:value="sI.name"  >
+							 <span  class="closeStandardBtn mui-icon mui-icon-closeempty"></span>
+						</div>
+					</div>
+				</form>
+				<!--新增规格-->
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label>新增规格</label>
+						<input id="addStandard" type="text" class="mui-input-clear" placeholder="规格名称">
+					</div>
+				</form>
+				<!--规格添加处-->
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.ready(function() {
+				console.log(n.url+"/goods/queryALLStandardByTid");
+				mui('body').on('tap', '.LastStypeSec', function() {
+					var webview = plus.webview.create("goodsSelectStype_h.html", "goodsSelectStype_h.html", {}, {});
+					webview.show("slide-in-right");
+				})
+				//添加类目
+				mui('body').on('tap','#submitBtn',function(){
+				  //验证输入完整性
+				  //console.log(document.querySelector("#standardTop").innerHTML);
+				  getStandardData();
+				}) 
+				//规格值输入
+				mui('body').on('change','.simStandard input',function(){
+				  if(!this.value.length>0)
+				  	this.parentElement.parentElement.removeChild(this.parentElement);//空值删除
+				  else
+				  	this.parentElement.setAttribute("data-standardInsId","--"+this.value);
+				  	
+				}) 
+				//规格输入
+				mui('body').on('change','.standardTitle',function(){
+				  if(!this.value.length>0)
+				  	this.parentElement.parentElement.removeChild(this.parentElement);//空值删除
+				  else
+				  	this.nextElementSibling.setAttribute("data-standardId","--"+this.value);
+				}) 
+			})
+			var vue = new Vue({
+				el:".mui-content",
+				data:{
+					list:[]
+				}
+			});
+			function setGoodsType(d){//{"typeName":"服装","typeId":"1"}
+				var typeObj = eval('('+d+')');
+				var nq = document.querySelector(".stypeName");
+				nq.innerText = typeObj.typeName;
+				nq.setAttribute("data-typeId",typeObj.typeId);
+				//根据类目查询属性值
+				mui.ajax(n.url+"/goods/queryALLStandardByTid",{
+					data:{
+						tId:typeObj.typeId
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						console.log(JSON.stringify(data));
+						vue.list = data;
+					},
+					error:function(xhr,type,errorThrown){
+						
+					}
+				});//ajax结束
+			}
+			mui.plusReady(function() {
+				mui('body').on('tap', '#addStypeBtn', function() {
+					var webview = plus.webview.create("goodsAddStype.html", "goodsAddStype.html", {}, {});
+					webview.show("slide-in-right");
+				})
+				//添加自定义属性
+				mui('body').on('change', '#addStandard', function() {
+					if(addStandard.value.length != 0) {
+						//最顶层规格div id=standardTop
+						var target = document.querySelector("#standardTop");
+						//新增自定义规格部分
+						var form = document.createElement("form");
+						form.className = "mui-input-group";
+						//删除按钮
+						var deleteSpan = document.createElement("span");
+						deleteSpan.className = "mui-icon mui-icon-closeempty StandardCloseBtn";
+						form.appendChild(deleteSpan);
+						//标题<p class="standardTitle">颜色分类</p> 可修改
+						var titleInput = document.createElement("input");
+						titleInput.setAttribute("type", "text");
+						titleInput.className = "standardTitle";
+						titleInput.value = this.value;
+						titleInput.style.margin = "0px";
+						titleInput.style.padding = "0px";
+						var div = document.createElement("div");
+						div.className = "tandardSec mui-row";
+						div.setAttribute("data-standardName",this.value);
+						var div1 = document.createElement("div");
+						div1.className = "simStandard bgGraw mui-col-xs-4";
+						var input = document.createElement("input");
+						input.className = "input";
+						input.setAttribute("type", "text");
+						input.setAttribute("placeholder", "规格名称");
+						//下拉控件<div class="arrowBtn mui-icon mui-icon-arrowdown mui-col-xs-12"></div>
+						var div2 = document.createElement("div");
+						//div2.className = "arrowBtn mui-icon mui-icon-arrowdown mui-col-xs-12";
+						form.appendChild(titleInput);
+						form.appendChild(div);
+						div.appendChild(div1);
+						div1.appendChild(input);
+						//div.appendChild(div2);
+						target.appendChild(form);
+					}
+					this.value = "";
+				})
+				//添加自定义属性值
+				mui('body').on('input', '.bgGraw', function() {
+					this.classList.add("divStandard"); //自定义规格标记
+					this.classList.remove("bgGraw");
+					this.classList.add("standardSelected"); //选中样式
+					this.style.borderColor = "#0000FF";
+					this.style.borderStyle = "solid";
+					var span = document.createElement("span");
+					span.className = "closeStandardBtn mui-icon mui-icon-closeempty";
+					this.appendChild(span);
+					//新节点（自定义规格值）
+					var div = document.createElement("div");
+					div.className = "simStandardValue bgGraw mui-col-xs-4";
+					var input = document.createElement("input");
+					input.className = "input";
+					input.placeholder = "规格值名称";
+					input.type = "text";
+					div.appendChild(input);
+					//console.log(this.parentElement.children[0].value);
+					this.parentElement.insertBefore(div, this.parentElement.children[0]);
+				})
+				//删除规格
+				mui('body').on('tap','.StandardCloseBtn',function(e){
+					//删除数据
+				  	for(var i = 0;i<vue.list.length;i++){
+				  		if(vue.list[i].id == this.nextElementSibling.nextElementSibling.getAttribute("data-standardId")){
+				  			vue.list.splice(i,1);
+				  		}
+				  	}
+				  	
+				}) 
+				//规格删除按钮
+				mui('body').on('tap', '.closeStandardBtn', function(e) {
+					for(var i = 0;i<vue.list.length;i++){
+				  		if(vue.list[i].id == this.parentElement.parentElement.getAttribute("data-standardId")){
+				  			for(var j=0;j<vue.list[i].sInList.length;j++){
+				  				if(vue.list[i].sInList[j].id == this.parentElement.getAttribute("data-standardInsId")){
+				  					vue.list[i].sInList.splice(j,1);
+				  				}
+				  			}
+				  		}
+				  	}
+					
+					/*e.stopPropagation();
+					this.parentElement.remove();*/
+				})
+			})
+			//初始化
+			//层次
+			function showNode(types, FatherNode, garde) {
+				garde++;
+				if(types == null)
+					return;
+				for(var i = 0; i < types.length; ++i) {
+					var type = types[i];
+					var node = document.createElement("div");
+					node.className = "stypeSec";
+					node.setAttribute("data-tId", types[i].id);
+					//console.log(type.gtList.length);
+					var div = document.createElement("div");
+					//node.setAttribute("data-id",type.id);
+					var span = document.createElement("span");
+					span.className = "stypeName";
+					span.innerText = type.name;
+					//如果还有下一层stypeFather，无stypeSon
+					if(type.gtList.length != 0) {
+						div.className = 'stypeFather';
+						var span1 = document.createElement("span");
+						span1.className = "arrowBtn mui-icon mui-icon-arrowdown";
+						div.appendChild(span);
+						div.appendChild(span1);
+					} else {
+						div.className = 'stypeSon';
+						div.appendChild(span);
+					}
+					node.appendChild(div);
+					FatherNode.appendChild(node);
+					if(type.parentid == 0) {
+						node.style.display = "block";
+						node.style.textIndent = 0 + "em";
+					} else {
+						node.style.display = "none";
+						node.style.textIndent = garde + "em";
+					}
+					//子类
+					showNode(type.gtList, node, garde);
+				}
+			}
+			//获取规格数据（新增规格）
+			function getStandardData(){
+				//规格集合
+				var standardArr = document.querySelectorAll(".tandardSec");
+				var standardObjs = [];
+				for (var i = 0;i<standardArr.length;i++) {
+					var standardObj = {};
+					standardObj.standardId = standardArr[i].getAttribute("data-standardId");
+					//规格值集合
+					var standardInsArr =  standardArr[i].querySelectorAll(".simStandard");//data-standardInsName
+					var standardInsObjs = [];
+					for(var j = 0;j<standardInsArr.length;j++){
+						standardInsObjs.push(standardInsArr[j].getAttribute("data-standardInsId"));
+					}
+					standardObj.standardInsList = standardInsObjs;
+					standardObjs.push(standardObj);
+				}
+				console.log(JSON.stringify(standardObjs));
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="../css/app.css" />-->
+		<link href="../css/mui.indexedlist.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/User_admin.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			  <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="head_title">新增</h1>
+			<a class="add" data_client="add_client.html" data_supplier="add_supplier.html" data_cargo_client="cargo_client_add.html"></a>
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">
+						客户
+					</a>
+					<a class="mui-control-item" href="#item2mobile">
+						供应商
+					</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" id="c" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<div class='list' class="mui-indexed-list">
+										<div class="mui-indexed-list-search mui-input-row mui-search">
+											<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入客户/关键字/拼音首字母">
+										</div>
+										<div class="mui-indexed-list-bar" style="height: 490px;">
+											<a>A</a>
+											<a>B</a>
+											<a>C</a>
+											<a>D</a>
+											<a>E</a>
+											<a>F</a>
+											<a>G</a>
+											<a>H</a>
+											<a>I</a>
+											<a>J</a>
+											<a>K</a>
+											<a>L</a>
+											<a>M</a>
+											<a>N</a>
+											<a>O</a>
+											<a>P</a>
+											<a>Q</a>
+											<a>R</a>
+											<a>S</a>
+											<a>T</a>
+											<a>U</a>
+											<a>V</a>
+											<a>W</a>
+											<a>X</a>
+											<a>Y</a>
+											<a>Z</a>
+										</div>
+										<div class="mui-indexed-list-alert"></div>
+										<div class="mui-indexed-list-inner">
+											<div class="mui-indexed-list-empty-alert">没有数据</div>
+											<ul class="mui-table-view">
+												<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
+												<li data-value="AIU" data-tags="ajiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>阿佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="aijiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>唉佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+
+												<li data-value="AIU" data-tags="ajiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>啊佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-group="B" class="mui-table-view-divider mui-indexed-list-group">B</li>
+												<li data-value="AIU" data-tags="bijiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>币佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="bujiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>部佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="bojiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>伯佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-group="C" class="mui-table-view-divider mui-indexed-list-group">C</li>
+												<li data-value="AIU" data-tags="chejiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>车佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="caijiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>才佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="chenjiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>陈佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+												<li data-value="AIU" data-tags="cejiajing" class="mui-table-view-cell mui-indexed-list-item" name="client_menu.html">
+													<a href="#picture" style="width: 350px;"><span>侧佳静</span><span class="monye_span">￥23132.0</span>
+														<p>123165498</p>
+													</a>
+												</li>
+											</ul>
+										<div style="height: 40px;"></div>	
+										</div>
+									</div>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class='list' class="mui-indexed-list">
+									<div class="mui-indexed-list-search mui-input-row mui-search">
+										<input type="search" class="mui-input-clear mui-indexed-list-search-input" placeholder="请输入供应商/关键字/拼音首字母">
+									</div>
+									<div class="mui-indexed-list-bar" style="height: 490px;">
+										<a>A</a>
+										<a>B</a>
+										<a>C</a>
+										<a>D</a>
+										<a>E</a>
+										<a>F</a>
+										<a>G</a>
+										<a>H</a>
+										<a>I</a>
+										<a>J</a>
+										<a>K</a>
+										<a>L</a>
+										<a>M</a>
+										<a>N</a>
+										<a>O</a>
+										<a>P</a>
+										<a>Q</a>
+										<a>R</a>
+										<a>S</a>
+										<a>T</a>
+										<a>U</a>
+										<a>V</a>
+										<a>W</a>
+										<a>X</a>
+										<a>Y</a>
+										<a>Z</a>
+									</div>
+									<div class="mui-indexed-list-alert"></div>
+									<div class="mui-indexed-list-inner">
+										<div class="mui-indexed-list-empty-alert">没有数据</div>
+										<ul class="mui-table-view">
+											<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">A</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+											<li data-value="AKU" data-tags="AKeSu" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
+												<span>东莞骏和手机膜加工厂</span>
+												<span class="monye_span">￥210.0</span>
+												<p><span>高新话</span><span style="margin: 10px;">131213212321</span></p>
+											</li>
+										</ul>
+										<div style="height: 40px;"></div>	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.indexedlist.js"></script>
+		<script type="text/javascript" src="../js/zjfinsert_admin.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			(function($) {
+				/*$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});*/
+				var html2 = '<ul class="mui-table-view"><li class="mui-table-view-cell">第二个选项卡子项-1</li><li class="mui-table-view-cell">第二个选项卡子项-2</li><li class="mui-table-view-cell">第二个选项卡子项-3</li><li class="mui-table-view-cell">第二个选项卡子项-4</li><li class="mui-table-view-cell">第二个选项卡子项-5</li></ul>';
+				var html3 = '<ul class="mui-table-view"><li class="mui-table-view-cell">第三个选项卡子项-1</li><li class="mui-table-view-cell">第三个选项卡子项-2</li><li class="mui-table-view-cell">第三个选项卡子项-3</li><li class="mui-table-view-cell">第三个选项卡子项-4</li><li class="mui-table-view-cell">第三个选项卡子项-5</li></ul>';
+				var item2 = document.getElementById('item2mobile');
+				var item3 = document.getElementById('item3mobile');
+				document.getElementById('slider').addEventListener('slide', function(e) {
+					if(e.detail.slideNumber === 1) {
+						if(item2.querySelector('.mui-loading')) {
+							setTimeout(function() {
+								item2.querySelector('.mui-scroll').innerHTML = html2;
+							}, 500);
+						}
+					} else if(e.detail.slideNumber === 2) {
+						if(item3.querySelector('.mui-loading')) {
+							setTimeout(function() {
+								item3.querySelector('.mui-scroll').innerHTML = html3;
+							}, 500);
+						}
+					}
+				});
+				var sliderSegmentedControl = document.getElementById('sliderSegmentedControl');
+				$('.mui-input-group').on('change', 'input', function() {
+					if(this.checked) {
+						sliderSegmentedControl.className = 'mui-slider-indicator mui-segmented-control mui-segmented-control-inverted mui-segmented-control-' + this.value;
+						//force repaint
+						sliderProgressBar.setAttribute('style', sliderProgressBar.getAttribute('style'));
+					}
+				});
+			})(mui);
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			var info = document.getElementById("info");
+			mui.ready(function() {
+				var header = document.querySelector('header.mui-bar');
+				var list2 = document.querySelectorAll(".list")
+				for(var i = 0; i < list2.length; i++) {
+					list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
+					window.indexedList = new mui.IndexedList(list2[i]);
+				}
+				
+			});
+			
+		</script>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+.mui-content{
+	background-color: #F3F3F3;
+}
+.mui-input-row{
+	background-color: white;
+	border-bottom: 1px solid #F3F3F3;
+}
+ body .mui-input-row:nth-child(1){
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+body .mui-input-row:nth-child(5){
+	margin-top: 10px;
+}
+body .mui-input-row:nth-child(7){
+	margin-top: 10px;
+}
+label{
+	color: #6EACFB;
+}
+.mui-bar{
+	background-color: #1E7DFA;
+}
+.add{
+	color: #000000;
+	float: right;
+}
+.mui-action-back{
+	color: white;
+}

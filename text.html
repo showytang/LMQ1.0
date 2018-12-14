@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<button type="button" class="mui-btn mui-btn-blue mui-btn-block">按钮</button>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<div style="height: 100px;">123123123</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/openModel.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui('body').on('tap', 'button', function() {
+				lmqModel.open("全局设置", [{
+					title: "价格",
+					type: "text",
+					bit: "元",
+					name: "price",
+					placeholder: "统一输入价格"
+				}, {
+					title: "库存",
+					type: "text",
+					bit: "件",
+					name: "count",
+					placeholder: "统一输入价格"
+				}], function() { //取消回调
+					alert("啦啦");
+				}, function(data) { //确定回调
+					alert(JSON.stringify(data));
+				});
+			})
+		</script>
+	</body>
+
+</html>

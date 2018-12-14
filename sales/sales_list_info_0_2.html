@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>关联销售单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-bar-tab {
+			height: 65px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>单据编号</label>
+								<input type="text" name='user1' disabled="disabled" v-bind:value="Sales.user1" />
+							</div>
+						</a>
+					</li>
+					<li v-if="Sales.user2" class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input name="user2" type="text" disabled="disabled" v-bind:value="Sales.user2" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="hidden" name="cid" v-bind:value="Sales.cid" />
+								<input type="text"  disabled="disabled" v-bind:value="Sales.cname" />
+							</div>
+				
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>日期</label>
+							<input name="time" type="date"  disabled="disabled" v-bind:value="Sales.stime" />
+						</div>
+					</li>
+					
+				</ul>
+			</div>
+			<div class="mui-card">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-3">
+							货品
+						</div>
+						<div name="count" class="mui-col-xs-6">{{Sales.count}}</div>
+						<div name="takeinmoney" class="mui-col-xs-3">{{Sales.takeinmoney}}</div>
+					</li>
+					<ul id="OA_task_1" class="mui-table-view">
+						<li class="mui-table-view-cell" v-for="(s,index) in Sales.salesdetails" v-on:click="updateInfo(index)">
+							<div class="mui-row">
+								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-10">
+									<span hidden="" name="id">{{s.id}}</span>
+									<span hidden="" name="user1">{{s.user1}}</span>
+									<div class="mui-row">
+										<div class="mui-col-xs-6"><span name="name">{{s.user2}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6"><span name="money">{{(s.count*s.takeinmoney).toFixed(2)}}</span></div>
+									</div>
+									<div class="mui-row">
+										<div class="mui-col-xs-6"><span name="count">{{s.count}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6"><span name="takeinmoney">{{s.takeinmoney.toFixed(2)}}</span></div>
+									</div>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<li class="mui-table-view mui-row">
+						
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>营业员</label>
+								<input type="hidden" name="uid" />
+								<input type="text" readonly="readonly" value="" name="uname" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="hidden" name="pid" v-bind:value="Sales.pid" />
+								<input type="text" readonly="readonly" v-bind:value="Sales.pname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" readonly="readonly" v-bind:value="Sales.user3" name="user3" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="" style="height: 75px;">
+			</div>
+		</div>
+
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var uid = 1;
+			var sid = 1;
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.plusReady(function() {
+
+				queryById(plus.webview.currentWebview().pid);
+
+			});
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					Sales: {}
+				},
+				methods: {
+					updateInfo: function(index) {
+						console.log(index);
+						lmqModel.open(this.Salesindent.id, [{
+							title: "价格",
+							type: "text",
+							bit: "元",
+							name: "price",
+							placeholder: "统一输入价格"
+						}, {
+							title: "库存",
+							type: "text",
+							bit: "件",
+							name: "count",
+							placeholder: "统一输入价格"
+						}], function() { //取消回调
+							alert("啦啦");
+						}, function(data) { //确定回调
+							alert(JSON.stringify(data));
+						});
+
+					}
+				}
+			});
+			//通过ajax查询出信息并赋值vue对象
+			function queryById(id) {
+				console.log("ajax:"+id)
+				mui.ajax(n.url + "/s/queryById", {
+					data: {
+						id: id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(JSON.stringify(data))
+						v.Sales = data;
+						v.Sales.stime = (data.time).substring(0, 10);
+						/*v.deposi=data.deposi;
+						v.remark=data.remark;*/
+						//v.stime = (data.time).substring(0, 10);
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+			
+		</script>
+	</body>
+
+</html>

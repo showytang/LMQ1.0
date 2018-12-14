@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>销售统计明细</title>
+		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="../css/report.css" />
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="../css/cargo_client_add.html.css" />
+		<script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/pace.min.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<style type="text/css">
+			.mui-title>ul>li>a {
+				padding: 0 0;
+				font-size: 0.6em;
+			}
+			
+			table {
+				height: 100%;
+				background-color: white;
+			}
+			
+			.totaltr {
+				height: 80px;
+				width: 100%;
+			}
+			
+			.table>tbody>tr>td {
+				padding: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">客户报价</h1>
+			<a class="add" style="float: right;"><span class="mui-icon mui-icon-checkmarkempty"></span></a>
+		</header>
+		<div class="mui-content tab-content">
+			<div id="slider" class="mui-slider">
+				<!--<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">按客户新增</a>
+					<a class="mui-control-item" href="#item2mobile">按货品新增</a>
+				</div>-->
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-6"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="javascript:void(0)" class="mui-navigate-right">客户名称<span id="client_name"></span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a href="javascript:void(0)" class="mui-navigate-right">设置客户报价</a>
+							</li>
+						</ul>
+					</div>
+					<!--<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<ul class="mui-table-view mui-table-view-chevron">
+							<li class="mui-table-view-cell">
+								<a href="javascript:void(0)" class="mui-navigate-right">货品名称<span id="goods_name">哈哈哈哈</span></a>
+							</li>
+							<li class="mui-table-view-cell">
+								<a href="javascript:void(0)" class="mui-navigate-right">设置客户报价</a>
+							</li>
+						</ul>
+					</div>-->
+				</div>
+				<div>
+				</div>
+				<input type="hidden" id="hiden" />
+				<script type="text/javascript" src="js/cargo_client_add.js"></script>
+				<script type="text/javascript" charset="utf-8">
+					mui.init();
+					/*var w = window.innerWidth
+					var h = window.innerHeight;
+					document.querySelector("body").style.height = h + "px"
+					document.querySelector(".mui-slider-group").style.height = h - 45 - 45 + "px"
+					var current = "salesStatistics_Detail.html";
+					mui.plusReady(function() {
+						mui('header').on('tap', '#icon-right', function() {
+							news.gotoFilter(current)
+						})
+						mui('header').on('tap', '#icon-left', function() {
+							news.back(current)
+						})
+
+					})
+					/*获取到选中的客户对象*/
+					function getclientId(data) {
+						/*获取到JSON格式字符串反序列化*/
+						var obj = eval(data);
+						document.querySelector("#client_name").innerHTML = obj.name
+						document.querySelector("#item1mobile .mui-table-view li:nth-child(2)").setAttribute("data-id", obj.id)
+						document.querySelector("#item1mobile .mui-table-view li:nth-child(2)").setAttribute("data-pid", obj.pid)
+					}
+				</script>
+	</body>
+
+</html>

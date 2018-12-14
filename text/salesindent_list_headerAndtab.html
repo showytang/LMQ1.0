@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>销售订单列表</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-bar-nav~.mui-content {
+			padding-top: 70px;
+		}
+		/*设置固定高度*/
+		
+		.hei {
+			height: 110px;
+		}
+	</style>
+
+	<body>
+		<header class="hei mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">销售订单列表</h1>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right"></a>
+			<div class="mui-input-row mui-search">
+				<input v-model="filtrate" type="search" class="mui-input-clear" placeholder="请输入单据号/客户/品名规格/备注">
+			</div>
+			<div>
+				<span id="startTime">
+					
+				</span><span> | </span><span id="endTime">
+					
+				</span>
+			</div>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			合计:<span id="sumMoney"></span>
+		</nav>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/lodash.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var v = new Vue({
+				el: ".mui-input-row",
+				data: {
+					filtrate: null,
+					sumMoney:null
+				},
+				watch: {
+					filtrate: function() {
+						//console.log(this.filtrate);
+						this.getAnswer();
+					}
+				},
+				methods: {
+					getAnswer: _.debounce(
+						function() {
+							callajax(null, null, this.filtrate)
+						},
+						// 这是我们为用户停止输入等待的毫秒数
+						500
+					)
+				}
+			});
+
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.init({
+				subpages: [{
+					url: 'salesindent_list.html',
+					id: 'salesindent_list.html',
+					styles: {
+						top: "110px",
+						bottom: "50px"
+					},
+					extras: {
+						startTime: eval("getMonthStartDate()"),
+						endTime: eval("getMonthEndDate()"),
+						filtrate: null
+					}
+				}]
+			})
+			mui.ready(function() {
+				mui('body').on('tap', '.mui-content', function() {
+					document.activeElement.blur();
+				});
+				document.querySelector("#startTime").innerHTML = eval("getMonthStartDate()");
+				document.querySelector("#endTime").innerHTML = eval("getMonthEndDate()");
+			})
+			mui.plusReady(function() {
+				//
+				var self = plus.webview.currentWebview();
+				console.log(self.ourl);
+
+				//触摸返回图标时，将webview隐藏
+				mui.back = function() {
+					//plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).show();
+					plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-right");
+				};
+				mui('body').on('tap', '#menu', function() {
+					document.activeElement.blur();
+					// 弹出系统选择按钮框
+					plus.nativeUI.actionSheet({
+						title: "选项",
+						cancel: "取消",
+						buttons: [{
+							title: "筛选"
+						}, {
+							title: "新增"
+						}]
+					}, function(e) {
+						if(e.index == 1) {
+							//判断筛选窗体是否存在
+							var vw = plus.webview.getWebviewById("salesindent_filtrate");
+							if(vw) {
+								vw.show("slide-in-right");
+								return;
+							}
+							//显示新的筛选窗体
+							plus.webview.create("filtrate.html", "salesindent_filtrate", {}, {}).show("slide-in-right");
+						}
+						if(e.index == 2) {
+							//每次都将重新创建一个新的webview
+							plus.webview.create("salesindent_add_1.html", "salesindent_add_1.html", {}, {}).show("slide-in-right");
+						}
+					});
+				})
+
+			});
+			//隐藏键盘
+			function hidejp() {
+				document.activeElement.blur();
+			}
+			//筛选页面调用此方法，获得筛选条件
+			function getFiltrate(start, end) {
+				//先赋值
+				document.querySelector("#startTime").innerHTML = start;
+				document.querySelector("#endTime").innerHTML = end;
+				//将input复位
+				emptyInput();
+				//调用子窗体的ajax
+				callajax(start, end, );
+			}
+			//一个调用子窗体的ajax的方法
+			function callajax(start, end, f) {
+				plus.webview.getWebviewById("salesindent_list.html").evalJS("ajaxList('" + document.querySelector("#startTime").innerHTML + "','" + document.querySelector("#endTime").innerHTML + "','" + f + "')");
+
+			}
+			//清空输入框
+			function emptyInput() {
+				document.querySelector('[type="search"]').value = '';
+				document.querySelector('[type="search"]').focus();
+				document.querySelector('[type="search"]').blur();
+			}
+			//被调用赋值合计
+			function setSumMoney(money){
+				document.querySelector("#sumMoney").innerHTML=money;
+			}
+		</script>
+		<script type="text/javascript">
+			(function($) {
+			
+				//触摸编辑
+				$('#OA_task').on('tap', '.mui-btn-blue', function(event) {
+					$.swipeoutClose(this.parentNode.parentNode);
+					plus.webview.create("salesindent_update.html", "salesindent_update.html", {}, {}).show("slide-in-right");
+
+				});
+			})(mui);
+		</script>
+	</body>
+
+</html>

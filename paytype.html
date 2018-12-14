@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">结算账号</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card" v-for="pay in pList">
+				<ul class="mui-table-view">
+					<li v-bind:pid="pay.id" class="mui-table-view-cell">{{pay.name}}</li>
+				</ul>
+			</div>
+		</div>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var v  = new Vue({
+							el: ".mui-content",
+							data: {
+								pList: null
+							}
+						});
+			var oldVw = null;
+			var pid = null;
+			var pname = null;
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.ready(function() {
+				mui.ajax(n.url + "/paytype/queryAll", {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(list) {
+						v.pList=list;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			});
+			mui.plusReady(function() {
+				var c = plus.webview.currentWebview();
+				if(c.oldId) {
+					oldVw = plus.webview.getWebviewById(c.oldId);
+				}
+				console.log("初始化获得" + c.oldId);
+				//触摸类型是 传值 隐藏窗体
+				mui('body').on('tap', '.mui-table-view-cell', function() {
+					pid = this.getAttribute("pid");
+					pname = this.innerHTML;
+					console.log(pname)
+					oldVw.evalJS("getPay(" + pid + ",'" + pname + "')");
+					plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-right");
+				});
+			});
+
+			function getOldId(id) {
+				console.log("方法获得" + id);
+				oldVw = plus.webview.getWebviewById(id);
+			}
+		</script>
+	</body>
+
+</html>

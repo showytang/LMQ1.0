@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">修改规格</h1>
+			<span class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="addBtn"></span>
+		</header>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			/*mui.init({//子页面
+				subpages: [{
+					url: 'goodsAddStandard.html',
+					id: 'goodsAddStandard.html',
+					styles: {
+						top: document.querySelector("#header").offsetHeight,
+						bottom: "0px",
+					},
+					extras: {
+						
+					}
+				}]
+			});*/
+			mui.plusReady(function() {
+				var view = plus.webview.create("goodsEditStandard.html", "goodsEditStandard.html", {
+					top: document.querySelector("#header").offsetHeight
+				}, {
+					/*'tid': plus.webview.currentWebview().tId,
+				"price": plus.webview.currentWebview().price,
+				"basePrice": plus.webview.currentWebview().basePrice,
+				"count": plus.webview.currentWebview().count*/
+				});
+				view.show("none");
+				mui('body').on('tap','#addBtn',function(){
+				  var webview = plus.webview.getWebviewById("goodsEditStandard.html");
+				 if(webview !=null){
+				 	webview.evalJS("addBtn()");
+				 }
+				})
+			})
+			//返回重写
+			mui.ready(function() {
+				mui.back = function() {
+					//子页面销毁
+					var webview = plus.webview.getWebviewById("goodsEditStandard.html");
+					if(webview != null) {
+						webview.close();
+					}
+					var webview = plus.webview.currentWebview();
+					if(webview != null) {
+						webview.close("slide-out-right");
+					}
+				}
+			})
+
+			function Init() {
+				var Para = {};
+				Para.gInList = plus.webview.currentWebview().gInList;
+				Para.tId = plus.webview.currentWebview().tid;
+				Para.gId = plus.webview.currentWebview().gId;
+				Para.price = plus.webview.currentWebview().price;
+				Para.basePrice = plus.webview.currentWebview().basePrice;
+				Para.count = plus.webview.currentWebview().count;
+				console.log(JSON.stringify(Para));
+				var webview = plus.webview.getWebviewById("goodsEditStandard.html");
+				webview.evalJS("initStandardSec(" + JSON.stringify(Para) + ")");
+			}
+			
+		</script>
+	</body>
+
+</html>

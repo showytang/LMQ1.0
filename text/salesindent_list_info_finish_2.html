@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>已完成页面</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-checkbox.mui-left input[type=checkbox],
+		.mui-radio.mui-left input[type=radio] {
+			left: 0px;
+		}
+		
+		.mui-table-view-cell.mui-active {
+			background-color: white;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input type="text" disabled="disabled" v-bind:value="Salesindent.salesindentnub"/>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>日期</label>
+							<input type="date" disabled="disabled" v-bind:value="stime" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="text" disabled="disabled" v-bind:value="Salesindent.cname"/>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-1 mui-checkbox mui-left">
+							<input name="ckAll" type="checkbox" checked>
+						</div>
+						<div class="mui-col-xs-7 mui-row">
+							货品
+						</div>
+						<div class="mui-col-xs-4">
+							0.00
+						</div>
+					</li>
+					<ul id="OA_task" class="mui-table-view">
+
+						<li class="mui-table-view-cell mui-row" v-for="s in Salesindent.salesindentdetails">
+							<div class="mui-col-xs-1 mui-checkbox mui-left">
+								<input name="checkbox" type="checkbox" checked>
+							</div>
+							<div class="mui-col-xs-7 mui-row">
+
+								<div class="mui-col-xs-3">
+									<img src="" width="50px" height="50px" />
+								</div>
+								<div class="mui-col-xs-6" style="font-size: 0.9em;">
+									<div class="">
+										{{s.gname}}
+									</div>
+									<div class="">
+										{{s.takeinmoney}}
+									</div>
+									<div class="">
+										0.00
+									</div>
+								</div>
+							</div>
+							<div class="mui-col-xs-4">
+								<div class="mui-numbox" data-numbox-min='0'>
+									<!-- "-"按钮，点击可减小当前数值 -->
+									<button class="mui-btn mui-numbox-btn-minus" type="button">-</button>
+									<input class="mui-numbox-input" type="number" value="0" />
+									<!-- "+"按钮，点击可增大当前数值 -->
+									<button class="mui-btn mui-numbox-btn-plus" type="button">+</button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>定金</label>
+								<input type="number" v-bind:value="Salesindent.deposi" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="payType">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="hidden" name="pid" v-bind:value="Salesindent.pid" />
+								<input name="pname" type="text" disabled="disabled" v-bind:value="Salesindent.pname" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" v-bind:value="Salesindent.remark" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.plusReady(function() {
+				//触摸货品后的复选框影响 其他所有的复选框
+				mui('body').on('tap', '[name="ckAll"]', function() {
+					//获取ckAll的状态
+					var ck = !this.checked;
+					mui.each(document.querySelectorAll('[name="checkbox"]'), function(index, element) {
+						//依次改变
+						element.checked = ck;
+					});
+				});
+				//触摸列表的复选框影响货品的金额的统计
+				mui('body').on('tap', '[name="checkbox"]', function() {
+					if(!this.checked) {
+						//触摸之后复选框选中
+						console.log(1);
+					} else {
+						//触摸之后复选框未被选中
+						console.log(2);
+						document.querySelector('[name="ckAll"]').checked = false;
+					}
+				});
+			
+				queryById(plus.webview.currentWebview().pid);
+			});
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					Salesindent: null,
+					stime: null
+				}
+			});
+			//通过ajax查询出信息并赋值vue对象
+			function queryById(id) {
+				
+				mui.ajax(n.url + "/si/queryById", {
+					data: {
+						id: id
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						v.Salesindent = data;
+						v.stime = (data.time).substring(0, 10);
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

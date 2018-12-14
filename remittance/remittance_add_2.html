@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增销售单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+	</style>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>单据号</label>
+								<input name="user2" type="text" readonly="readonly" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>日期</label>
+								<input type="date" value="" name="user1" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell" id="supper">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>供应商</label>
+								<input type="hidden" disabled="disabled" v-model="supid" name="supid" />
+								<input type="text" readonly="readonly" v-model="supname" value=""/>
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>应付款</label>
+								<input type="number" readonly="readonly" v-model="balance" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" id="payType">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="hidden" name="user3" />
+								<input name="pname" type="text" readonly="readonly" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>收款金额</label>
+								<input name="money" type="number" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input name="user4" type="text" value="" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div id="hide" style="height: 80px;">
+
+			</div>
+		</div>
+<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var loginUser = login.getLogin();
+			var uid = loginUser.id;
+			var sid = loginUser.store.id;
+			var now = new Date();
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					supid:null,
+					supname:null,
+					balance: 0.00
+				}
+			});
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.ready(function() {
+				//赋值订单号
+				setSalesIndentNub(uid);
+				//默认日期为当前日期
+				document.querySelector("[name='user1']").value = eval("formatNowDate()");
+				console.log(eval("formatNowDate()"));
+			});
+			mui.plusReady(function() {
+				//触摸结算账户
+				mui('body').on('tap', '#payType', function() {
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById("paytype.html");
+					var oldid = plus.webview.currentWebview().id;
+					console.log("当前页面id" + oldid);
+					if(vw) {
+						vw.show("slide-in-right");
+						console.log("已经创建过了页面开始传值" + oldid)
+						vw.evalJS("getOldId('" + oldid + "')");
+						return;
+					}
+					console.log("未创建过了页面开始传值" + oldid)
+					vw = plus.webview.create("../paytype.html", "paytype.html", {}, {
+						oldId: oldid
+					});
+					vw.show("slide-in-right");
+				});
+				mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
+					console.log(n.getParam(".mui-content"));
+					addAjax();
+				});
+				
+				//触摸客户
+				mui('body').on('tap', '#supper', function() {
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById("supper.html");
+					vw = plus.webview.create("supper.html", "supper.html", {}, {});
+					vw.show("slide-in-right");
+				});
+			});
+			//获得结算账户
+			function getPay(pid, pname) {
+				console.log("传值成功:" + pid + "," + pname);
+				var id = document.querySelector("[name='user3']");
+				id.value = pid;
+				var name = document.querySelector("[name='pname']");
+				name.value = pname;
+			};
+			function getSupperObj(data){
+				console.log(JSON.stringify(data));
+				v.supid=data.id;
+				v.supname=data.name;
+				v.balance=data.balance;
+			}
+			//提交数据
+			function addAjax() {
+				var json = n.getParam(".mui-content");
+				json.sid = sid;
+				json.uid=uid;
+				console.log(JSON.stringify(json));
+				var money = json.money;
+				if(json.user3 != "") {
+					if(money != "") {
+						if(money != 0) {
+							mui.ajax(n.url + "/Remittance/add", {
+								data: JSON.stringify(json),
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								contentType: "application/json",
+								success: function(data) {
+									plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close("slide-out-right");
+									var vw = plus.webview.getWebviewById("remittance/remittance_list_headerAndtab.html");
+									if(vw) {
+										vw.show("slide-in-right");
+										vw.evalJS("F5()")
+										return;
+									}
+									vw = plus.webview.create("remittance_list_headerAndtab.html", "remittance/remittance_list_headerAndtab.html", {}, {});
+									vw.show("slide-in-right");
+								},
+								error: function(xhr, type, errorThrown) {}
+							});
+						} else {
+							mui.toast('收款金额不能为0', {
+								duration: 'short',
+								type: 'div'
+							});
+						}
+					} else {
+						mui.toast('请输入收款金额', {
+							duration: 'short',
+							type: 'div'
+						});
+					}
+				} else {
+					mui.toast('请选择结算账户', {
+						duration: 'short',
+						type: 'div'
+					});
+				}
+				/*mui.ajax(n.url + "/Remittance/add", {
+					data: JSON.stringify(json),
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					contentType: "application/json",
+					success: function(data) {
+						var vw = plus.webview.getWebviewById("remittance/remittance_list_headerAndtab.html");
+						if(vw) {
+							vw.show("slide-in-right");
+							vw.evalJS("F5()")
+							return;
+						}
+						vw = plus.webview.create("remittance_list_headerAndtab.html", "remittance/remittance_list_headerAndtab.html", {}, {});
+						vw.show("slide-in-right");
+					},
+					error: function(xhr, type, errorThrown) {}
+				});*/
+			};
+
+			//通过数据库生产单据号
+			function setSalesIndentNub() {
+				console.log(uid)
+				mui.ajax(n.url + "/Remittance/getTimeNum", {
+					data: {
+						uid: uid
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						console.log(data)
+						if(data == "404") {
+
+							var myyear = now.getFullYear();
+							var mymonth = now.getMonth() + 1;
+							var myweekday = now.getDate();
+
+							if(mymonth < 10) {
+								mymonth = "0" + mymonth;
+							}
+							if(myweekday < 10) {
+								myweekday = "0" + myweekday;
+							}
+
+							document.querySelector("[name='user2']").value = "FKD" + uid + myyear + mymonth + myweekday + "0001";
+							return;
+						};
+						var xsd = "FKD" + uid + data;
+						document.querySelector("[name='user2']").value = xsd;
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>添加类型（选择上一级类目）</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			/*.standardTitle {
+				color: #000000;
+				font-weight: bold;
+				font-size: 0.8em;
+			}
+			
+			.bgGraw {
+				background-color: #DDDDDD;
+				font-weight: bold;
+			}
+			
+			.simStandard {
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}
+			.simStandardValue{
+				border: 1px solid #D4D4D4;
+				font-size: 0.8em;
+				text-align: center;
+				margin: 1em 0;
+			}*/
+			.stypeFather {
+				border: 1px solid #d4d4d4;
+				background-color: #FFFFFF;
+			}
+			
+			.stypeSon {
+				border: 1px solid #d4d4d4;
+				background-color: #FFFFFF;
+			}
+			
+			.stypeName {
+				margin-left: 1em;
+				line-height: 2.5em;
+			}
+			
+			.arrowBtn {
+				font-size: 1em;
+				float: right;
+				line-height: 2.5em;
+				margin-right: 1em;
+				padding: 0px 1em;
+			}
+			
+			.selected {
+				background-color: #eee;
+			}
+			
+			#addStypeBtn {
+				float: right;
+			}
+			
+			.stypeSec {}
+			
+			
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<span class="mui-icon mui-icon-plus" id="addStypeBtn"></span>
+			<h1 class="mui-title">货物类目</h1>
+		</header>-->
+		
+		<div class="mui-content">
+			<!--类别-->
+			<div id="stypeSec"></div>
+			
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui.ready(function() {
+				//初始化
+				mui.ajax(n.url + '/goods/queryGoodstypeByParentId', {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//console.log(data);
+						showNode(data, document.querySelector("#stypeSec"), 0);
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+
+				//展开事件
+				mui('body').on('tap', '.arrowBtn', function(e) {
+					if(this.classList.contains("mui-icon-arrowdown")) {
+						/*图片样式改变 */
+						this.classList.remove("mui-icon-arrowdown");
+						this.classList.add("mui-icon-arrowup");
+						this.parentElement.classList.add("selected");
+						/*展开*/
+						mui(this.parentElement.parentElement.children).each(function(index, element) {
+							if(element.classList.contains("stypeSec")) {
+								//显示
+								element.style.display = "block";
+							}
+						})
+					} else {
+						/*图片样式改变 */
+						this.classList.add("mui-icon-arrowdown");
+						this.classList.remove("mui-icon-arrowup");
+						this.parentElement.classList.remove("selected");
+						/*收起*/
+						mui(this.parentElement.parentElement.children).each(function(index, element) {
+							if(element.classList.contains("stypeSon") || element.classList.contains("stypeSec")) {
+								//显示
+								element.style.display = "none";
+							}
+						})
+					}
+					e.stopPropagation();
+				})
+				//选中类目触摸事件
+				mui('body').on('tap', '.stypeSec', function(e) {
+					var webview = plus.webview.getWebviewById("goodsAddStype.html");
+					if(!webview)
+						return ;
+					var typeName = this.children[0].innerText;
+					var typeId = this.getAttribute("data-tId");
+					console.log(typeId);
+					e.stopPropagation();
+					var type = {};
+					type.typeName = typeName;
+					type.typeId = typeId;
+					var typeJson = JSON.stringify(type);
+					webview.evalJS("setGoodsType('" + typeJson + "')");
+					//关闭当前窗体
+			   	    var webview = plus.webview.getWebviewById("goodsSelectStype_h.html");
+			   	    if(webview != null){
+			   	    	webview.close();
+			   	    }
+			   	    var webview = plus.webview.currentWebview();
+			   	    if(webview != null){
+			   	    	webview.close("slide-out-right");
+			   	    }
+					
+				})
+			})
+			//初始化
+			//层次
+			function showNode(types, FatherNode, garde) {
+				garde++;
+				if(types == null)
+					return;
+				for(var i = 0; i < types.length; ++i) {
+					var type = types[i];
+					var node = document.createElement("div");
+					node.className = "stypeSec";
+					node.setAttribute("data-tId", types[i].id);
+					//console.log(type.gtList.length);
+					var div = document.createElement("div");
+					//node.setAttribute("data-id",type.id);
+					var span = document.createElement("span");
+					span.className = "stypeName";
+					span.innerText = type.name;
+					//如果还有下一层stypeFather，无stypeSon
+					if(type.gtList.length != 0) {
+						div.className = 'stypeFather';
+						var span1 = document.createElement("span");
+						span1.className = "arrowBtn mui-icon mui-icon-arrowdown";
+						div.appendChild(span);
+						div.appendChild(span1);
+					} else {
+						div.className = 'stypeSon';
+						div.appendChild(span);
+					}
+					node.appendChild(div);
+					FatherNode.appendChild(node);
+					if(type.parentid == 0) {
+						node.style.display = "block";
+						node.style.textIndent = 0 + "em";
+					} else {
+						node.style.display = "none";
+						node.style.textIndent = garde + "em";
+					}
+					//子类
+					showNode(type.gtList, node, garde);
+				}
+			}
+		</script>
+	</body>
+
+</html>

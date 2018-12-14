@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>货物单位</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.bitSec {
+				display: block;
+				text-align: center;
+			}
+			
+			#addBitBtn {
+				float: right;
+			}
+			
+			.mui-table-view-cell:after {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 15px;
+				height: 1px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<span class="mui-icon mui-icon-plus" id="addBitBtn"></span>
+			<h1 class="mui-title">货物单位</h1>
+		</header>-->
+		<div class="mui-content">
+			<!--单位-->
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" style="border-bottom: 1px #D4D4D4 solid;" v-for="(l,index) in list">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-grey">编辑</a>
+						<a class="mui-btn mui-btn-yellow">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="bitSec mui-table-cell" v-bind:data-id="l.id">
+							{{l.name}}
+						</div>
+					</div>
+				</li>
+				<!--<li class="mui-table-view-cell" style="border-bottom: 1px #D4D4D4 solid;">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-grey">编辑</a>
+						<a class="mui-btn mui-btn-yellow">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="bitSec mui-table-cell">
+							台
+						</div>
+					</div>
+				</li>-->
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			var vue = new Vue({
+				el: ".mui-content",
+				data: {
+					list: null
+				}
+			});
+			mui.ready(function() {
+				getData();
+				mui('body').on('tap', '#addBitBtn', function() {
+					var webview = plus.webview.create("goodsAddBit_h.html", "goodsAddBit_h.html", {}, {});
+					webview.show("slide-in-right");
+				})
+				//单位选中传值
+				mui('body').on('tap','.bitSec',function(){
+				  var webview = plus.webview.getWebviewById("goodsEdit.html");
+				  if(!webview)
+				    webview = plus.webview.getWebviewById("goodsAdd.html");
+				  var bitName = this.innerText;
+				  var bitId = this.getAttribute("data-id");
+				  var bit = {};
+				  bit.bitName = bitName;
+				  bit.bitId = bitId;
+				  var bitJson = JSON.stringify(bit);
+				  webview.evalJS("setBit("+bitJson+")");
+				  //关闭当前窗体
+			   	    var webview = plus.webview.getWebviewById("goodsBit_h.html");
+			   	    if(webview != null){
+			   	    	webview.close();
+			   	    }
+			   	    var webview = plus.webview.currentWebview();
+			   	    if(webview != null){
+			   	    	webview.close("slide-out-right");
+			   	    }
+				}) 
+			})
+			function getData(){
+				//初始化数据
+				mui.ajax(n.url + "/goods/queryBitBySid", {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data != null) {
+							vue.list = data;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

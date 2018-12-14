@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>选择货物</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				/*border: 1px solid #000000;*/
+			}
+			
+			#addGoodBtn {
+				float: right;
+			}
+			
+			.simImg {
+				/*max-width: 60px;*/
+				margin-right: 8px;
+				width: 4.5em;
+				height: 4.5em;
+			}
+			
+			.goodsTitle {
+				font-size: 0.85em;
+				word-break: normal;
+				width: 100%;
+				white-space: pre-wrap;
+				/*word-wrap : break-word ;*/
+				overflow: hidden;
+				line-height: 1.2em;
+				margin-bottom: 2px;
+			}
+			
+			.goodsPrice {
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
+			
+			.goodsNum {
+				font-size: 0.7em;
+				line-height: 1.2em;
+				color: red;
+			}
+			
+			.hei {
+				height: 90px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header id="header" class="mui-bar mui-bar-nav">
+			<span class="mui-icon mui-icon-plus mui-pull-right" id="addBtn"></span>
+			<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入用户名称">
+		</header>-->
+
+		<header id="header" class="hei mui-bar mui-bar-nav">
+			<h1 class="mui-title">选择货物(默认价格)</h1>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<div class="mui-input-row mui-search">
+				<input v-model="gName" type="search" class="mui-input-clear" id="searchBtn" placeholder="请输入单品名称">
+			</div>
+		</header>
+		<div class="mui-content">
+
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			var sId = 1;//默认门店id
+			mui.init({
+				subpages: [{
+					url: 'goodsInstanceSelectDef.html',
+					id: 'goodsInstanceSelectDef.html',
+					styles: {
+						top: document.querySelector("#header").offsetHeight,
+						bottom: "0px",
+					},
+					extras: {
+						sId : 1
+					}
+				}]
+			});
+			
+			var vue = new Vue({
+				el: "#header",
+				data: {
+					gName: ""
+				},
+				watch: {
+					gName: function() {
+						var webview = plus.webview.getWebviewById("goodsInstanceSelectDef.html");
+						if(webview) {
+							webview.evalJS("getData('"+this.gName + "')");
+						}
+					}
+				}
+			})
+			
+		</script>
+	</body>
+
+</html>

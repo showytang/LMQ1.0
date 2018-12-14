@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新增销售单</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新增销售单</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-card" style="margin-top:2px ;">
+
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+						<div class="mui-input-row ">
+							<label>日期</label>
+							<input type="date" value="2013-09-05" />
+						</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-row">
+						<div class="mui-col-xs-3">
+							货品
+						</div>
+						<div class="mui-col-xs-6">
+							2
+						</div>
+						<div class="mui-col-xs-3">
+							2000000.00
+						</div>
+					</li>
+					<ul id="OA_task_1" class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-red">删除</a>
+							</div>
+							<div class="mui-slider-handle mui-row">
+								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-10">
+									<div class="mui-row">
+										<div class="mui-col-xs-6">Item 1</div>
+										<div style="text-align: right;" class="mui-col-xs-6">Item 2</div>
+									</div>
+									<div class="mui-row">
+										<div class="mui-col-xs-6">Item 3</div>
+										<div style="text-align: right;" class="mui-col-xs-6">Item 4</div>
+									</div>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<li class="mui-table-view mui-row">
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em; " class="mui-icon mui-icon-camera"></span>
+						</div>
+						<div style="text-align: center;" class="mui-col-xs-6 mui-table-view-cell">
+							<span style="font-size: 7em;" class="mui-icon mui-icon-plusempty"></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>营业员</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<div class="mui-input-row ">
+								<label>结算账户</label>
+								<input type="text" disabled="disabled" value="" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>快递单号</label>
+								<input type="text" value="" placeholder="请手动输入货扫描" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>快递公司</label>
+								<input type="text" value="" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>备注</label>
+								<input type="text" value="" />
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="" style="height: 90px;">
+				
+			</div>
+		</div>
+		
+		<nav class="mui-bar mui-bar-tab mui-row">
+			<div class="mui-col-xs-9">
+				<div class="mui-input-row">
+       			 <label>用户名</label>
+		    <input type="text" class="mui-input-clear" placeholder="请输入用户名">
+		    </div>
+		    <div class="mui-input-row">
+		        <label>用户名</label>
+		    <input type="text" class="mui-input-clear" placeholder="请输入用户名">
+		    </div>
+			</div>
+			<div class="../mui-col-xs-3">111</div>
+		</nav>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能 
+			});
+			mui.ready(function() {
+				mui.back = function() {
+
+					var btnArray = ['取消', '确认'];
+					//首次按键，提示‘再按一次退出应用’
+					mui.confirm('销售订单内容已改，是否放弃编辑', '', btnArray, function(e) {
+						if(e.index == 0) {
+							return;
+						} else {
+							plus.webview.currentWebview().close("slide-out-right");
+						}
+					});
+				};
+
+			});
+			mui.plusReady(function() {
+				
+			})
+			
+		</script>
+	</body>
+
+</html>

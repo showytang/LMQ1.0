@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>根据客户选择价格</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+				/*border: 1px solid #000000;*/
+			}
+			
+			#addGoodBtn {
+				float: right;
+			}
+			
+			.goodsPrice {
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
+			
+			.goodsNum {
+				font-size: 0.7em;
+				line-height: 1.2em;
+				color: red;
+			}
+			
+			.simImg {
+				/*max-width: 60px;*/
+				margin-right: 8px;
+				width: 4.5em;
+				height: 4.5em;
+			}
+			
+			.goodsTitle {
+				font-size: 0.85em;
+				word-break: normal;
+				width: 100%;
+				white-space: pre-wrap;
+				/*word-wrap : break-word ;*/
+				overflow: hidden;
+				line-height: 1.2em;
+				margin-bottom: 2px;
+			}
+			
+			.userName {
+				color: #0062CC;
+			}
+			
+			.mui-bar-nav~.mui-content {
+				padding-top: 45px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">客户报价</h1>
+			<span class="mui-icon mui-icon-plus mui-pull-right" id="addBtn"></span>
+			<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入用户名称">
+		</header>-->
+		<input value="" type="hidden" v-model="gName" />
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="mui-content">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media" v-for="(gIn,index) in list">
+							<a href="javascript:;" v-bind:goodsInstanceId="gIn.goodsInstanceId" class="mui-row simGoodsInstance">
+								<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+gIn.url">
+								<div class="mui-col-xs-9 mui-row">
+									<span class="mui-col-xs-12 goodsTitle">{{gIn.goodsName}}{{gIn.standardName}}</span>
+									<span class="mui-col-xs-6 goodsPrice">{{gIn.priceName}}：￥{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
+									<!--<span class="mui-col-xs-12 goodsNum">9台</span>-->
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/news.js"></script>
+		<script src="../js/vue.js"></script>
+		<script src="../js/openModel.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					auto: true,
+					down: {
+						contentrefresh: '正在加载...',
+						callback: pulldownRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				getData("");
+			}
+			//vue
+			var vue = new Vue({
+				el: ".mui-content",
+				data: {
+					list: "",
+					gName:"",
+					url: n.url+"/"
+				},
+				watch: { //搜索
+					gName: function() {
+						getData(this.gName);
+					}
+				}
+			});
+			var sId;
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				self.sId = sId;
+				//alert(sId);
+				getData("");
+				mui('body').on('tap','.simGoodsInstance',function(){
+					//参数
+					var goodsInstanceId = this.getAttribute("goodsInstanceId");
+					var goodsInstance;
+					for(var i = 0;i<vue.list.length;i++){
+						if(vue.list[i].goodsInstanceId == goodsInstanceId){
+							goodsInstance = vue.list[i];
+							break;
+						}
+					}
+				  	var webview = plus.webview.getWebviewById("goodsInstancePriceNoRateDef_h.html");
+				  	
+				    if(!webview){
+				    	webview = plus.webview.create("goodsInstancePriceNoRateDef_h.html","goodsInstancePriceNoRateDef_h.html",{top:0},{
+				    		"goodsInstance":JSON.stringify(goodsInstance)
+				    		}
+				    	);
+				    }
+				    webview.show("slide-in-right");
+			}) 
+				
+			})
+
+			
+			
+			//数据初始化
+			function getData(gName) {
+				mui.ajax(n.url + '/goods/queryGoodsInstanceVoAboutDefPriceList', {
+					data: {
+						sId:1
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//为空判断
+						if(data != null) {
+							//console.log("啊啊啊啊"+JSON.stringify(data));
+							vue.list = data;
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,94 @@
+.monye_input div{
+	display: inline;
+}
+.monye_input span{
+	padding: 0px;
+	margin: 0px;
+}
+.monye_input div:nth-child(1){
+	margin-left: 10px;
+						
+}
+.monye_input input[type=text]:nth-child(1){
+	margin: 2px;
+	width: 30%;
+	height:30px;
+	font-size:10px ;
+}
+.monye_input input[type=text]:nth-child(2){
+	margin: 2px;
+	width: 60%;
+	font-size:10px ;
+}
+.monye_input button{
+	width: 5px;
+}
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+.mui-bar {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background-color: #1E7DFA;
+}
+.mui-control-content {
+	background-color: white;
+	min-height: 600px;
+				
+}
+.mui-control-content .mui-loading {
+	margin-top: 50px;
+}
+.mui-scroll{
+	height: 100%;
+}
+.mui-indexed-list{
+	height: 100%;
+}
+.mui-table-view li span{
+	color: darkblue;
+}
+/*单位往来数据导航栏*/
+.danwei_data{
+	display: none;
+	border: 1px solid beige;
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+}
+.huoping_data{
+	display: none;
+	border: 1px solid beige;
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+}
+.monye_span{
+	float: right;
+}
+/*头部加号*/
+header a{
+	float: right;
+	color: #000000;
+}	
+hr{
+	margin: 0px;
+	size: 1px;
+}
+.nullbox{
+	border-top: 1px solid #E7E8E9;
+	height: 90px;
+}
+li{
+	list-style: none;
+}
+
+.data_content li a{
+	width: 370px;
+}
+[href="#supplier"] p span{
+	color: #C7C7CC;
+}
+

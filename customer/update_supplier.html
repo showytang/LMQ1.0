@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/add_client.css" />
+		<!--App自定义的css-->
+		<!--<link rel="stylesheet" type="text/css" href="css/app.css" />-->
+		<link href="../css/mui.picker.css" rel="stylesheet" />
+		<link href="../css/mui.poppicker.css" rel="stylesheet" />
+		<!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+		<style>
+			button {
+				margin-top: 20px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 8px;
+				margin: 3px;
+			}
+			
+			h5.mui-content-padded {
+				margin-left: 3px;
+				margin-top: 20px !important;
+			}
+			
+			h5.mui-content-padded:first-child {
+				margin-top: 12px !important;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑供应商</h1>
+			<a class="add"><span class="mui-icon mui-icon-checkmarkempty"></span></a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row">
+				<label>供应商名称</label>
+				<input type="text" v-bind:value="obj.name" name="name">
+				<input type="hidden" v-bind:value="obj.id" name="id">
+			</div>
+			<div class="mui-input-row">
+				<label>联系人</label>
+				<input type="text" v-bind:value="obj.contacts" name="contacts">
+			</div>
+			<div class="mui-input-row">
+				<label>联系电话</label>
+				<input type="text" v-bind:value="obj.phone" name="phone">
+			</div>
+			<div class="mui-input-row">
+				<label>经营地址</label>
+				<input type="button" class="mui-btn mui-btn-block" id='showCityPicker3'>
+				<p name="bigAddres" style="height: 100%;margin-top: 10px;">{{obj.province}} {{obj.city}} {{obj.district}}</p>
+			</div>
+			<div class="mui-input-row">
+				<label>详细地址</label>
+				<input type="text" name="addres" v-bind:value="obj.addres">
+			</div>
+			<div class="mui-input-row">
+				<label>应收款</label>
+				<input type="text" v-bind:value="obj.balance" name="balance">
+			</div>
+			<div class="mui-input-row">
+				<label>初始化收款</label>
+				<input type="text" readonly="true">
+			</div>
+			<div class="mui-input-row" style="background-color: white;">
+				<label>备注</label>
+				<input type="text" v-bind:value="obj.remark" name="remark">
+			</div>
+		</div>
+		<button type="button" class="mui-btn mui-btn-danger mui-btn-block">删除</button>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.js"></script>
+		<script src="../js/mui.poppicker.js"></script>
+		<script src="../js/city.data.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/news.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript">
+			(function($, doc) {
+				mui.init()
+				var v = null
+				mui.plusReady(function() {
+					var view = plus.webview.currentWebview();
+					var id = view.supplierid //客户ID
+					v = new Vue({
+						el: ".mui-content",
+						data: {
+							obj: null
+						}
+					})
+					mui.ajax(obj.url + '/Supplier/querySupplierById', {
+						data: {
+							id: id
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							v.obj = data;
+						},
+						error: function(xhr, type, errorThrown) {}
+					});
+					/*修改客户*/
+					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
+						var val = document.querySelector("[name=bigAddres]").innerHTML
+						var sel = document.querySelector(".mui-input-row select")
+						var province = val.substring(0, val.indexOf(" ")) //省
+						var city = val.substring(val.indexOf(" "), val.indexOf("市") + 1) //市
+						var county = val.substring(val.lastIndexOf(" "), val.length) //区
+						if(city == "") {
+							city = province
+						}
+						var param = obj.getParam(".mui-content")
+						//转换成对象格式
+						var p = {
+							province: province
+						}
+						var c = {
+							city: city
+						}
+						var q = {
+							district: county
+						}
+						var s = {
+							sid: 1
+						} //暂时死值
+						var t = Object.assign(p, c, q, s); //组合成JSON对象
+						//拼接JSON对象
+						for(var item in t) {
+							param[item] = t[item]
+						}
+						/*alert(JSON.stringify(param))*/
+						mui.ajax(obj.url + '/Supplier/updateSupplierById', {
+							data: param,
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								if(data > 0) {
+									mui.toast("修改成功!");
+									plus.webview.getWebviewById("show_supplier.html").close()
+									plus.webview.currentWebview().close();
+								}
+							},
+							error: function(xhr, type, errorThrown) {
+
+							}
+						});
+					})
+				})
+				/*三级联动*/
+				var _getParam = function(obj, param) {
+					return obj[param] || '';
+				};
+				var cityPicker3 = new $.PopPicker({
+					layer: 3
+				});
+				cityPicker3.setData(cityData3);
+				var showCityPickerButton = doc.getElementById('showCityPicker3');
+				var cityResult3 = document.querySelector("[name=bigAddres]");
+				mui('body').on('tap', "#showCityPicker3", function() {
+					cityPicker3.show(function(items) {
+						cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+					});
+				})
+			})(mui, document);
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>已完成页面</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		.mui-card {
+			margin-left: 0px;
+			margin-right: 0px;
+		}
+		
+		.mui-table-view-cell:after {
+			left: 0px;
+		}
+		
+		.mui-checkbox.mui-left input[type=checkbox],
+		.mui-radio.mui-left input[type=radio] {
+			left: 0px;
+		}
+		
+		.mui-table-view-cell.mui-active {
+			background-color: white;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">销售订单详情2</h1>
+		</header>
+
+		<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				subpages: [{
+					url: 'salesindent_list_info_finish_2.html',
+					id: 'salesindent_list_info_finish_2.html',
+					styles: {
+						top: "45px",
+						bottom: "0px"
+					},
+					extras: {
+						pid: plus.webview.currentWebview().pid
+					}
+				}],
+				swipeBack: true //启用右滑关闭功能
+			});
+		
+		</script>
+	</body>
+
+</html>
