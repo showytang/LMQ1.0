@@ -28,7 +28,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title" id="head_title">客管</h1>
-			<a class="add" data_client="add_client.html" data_supplier="add_supplier.html" data_cargo_client="customer/cargo_client_add.html"><span class="mui-icon mui-icon-plusempty"></span></a>
+			<a class="add" data_client="customer/add_client.html" data_supplier="customer/add_supplier.html" data_cargo_client="customer/cargo_client_add.html"><span class="mui-icon mui-icon-plusempty"></span></a>
 		</header>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider">
@@ -294,7 +294,7 @@
 														<span style="color: #C7C7CC;" v-for="(obj3,index) in obj2.sInList">{{obj3.name}}</span>
 													</p>
 
-													<p style="float: right;" >￥<span class="price">{{obj1.price}}</span></p>
+													<p style="float: right;">￥<span class="price">{{obj1.price}}</span></p>
 												</li>
 											</div>
 
@@ -380,6 +380,9 @@
 		<script src="js/openModel.js"></script>
 		<script type="text/javascript" src="js/news.js"></script>
 		<script type="text/javascript" src="js/vue.js"></script>
+		<script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			mui.init({
 				swipeBack: false
@@ -449,6 +452,10 @@
 			var v = null;
 			var v2 = null;
 			var v3 = null;
+
+			var loginUser = login.getLogin();
+			console.log(JSON.stringify(loginUser));
+			var sid = loginUser.store.id;
 			mui.ready(function() {
 				document.getElementById('slider').addEventListener('slide', function(e) {
 					var transform = document.querySelectorAll(".mui-control-item")
@@ -478,9 +485,9 @@
 				})
 
 				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname?sid=1', {
+				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
 					data: {
-
+						sid: sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
@@ -508,8 +515,9 @@
 					}
 				})
 				//查询供应商
-				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier?sid=1', {
+				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier', {
 					data: {
+						sid: sid
 
 					},
 					dataType: 'json', //服务器返回json格式数据
@@ -528,8 +536,9 @@
 						list: null
 					}
 				})
-				mui.ajax(obj.url + '/QuotedPrice/queryBySidAll?sid=1', {
+				mui.ajax(obj.url + '/QuotedPrice/queryBySidAll', {
 					data: {
+						sid: sid
 
 					},
 					dataType: 'json', //服务器返回json格式数据
@@ -546,7 +555,7 @@
 				//删除客户
 				mui('body').on('tap', '#delClient', function() {
 					var id = document.querySelector("#picture .show_clientInfo").getAttribute("data-id")
-					mui.ajax(obj.url+'/Customer/deleteByCid', {
+					mui.ajax(obj.url + '/Customer/deleteByCid', {
 						data: {
 							id: id
 						},
@@ -568,6 +577,14 @@
 						}
 					});
 				})
+				/*点击供应商为详情按钮id属性添加供应商ID*/
+				mui('body').on('tap', '.item2mobile .mui-indexed-list-item', function() {
+					var id = this.getAttribute("data-id")
+					var name = this.getAttribute("data-name")
+					/*var param=obj.getclient(id,name)	//供应商的ID和名字的JSON对象
+					alert(JSON.stringify(param))	*/
+					document.querySelector(".show_supplierInfo").setAttribute("data-id", id)
+				})
 
 			});
 			mui.plusReady(function() {
@@ -580,8 +597,8 @@
 					var qid = this.getAttribute("data-id")
 					plus.webview.create("customer/updateQuote.html", "updateQuote.html", {}, {
 						gname: gname,
-						monye:monye,
-						qid:qid
+						monye: monye,
+						qid: qid
 					}).show("none")
 				})
 			})

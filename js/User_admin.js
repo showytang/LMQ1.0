@@ -70,14 +70,7 @@ mui.ready(function() {
 		document.querySelector(".show_clientInfo").setAttribute("data-id", id)
 	})
 	
-	/*点击供应商为详情按钮id属性添加供应商ID*/
-	mui('body').on('tap', '.item2mobile .mui-indexed-list-item', function() {
-		var id = this.getAttribute("data-id")
-		var name=this.getAttribute("data-name")
-		/*var param=obj.getclient(id,name)	//供应商的ID和名字的JSON对象
-		alert(JSON.stringify(param))	*/	
-		document.querySelector(".show_supplierInfo").setAttribute("data-id", id)
-	})
+	
 })
 mui.plusReady(function() {
 	/*webview显示客户详情*/

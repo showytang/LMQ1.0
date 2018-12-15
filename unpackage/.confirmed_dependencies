@@ -16,7 +16,9 @@
 			"sales/sales_list_headerAndtab.html",
 			"customerrecharge/customerrecharge_list_headerAndtab.html",
 			"stock/stock_list_headerAndtab.html",
-			"sales/sales_add_1.html"
+			"sales/sales_add_1.html",
+			"stock/stock_add_1.html",
+			"remittance/remittance_add_1.html"
 		],
 		"resources": [
 			"css/mui.min.css",
@@ -25,7 +27,8 @@
 	},
 	"salesindent/salesindent_add_1.html": {
 		"resources": [
-			"salesindent/salesindent_add_2.html"
+			"salesindent/salesindent_add_2.html",
+			"css/mui.min.css"
 		],
 		"refer": [
 			"salesindent/salesindent_add_2.html"
@@ -72,7 +75,10 @@
 	},
 	"stock/stock_list_headerAndtab.html": {
 		"resources": [
-			"stock/stock_list.html"
+			"stock/stock_list.html",
+			"js/axios.min.js",
+			"css/mui.min.css",
+			"js/lodash.min.js"
 		],
 		"refer": [
 			"stock/stock_list.html"
@@ -82,7 +88,8 @@
 		"refer": [
 			"User_admin.html",
 			"a.html",
-			"goodsManage_h.html"
+			"goodsManage_h.html",
+			"setting.html"
 		],
 		"resources": [
 			"css/mui.min.css",
@@ -108,7 +115,8 @@
 	},
 	"sales/sales_add_1.html": {
 		"resources": [
-			"sales/sales_add_2.html"
+			"sales/sales_add_2.html",
+			"css/mui.min.css"
 		],
 		"refer": [
 			"sales/sales_add_2.html"
@@ -116,7 +124,10 @@
 	},
 	"salesindent/salesindent_add_2.html": {
 		"refer": [
-			"salesindent/client.html"
+			"salesindent/client.html",
+			"paytype.html",
+			"salesindent/goodsInstanceSelect_h.html",
+			"salesindent/barcode.html"
 		],
 		"resources": [
 			"css/mui.min.css"
@@ -163,7 +174,11 @@
 			"css/mui.min.css",
 			"css/mui.poppicker.css",
 			"css/mui.picker.css",
-			"css/add_client.css"
+			"css/add_client.css",
+			"js/mui.picker.js",
+			"js/mui.poppicker.js",
+			"js/city.data.js",
+			"js/city.data-3.js"
 		]
 	},
 	"customer/show_client.html": {
@@ -226,7 +241,8 @@
 		"refer": [
 			"customer/client_supplier.html",
 			"customer/show_client.html",
-			"customer/client.html"
+			"customer/client.html",
+			"customer/goodsInstanceCustomer_h.html"
 		]
 	},
 	"customer/client_supplier.html": {
@@ -240,6 +256,121 @@
 		"resources": [
 			"css/User_admin.css",
 			"css/mui.indexedlist.css",
+			"css/mui.min.css"
+		]
+	},
+	"salesindent/client.html": {
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.min.css",
+			"css/mui.indexedlist.css"
+		]
+	},
+	"stock/supper.html": {
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.indexedlist.css",
+			"css/mui.min.css"
+		]
+	},
+	"stock/stock_add_1.html": {
+		"resources": [
+			"css/mui.min.css",
+			"stock/stock_add_2.html"
+		],
+		"refer": [
+			"stock/stock_add_2.html"
+		]
+	},
+	"stock/stock_add_2.html": {
+		"refer": [
+			"stock/supper.html"
+		]
+	},
+	"stock/stock_list.html": {
+		"resources": [
+			"js/jquery.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"paytype.html": {
+		"resources": [
+			"js/jquery.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"salesindent/goodsInstanceSelect_h.html": {
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"sales/client.html": {
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.min.css",
+			"css/mui.indexedlist.css"
+		]
+	},
+	"sales/sales_add_2.html": {
+		"refer": [
+			"sales/client.html",
+			"paytype.html"
+		]
+	},
+	"remittance/remittance_add_1.html": {
+		"resources": [
+			"css/mui.min.css",
+			"remittance/remittance_add_2.html"
+		],
+		"refer": [
+			"remittance/remittance_add_2.html"
+		]
+	},
+	"customer/goodsInstanceCustomer_h.html": {
+		"resources": [
+			"customer/goodsInstanceCustomer.html",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"customer/goodsInstanceCustomer.html"
+		]
+	},
+	"customer/goodsInstanceCustomer.html": {
+		"resources": [
+			"css/mui.min.css"
+		],
+		"refer": [
+			"customer/goodsCustomerPrice_h.html"
+		]
+	},
+	"customer/goodsCustomerPrice_h.html": {
+		"resources": [
+			"css/mui.min.css",
+			"js/mui.js"
+		],
+		"refer": [
+			"customer/goodsCustomerPrice.html"
+		]
+	},
+	"customer/goodsCustomerPrice.html": {
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"setting.html": {
+		"resources": [
+			"css/feedback.css",
+			"css/mui.min.css",
+			"img/logo.png",
+			"js/feedback.js",
+			"js/mui.view.js"
+		],
+		"refer": [
+			"admin.html"
+		]
+	},
+	"admin.html": {
+		"resources": [
 			"css/mui.min.css"
 		]
 	}

@@ -142,13 +142,16 @@
 					"sales/sales_list_headerAndtab.html",
 					"customerrecharge/customerrecharge_list_headerAndtab.html",
 					"stock/stock_list_headerAndtab.html",
-					"sales/sales_add_1.html"
+					"sales/sales_add_1.html",
+					"stock/stock_add_1.html",
+					"remittance/remittance_add_1.html"
 				],
 				"priority": 0
 			},
 			"salesindent/salesindent_add_1.html": {
 				"resources": [
-					"salesindent/salesindent_add_2.html"
+					"salesindent/salesindent_add_2.html",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0
@@ -192,7 +195,10 @@
 			},
 			"stock/stock_list_headerAndtab.html": {
 				"resources": [
-					"stock/stock_list.html"
+					"stock/stock_list.html",
+					"js/axios.min.js",
+					"css/mui.min.css",
+					"js/lodash.min.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -213,7 +219,8 @@
 				"refer": [
 					"User_admin.html",
 					"a.html",
-					"goodsManage_h.html"
+					"goodsManage_h.html",
+					"setting.html"
 				],
 				"priority": 0
 			},
@@ -227,7 +234,8 @@
 			},
 			"sales/sales_add_1.html": {
 				"resources": [
-					"sales/sales_add_2.html"
+					"sales/sales_add_2.html",
+					"css/mui.min.css"
 				],
 				"refer": [],
 				"priority": 0
@@ -237,7 +245,10 @@
 					"css/mui.min.css"
 				],
 				"refer": [
-					"salesindent/client.html"
+					"salesindent/client.html",
+					"paytype.html",
+					"salesindent/goodsInstanceSelect_h.html",
+					"salesindent/barcode.html"
 				],
 				"priority": 0
 			},
@@ -286,7 +297,11 @@
 					"css/mui.min.css",
 					"css/mui.poppicker.css",
 					"css/mui.picker.css",
-					"css/add_client.css"
+					"css/add_client.css",
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"js/city.data.js",
+					"js/city.data-3.js"
 				],
 				"refer": [],
 				"priority": 0
@@ -359,7 +374,8 @@
 				"refer": [
 					"customer/client_supplier.html",
 					"customer/show_client.html",
-					"customer/client.html"
+					"customer/client.html",
+					"customer/goodsInstanceCustomer_h.html"
 				],
 				"priority": 0
 			},
@@ -380,6 +396,141 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"salesindent/client.html": {
+				"resources": [
+					"css/User_admin.css",
+					"css/mui.min.css",
+					"css/mui.indexedlist.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"stock/supper.html": {
+				"resources": [
+					"css/User_admin.css",
+					"css/mui.indexedlist.css",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"stock/stock_add_1.html": {
+				"resources": [
+					"css/mui.min.css",
+					"stock/stock_add_2.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"stock/stock_add_2.html": {
+				"resources": [],
+				"refer": [
+					"stock/supper.html"
+				],
+				"priority": 0
+			},
+			"stock/stock_list.html": {
+				"resources": [
+					"js/jquery.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"paytype.html": {
+				"resources": [
+					"js/jquery.min.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"salesindent/goodsInstanceSelect_h.html": {
+				"resources": [
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"sales/client.html": {
+				"resources": [
+					"css/User_admin.css",
+					"css/mui.min.css",
+					"css/mui.indexedlist.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"sales/sales_add_2.html": {
+				"resources": [],
+				"refer": [
+					"sales/client.html",
+					"paytype.html"
+				],
+				"priority": 0
+			},
+			"remittance/remittance_add_1.html": {
+				"resources": [
+					"css/mui.min.css",
+					"remittance/remittance_add_2.html"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/goodsInstanceCustomer_h.html": {
+				"resources": [
+					"customer/goodsInstanceCustomer.html",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/goodsInstanceCustomer.html": {
+				"resources": [
+					"css/mui.min.css"
+				],
+				"refer": [
+					"customer/goodsCustomerPrice_h.html"
+				],
+				"priority": 0
+			},
+			"customer/goodsCustomerPrice_h.html": {
+				"resources": [
+					"css/mui.min.css",
+					"js/mui.js"
+				],
+				"refer": [
+					"customer/goodsCustomerPrice.html"
+				],
+				"priority": 0
+			},
+			"customer/goodsCustomerPrice.html": {
+				"resources": [
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"setting.html": {
+				"resources": [
+					"css/feedback.css",
+					"css/mui.min.css",
+					"img/logo.png",
+					"js/feedback.js",
+					"js/mui.view.js"
+				],
+				"refer": [
+					"admin.html"
+				],
+				"priority": 0
+			},
+			"admin.html": {
+				"resources": [
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {
@@ -391,15 +542,12 @@
 				"salesindent/salesindent_update_1.html",
 				"sales/goodsInstancePriceRate.html",
 				"sales/sales_add_sales_goods_2.html",
-				"admin.html",
-				"remittance/remittance_add_1.html",
 				"img/good.jpg",
 				"salesindent/salesindent_list_info_finish_2.html",
 				"stock/goodsInstancePriceNoRateDef.html",
 				"text/salesindent_list_info_finish_1.html",
 				"text/salesindent_list.html",
 				"salesindent/salesindent_list_info_unfinished_1.html",
-				"js/mui.view.js",
 				"stock/stock_add_goods_1.html",
 				"text/salesindent_list_headerAndtab.html",
 				"a-1-2-1.html",
@@ -412,7 +560,6 @@
 				"goodsAddStandard.html",
 				"stock/stock_add_goods_2.html",
 				"text/salesindent_update_1.html",
-				"js/feedback.js",
 				"salesindent/salesindent_add_sales_goods_2.html",
 				"goodsAddStype.html",
 				"error.html",
@@ -437,49 +584,38 @@
 				"salesindent/salesindent_list_info_unfinished_2.html",
 				"salesindent/salesindent_add_sales_proceeds_1.html",
 				"a-1-2.html",
-				"css/feedback.css",
 				"customerrecharge/customerrecharge_add_2.html",
 				"goodsBit.html",
 				"salesindent/goodsInstancePriceRate_h.html",
 				"salesindent/salesindent_update_2.html",
-				"salesindent/barcode.html",
-				"remittance/remittance_add_2.html",
 				"sales/barcode.html",
 				"sales/goodsInstanceSelect.html",
 				"sales/sales_add_sales_goods_1.html",
 				"a-1-1.html",
-				"paytype.html",
 				"js/mui-yg.js",
 				"goodsInfo.html",
-				"stock/stock_add_1.html",
 				"text/salesindent_add_sales_2.html",
 				"sales/goodsInstanceSelect_h.html",
 				"barcode.html",
 				"salesindent/goodsInstancePriceRate.html",
 				"text.html",
-				"js/lodash.min.js",
 				"stock/goodsInstancePriceNoRateDef_h.html",
 				"stock/barcode.html",
 				"text/salesindent_add_2.html",
 				"remittance/remittance_info.html",
 				"a-2-1.html",
 				"goodsEdit.html",
-				"salesindent/goodsInstanceSelect_h.html",
 				"text/sales_list_headerAndtab.html",
 				"a-1-2-2-1.html",
-				"js/axios.min.js",
 				"salesindent/salesindent_add_sales_goods_1.html",
 				"customerrecharge/customerrecharge_info.html",
 				"sales/sales_list_info_0_1.html",
 				"stock/goodsInstanceSelectDef.html",
-				"stock/stock_add_2.html",
 				"text/sales_list.html",
 				"remittance/supper.html",
 				"text/salesindent_add_1.html",
 				"js/new.js",
-				"stock/supper.html",
 				"home.html",
-				"sales/client.html",
 				"css/app.css",
 				"salesindent/salesindent_add_goods_1.html",
 				"salesindent/salesindent_add_goods_2.html",

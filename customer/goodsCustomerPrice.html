@@ -42,7 +42,7 @@
 				cid=data.cid
 			}
 			mui.plusReady(function() {
-				var webview = plus.webview.getWebviewById("cargo_client_add.html");
+				var webview = plus.webview.getWebviewById("customer/cargo_client_add.html");
 				webview.evalJS("getJsonObj()");
 				var goodsInstance = eval("(" + plus.webview.currentWebview().goodsInstance + ")");
 
@@ -68,6 +68,8 @@
 							success:function(data){
 								if(data>0){
 									mui.toast("修改成功！");
+									plus.webview.getWebviewById("goodsCustomerPrice_h.html").close();
+									plus.webview.getWebviewById("goodsCustomerPrice.html").close();
 									plus.webview.currentWebview().close()
 								}
 							},
