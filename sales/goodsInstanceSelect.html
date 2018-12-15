@@ -120,7 +120,7 @@
 				}
 			});
 			var cId;
-			var cId;
+			var sid;
 			mui.plusReady(function() {
 				mui('body').on('tap','.simGoodsInstance',function(){
 					//参数
@@ -157,6 +157,7 @@
 				
 				var self = plus.webview.currentWebview();
 				cId = self.cid;
+				sid=self.sid;
 				//根据用户cid查询pid客户类型
 				mui.ajax(n.url+'/Customer/queryByIdResultPid',{
 					data:{
@@ -185,7 +186,8 @@
 				mui.ajax(n.url + '/goods/queryGoodsInstanceVoList', {
 					data: {
 						cId: cId,
-						gName: gName
+						gName: gName,
+						sid:sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

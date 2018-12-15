@@ -157,9 +157,9 @@
 					}
 				})
 				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname?sid=1', {
+				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
 					data: {
-
+						sid:plus.webview.currentWebview().sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

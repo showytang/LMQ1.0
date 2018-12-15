@@ -133,11 +133,11 @@
 					<div class="mui-col-xs-9">
 						<div class="mui-input-row">
 							<label>应收款</label>
-							<input type="text" name="user5" value="0.00" class="mui-input-clear">
+							<input type="number" name="user5" value="0.00" class="mui-input-clear">
 						</div>
 						<div class="mui-input-row">
 							<label>实收款</label>
-							<input type="text" name="takeinmoney" value="0.00" class="mui-input-clear">
+							<input type="number" name="takeinmoney" value="0.00" class="mui-input-clear">
 						</div>
 					</div>
 				</nav>
@@ -232,7 +232,9 @@
 					//创建并判断是否存在列表内容窗体
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
 					var vw = plus.webview.getWebviewById("client.html");
-					vw = plus.webview.create("client.html", "client.html", {}, {});
+					vw = plus.webview.create("client.html", "client.html", {}, {
+						sid:sid
+					});
 					vw.show("slide-in-right");
 				});
 
@@ -242,7 +244,8 @@
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
 					var vw = plus.webview.getWebviewById("goodsInstanceSelect_h.html");
 					vw = plus.webview.create("goodsInstanceSelect_h.html", "goodsInstanceSelect_h.html", {}, {
-						cid: v.cid
+						cid: v.cid,
+						sid:sid
 					});
 					vw.show("slide-in-right");
 				})
