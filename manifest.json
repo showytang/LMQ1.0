@@ -531,6 +531,13 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"remittance/remittance_add_2.html": {
+				"resources": [
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {

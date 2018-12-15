@@ -91,10 +91,16 @@
 		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/news.js"></script>
 		<script type="text/javascript" src="../js/vue.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			(function($, doc) {
 				mui.init()
 				var v = null
+				var loginUser = login.getLogin();
+				console.log(JSON.stringify(loginUser));
+				var sid = loginUser.store.id;
 				mui.plusReady(function() {
 					var view = plus.webview.currentWebview();
 					var id = view.supplierid //客户ID
