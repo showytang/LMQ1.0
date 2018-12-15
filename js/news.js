@@ -2,7 +2,7 @@ var n = {
 	//url:"http://127.0.0.1:8080",
 //	url:"http://192.168.43.175:8080",
 //	url:"http://192.168.43.52:8080",
-	url:"http://192.168.2.108:8080",
+	url:"http://192.168.43.175:8080",
 	//url: "http://100.71.170.138:8080",
 	//获取参数
 	getParam: function(selector) {
@@ -56,12 +56,13 @@ var n = {
 		}
 		return paramValue;
 	},
-	verify:function(el){		/*验证input是否为空*/
-			var parents=document.querySelector(el)
-		for(var i=0;i<parents;i++){
-			if(this.value==null){
+	verify: function(el) { /*验证input是否为空*/
+		var parents = document.querySelectorAll(el)
+		for(var i = 0; i < parents.length; i++) {
+			if(parents[i].value === "") {
 				return false;
 			}
+
 		}
 		return true;
 	},

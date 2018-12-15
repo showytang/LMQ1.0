@@ -23,21 +23,13 @@
         "Console": {
             "description": "跟踪调试输出日志"
         },
-        "Contacts": {
-            "description": "访问系统联系人信息"
-        },
+        "Contacts": {},
         "Events": {
             "description": "应用扩展事件"
         },
-        "Messaging": {
-            "description": "访问通讯能力"
-        },
-        "Maps": {
-            "description": "管理地图插件"
-        },
-        "Speech": {
-            "description": "管理语音识别插件"
-        }
+        "Messaging": {},
+        "Maps": {},
+        "Speech": {},"Zip":{},"File":{},"Audio":{},"OAuth":{},"Camera":{},"Device":{},"Runtime":{},"Gallery":{},"Storage":{},"Webview":{},"Barcode":{},"Uploader":{},"NativeUI":{},"Proximity":{},"Navigator":{},"NativeObj":{},"Downloader":{},"Invocation":{},"Orientation":{},"Geolocation":{},"Accelerometer":{},"XMLHttpRequest":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -60,7 +52,7 @@
 				"keystore": "",/*Android应用打包使用的密钥库文件*/
 				"password": "",/*Android应用打包使用密钥库中证书的密码*/
 				"aliasname": "",/*Android应用打包使用密钥库中证书的别名*/
-				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>","<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-feature android:name=\"android.hardware.camera.autofocus\"/>","<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>","<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>","<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.SEND_SMS\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>","<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>","<uses-permission android:name=\"android.permission.WRITE_SMS\"/>","<uses-permission android:name=\"android.permission.READ_SMS\"/>"]
 			},
 			"orientation": ["portrait-primary", "portrait-secondary"],/*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
 			"icons": {
@@ -140,7 +132,8 @@
 			},
 			"a.html": {
 				"resources": [
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"js/filtrare_time.js"
 				],
 				"refer": [
 					"salesindent/salesindent_add_1.html",
@@ -206,7 +199,16 @@
 			},
 			"index.html": {
 				"resources": [
-					"css/mui.min.css"
+					"css/mui.min.css",
+					"js/vue.js",
+					"js/news.js",
+					"js/mui.min.js",
+					"fonts/mui.ttf",
+					"js/table/db.js",
+					"js/enter.js",
+					"js/loginUser.js",
+					"js/table/async.js",
+					"img/logo.png"
 				],
 				"refer": [
 					"User_admin.html",
@@ -231,7 +233,9 @@
 				"priority": 0
 			},
 			"salesindent/salesindent_add_2.html": {
-				"resources": [],
+				"resources": [
+					"css/mui.min.css"
+				],
 				"refer": [
 					"salesindent/client.html"
 				],
@@ -241,10 +245,18 @@
 				"resources": [
 					"css/User_admin.css",
 					"css/mui.min.css",
-					"css/mui.indexedlist.css"
+					"css/mui.indexedlist.css",
+					"js/openModel.js",
+					"js/User_admin.js",
+					"js/mui.indexedlist.js"
 				],
 				"refer": [
-					"customer/add_client.html"
+					"customer/add_client.html",
+					"customer/add_supplier.html",
+					"customer/show_client.html",
+					"customer/show_supplier.html",
+					"customer/updateQuote.html",
+					"customer/cargo_client_add.html"
 				],
 				"priority": 0
 			},
@@ -254,12 +266,125 @@
 				],
 				"refer": [],
 				"priority": 0
+			},
+			"customer/add_client.html": {
+				"resources": [
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"js/city.data.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"css/add_client.css",
+					"js/city.data-3.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/add_supplier.html": {
+				"resources": [
+					"css/mui.min.css",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"css/add_client.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/show_client.html": {
+				"resources": [
+					"js/show_client.js",
+					"css/mui.min.css",
+					"css/add_client.css"
+				],
+				"refer": [
+					"customer/update_client.html"
+				],
+				"priority": 0
+			},
+			"customer/update_client.html": {
+				"resources": [
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"css/mui.min.css",
+					"js/city.data.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"js/city.data-3.js",
+					"css/add_client.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/show_supplier.html": {
+				"resources": [
+					"css/mui.min.css",
+					"js/show_supplier.js",
+					"css/add_client.css"
+				],
+				"refer": [
+					"customer/update_supplier.html"
+				],
+				"priority": 0
+			},
+			"customer/update_supplier.html": {
+				"resources": [
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"js/city.data.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"css/add_client.css",
+					"js/city.data-3.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/updateQuote.html": {
+				"resources": [
+					"css/mui.min.css",
+					"js/mui.js",
+					"css/mui.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/cargo_client_add.html": {
+				"resources": [
+					"js/jquery.min.js",
+					"css/cargo_client_add.html.css",
+					"css/mui.min.css",
+					"js/cargo_client_add.js"
+				],
+				"refer": [
+					"customer/client_supplier.html",
+					"customer/show_client.html",
+					"customer/client.html"
+				],
+				"priority": 0
+			},
+			"customer/client_supplier.html": {
+				"resources": [
+					"css/User_admin.css",
+					"css/mui.min.css",
+					"css/mui.indexedlist.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"customer/client.html": {
+				"resources": [
+					"css/User_admin.css",
+					"css/mui.indexedlist.css",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
 			}
 		},
 		"idle": {
 			"resources": [
 				"text/sales_add.html",
-				"js/cargo_client_add.js",
 				"sales/goodsInstancePriceRate_h.html",
 				"a-2-2-1.html",
 				"goodsStype.html",
@@ -269,12 +394,9 @@
 				"admin.html",
 				"remittance/remittance_add_1.html",
 				"img/good.jpg",
-				"js/mui.poppicker.js",
 				"salesindent/salesindent_list_info_finish_2.html",
 				"stock/goodsInstancePriceNoRateDef.html",
-				"js/city.data.js",
 				"text/salesindent_list_info_finish_1.html",
-				"js/mui.js",
 				"text/salesindent_list.html",
 				"salesindent/salesindent_list_info_unfinished_1.html",
 				"js/mui.view.js",
@@ -283,19 +405,14 @@
 				"a-1-2-1.html",
 				"stock/stock_list_info_finish_2.html",
 				"stock/stock_list_info_finish_1.html",
-				"fonts/mui.ttf",
 				"customerrecharge/customerrecharge_add_1.html",
 				"stock/client.html",
-				"js/show_supplier.js",
-				"js/city.data-3.js",
 				"goodsSelectStype.html",
 				"filtrate.html",
 				"goodsAddStandard.html",
 				"stock/stock_add_goods_2.html",
 				"text/salesindent_update_1.html",
-				"js/table/db.js",
 				"js/feedback.js",
-				"js/table/async.js",
 				"salesindent/salesindent_add_sales_goods_2.html",
 				"goodsAddStype.html",
 				"error.html",
@@ -307,9 +424,7 @@
 				"goodsEditStandard.html",
 				"stock/goodsInstanceSelectDef_h.html",
 				"customerrecharge/client.html",
-				"js/mui.min.js",
 				"text/salesindent_list_info_unfinished_2.html",
-				"js/mui.indexedlist.js",
 				"salesindent/salesindent_list_info_finish_1.html",
 				"a-2-2.html",
 				"text/salesindent_add_sales_1.html",
@@ -321,7 +436,6 @@
 				"salesindent/salesindent_add_sales_1.html",
 				"salesindent/salesindent_list_info_unfinished_2.html",
 				"salesindent/salesindent_add_sales_proceeds_1.html",
-				"img/logo.png",
 				"a-1-2.html",
 				"css/feedback.css",
 				"customerrecharge/customerrecharge_add_2.html",
@@ -335,49 +449,35 @@
 				"sales/sales_add_sales_goods_1.html",
 				"a-1-1.html",
 				"paytype.html",
-				"js/show_client.js",
 				"js/mui-yg.js",
 				"goodsInfo.html",
 				"stock/stock_add_1.html",
 				"text/salesindent_add_sales_2.html",
-				"js/mui.picker.js",
 				"sales/goodsInstanceSelect_h.html",
 				"barcode.html",
 				"salesindent/goodsInstancePriceRate.html",
 				"text.html",
-				"css/mui.css",
 				"js/lodash.min.js",
 				"stock/goodsInstancePriceNoRateDef_h.html",
 				"stock/barcode.html",
-				"js/filtrare_time.js",
 				"text/salesindent_add_2.html",
-				"css/add_client.css",
 				"remittance/remittance_info.html",
 				"a-2-1.html",
 				"goodsEdit.html",
 				"salesindent/goodsInstanceSelect_h.html",
 				"text/sales_list_headerAndtab.html",
-				"js/User_admin.js",
 				"a-1-2-2-1.html",
 				"js/axios.min.js",
-				"js/news.js",
-				"js/vue.js",
 				"salesindent/salesindent_add_sales_goods_1.html",
 				"customerrecharge/customerrecharge_info.html",
 				"sales/sales_list_info_0_1.html",
 				"stock/goodsInstanceSelectDef.html",
-				"css/mui.poppicker.css",
-				"js/loginUser.js",
 				"stock/stock_add_2.html",
 				"text/sales_list.html",
-				"js/jquery.min.js",
-				"css/cargo_client_add.html.css",
 				"remittance/supper.html",
-				"js/openModel.js",
 				"text/salesindent_add_1.html",
 				"js/new.js",
 				"stock/supper.html",
-				"css/mui.picker.css",
 				"home.html",
 				"sales/client.html",
 				"css/app.css",

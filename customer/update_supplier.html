@@ -61,8 +61,9 @@
 				<input type="text" v-bind:value="obj.phone" name="phone">
 			</div>
 			<div class="mui-input-row">
-				<label>经营地址</label>
-				<input type="button" class="mui-btn mui-btn-block" id='showCityPicker3'>
+				<label>送货地址</label>
+				<!--<button   type='button'>三级联动示例 ...</button>-->
+				<label type="button"  style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
 				<p name="bigAddres" style="height: 100%;margin-top: 10px;">{{obj.province}} {{obj.city}} {{obj.district}}</p>
 			</div>
 			<div class="mui-input-row">
@@ -73,10 +74,10 @@
 				<label>应收款</label>
 				<input type="text" v-bind:value="obj.balance" name="balance">
 			</div>
-			<div class="mui-input-row">
+			<!--<div class="mui-input-row">
 				<label>初始化收款</label>
 				<input type="text" readonly="true">
-			</div>
+			</div>-->
 			<div class="mui-input-row" style="background-color: white;">
 				<label>备注</label>
 				<input type="text" v-bind:value="obj.remark" name="remark">
@@ -118,6 +119,14 @@
 					/*修改客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
 						var val = document.querySelector("[name=bigAddres]").innerHTML
+						if(obj.verify(".mui-content input")==false) {
+							mui.toast("请输入客户的完整信息");
+							return;
+						}
+						if(val===""){
+							mui.toast("请输入客户的完整信息");
+							return;
+						}
 						var sel = document.querySelector(".mui-input-row select")
 						var province = val.substring(0, val.indexOf(" ")) //省
 						var city = val.substring(val.indexOf(" "), val.indexOf("市") + 1) //市

@@ -28,7 +28,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<h1 class="mui-title" id="head_title">客管</h1>
-			<a class="add" data_client="customer/add_client.html" data_supplier="customer/add_supplier.html" data_cargo_client="customer/cargo_client_add.html"><span class="mui-icon mui-icon-plusempty"></span></a>
+			<a class="add" data_client="add_client.html" data_supplier="add_supplier.html" data_cargo_client="customer/cargo_client_add.html"><span class="mui-icon mui-icon-plusempty"></span></a>
 		</header>
 		<div class="mui-content">
 			<div id="slider" class="mui-slider">
@@ -283,21 +283,21 @@
 									<div class="mui-indexed-list-inner">
 										<div class="mui-indexed-list-empty-alert">没有数据</div>
 										<ul class="mui-table-view item3mobile1">
-											<div  v-for="(obj,index) in list">
-											<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>	
-											<li  data-value="AKU" data-tags="AKeSu" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item quoteData" v-bind:data-id="obj1.id">
-												<img src="http://120.78.85.230:8080/commodity/img/123.png" />
-												<p>{{obj1.name}}</p>
-												<p>{{obj1.gname}}</p>
-												<p v-for="(obj2,index) in obj1.standardlist" style="display: inline; margin-right: 10px;">
-													{{obj2.name}}
-													<span style="color: #C7C7CC;" v-for="(obj3,index) in obj2.sInList">{{obj3.name}}</span>
-												</p>
-												
-												<p style="float: right;">￥{{obj1.price}}</p>
-											</li>
+											<div v-for="(obj,index) in list">
+												<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+												<li data-value="AKU" data-tags="AKeSu" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item quoteData" v-bind:data-id="obj1.id">
+													<img src="http://120.78.85.230:8080/commodity/img/123.png" />
+													<p>{{obj1.name}}</p>
+													<p>{{obj1.gname}}</p>
+													<p v-for="(obj2,index) in obj1.standardlist" style="display: inline; margin-right: 10px;">
+														{{obj2.name}}
+														<span style="color: #C7C7CC;" v-for="(obj3,index) in obj2.sInList">{{obj3.name}}</span>
+													</p>
+
+													<p style="float: right;" >￥<span class="price">{{obj1.price}}</span></p>
+												</li>
 											</div>
-											
+
 										</ul>
 										<div class="nullbox">
 											<!--<li></li>-->
@@ -327,7 +327,7 @@
 			</ul>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
-					<a href="#picture"><b>删除</b></a>
+					<a id="delClient"><b>删除</b></a>
 				</li>
 			</ul>
 		</div>
@@ -448,7 +448,7 @@
 			var info = document.getElementById("info");
 			var v = null;
 			var v2 = null;
-			var v3=null;
+			var v3 = null;
 			mui.ready(function() {
 				document.getElementById('slider').addEventListener('slide', function(e) {
 					var transform = document.querySelectorAll(".mui-control-item")
@@ -473,12 +473,7 @@
 						list: null
 					},
 					updated: function() {
-						var header = document.querySelector('header.mui-bar');
-						var list2 = document.querySelectorAll(".list")
-						for(var i = 0; i < list2.length; i++) {
-							list2[i].style.height = (document.body.offsetHeight - header.offsetHeight) + 'px';
-							window.indexedList = new mui.IndexedList(list2[i]);
-						}
+
 					}
 				})
 
@@ -533,27 +528,62 @@
 						list: null
 					}
 				})
-				mui.ajax(obj.url+'/QuotedPrice/queryBySidAll?sid=1',{
-					data:{
-						
+				mui.ajax(obj.url + '/QuotedPrice/queryBySidAll?sid=1', {
+					data: {
+
 					},
-					dataType:'json',//服务器返回json格式数据
-					type:'post',//HTTP请求类型
-					timeout:10000,//超时时间设置为10秒；
-					success:function(data){
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
 						console.log(JSON.stringify(data))
-						v3.list=data
+						v3.list = data
 					},
-					error:function(xhr,type,errorThrown){
-						
+					error: function(xhr, type, errorThrown) {
+
 					}
 				});
-				
+				//删除客户
+				mui('body').on('tap', '#delClient', function() {
+					var id = document.querySelector("#picture .show_clientInfo").getAttribute("data-id")
+					mui.ajax(obj.url+'/Customer/deleteByCid', {
+						data: {
+							id: id
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if(data > 0) {
+								mui.toast("删除成功!")
+							} else {
+								mui.toast("已发送业务客户不能删除")
+							}
+							document.querySelector(".mui-backdrop-action.mui-backdrop.mui-active,.mui-bar-backdrop.mui-backdrop.mui-active").remove()
+							//关闭选项栏
+							document.querySelector("#picture").style.display = "none"
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+				})
+
 			});
-			mui.plusReady(function () {
-			    mui('body').on('tap','#goods',function(){
-				  plus.webview.create("goodsManage.html","goodsManage.html",{},{}).show("none")
-				}) 
+			mui.plusReady(function() {
+				mui('body').on('tap', '#goods', function() {
+					plus.webview.create("customer/goodsManage.html", "goodsManage.html", {}, {}).show("none")
+				})
+				mui('body').on('tap', '.quoteData', function() {
+					var gname = this.querySelector("p:nth-child(3)").innerHTML
+					var monye = this.querySelector(".price").innerHTML
+					var qid = this.getAttribute("data-id")
+					plus.webview.create("customer/updateQuote.html", "updateQuote.html", {}, {
+						gname: gname,
+						monye:monye,
+						qid:qid
+					}).show("none")
+				})
 			})
 		</script>
 

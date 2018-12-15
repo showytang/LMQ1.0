@@ -65,19 +65,19 @@ mui.ready(function() {
 	mui('body').on('tap', '.item1mobile1 .mui-indexed-list-item', function() {
 		var id = this.getAttribute("data-id")
 		var name=this.getAttribute("data-name")
-		var param=obj.getclient(id,name)	//客户的ID和名字的JSON对象
-		alert(JSON.stringify(param))
+		/*var param=obj.getclient(id,name)	//客户的ID和名字的JSON对象
+		alert(JSON.stringify(param))*/
 		document.querySelector(".show_clientInfo").setAttribute("data-id", id)
 	})
 	
 	/*点击供应商为详情按钮id属性添加供应商ID*/
-	/*mui('body').on('tap', '.item2mobile .mui-indexed-list-item', function() {
+	mui('body').on('tap', '.item2mobile .mui-indexed-list-item', function() {
 		var id = this.getAttribute("data-id")
 		var name=this.getAttribute("data-name")
-		var param=obj.getclient(id,name)	//供应商的ID和名字的JSON对象
-		alert(JSON.stringify(param))		
+		/*var param=obj.getclient(id,name)	//供应商的ID和名字的JSON对象
+		alert(JSON.stringify(param))	*/	
 		document.querySelector(".show_supplierInfo").setAttribute("data-id", id)
-	})*/
+	})
 })
 mui.plusReady(function() {
 	/*webview显示客户详情*/
@@ -85,7 +85,7 @@ mui.plusReady(function() {
 		var id=this.getAttribute("data-id")
 		document.querySelector("#picture").style.display = "none"
 		document.querySelector(".mui-backdrop-action.mui-backdrop.mui-active,.mui-bar-backdrop.mui-backdrop.mui-active").style.opacity = "0"
-		plus.webview.create("show_client.html", "show_client.html", {}, {
+		plus.webview.create("customer/show_client.html", "show_client.html", {}, {
 			cid:id
 		}).show("none")
 	})
@@ -94,7 +94,7 @@ mui.plusReady(function() {
 		var id=this.getAttribute("data-id")
 		document.querySelector("#supplier").style.display = "none"
 		document.querySelector(".mui-backdrop-action.mui-backdrop.mui-active, .mui-bar-backdrop.mui-backdrop.mui-active").style.opacity = "0"
-		plus.webview.create("show_supplier.html", "show_supplier.html", {}, {
+		plus.webview.create("customer/show_supplier.html", "show_supplier.html", {}, {
 			cid:id
 		}).show("none")
 	})

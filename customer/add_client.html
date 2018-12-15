@@ -73,7 +73,7 @@
 			<div class="mui-input-row">
 				<label>送货地址</label>
 				<!--<button   type='button'>三级联动示例 ...</button>-->
-				<input type="button" class="mui-btn mui-btn-block" id='showCityPicker3'>
+				<label type="button"  style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
 				<p name="bigAddres" style="height: 100%;margin-top: 10px;"></p>
 			</div>
 			<div class="mui-input-row">
@@ -84,10 +84,10 @@
 				<label>应收款</label>
 				<input type="text" name="balance">
 			</div>
-			<div class="mui-input-row">
+			<!--<div class="mui-input-row">
 				<label>初始化收款</label>
 				<input type="text" readonly="readonly">
-			</div>
+			</div>-->
 			<div class="mui-input-row" style="background-color: white;">
 				<label>备注</label>
 				<input type="text" name="remark">
@@ -104,35 +104,18 @@
 			(function($, doc) {
 				console.log(obj)
 				mui.init()
-
-				mui.ready(function() {
-					/*三级联动*/
-					var _getParam = function(obj, param) {
-						return obj[param] || '';
-					};
-					var cityPicker3 = new $.PopPicker({
-						layer: 3
-					});
-					cityPicker3.setData(cityData3);
-					var showCityPickerButton = doc.getElementById('showCityPicker3');
-					var cityResult3 = document.querySelector("[name=bigAddres]");
-					showCityPickerButton.addEventListener('tap', function(event) {
-						cityPicker3.show(function(items) {
-							cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
-							//返回 false 可以阻止选择框的关闭
-							//return false;
-						});
-					}, false);
-
-					/*添加客户*/
+				mui.plusReady(function () {
+				    /*添加客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
-						console.log(JSON.stringify(obj));
-						if(obj.verify(".mui-content input")) {
+						var val = document.querySelector("[name=bigAddres]").innerHTML
+						if(obj.verify(".mui-content input")==false) {
 							mui.toast("请输入客户的完整信息");
 							return;
 						}
-						
-						var val = document.querySelector("[name=bigAddres]").innerHTML
+						if(val===""){
+							mui.toast("请输入客户的完整信息");
+							return;
+						}
 						var sel = document.querySelector(".mui-input-row .select")
 						var index = sel.selectedIndex
 						var lid = sel.options[index].value //客户等级
@@ -177,13 +160,37 @@
 							type: 'post', //HTTP请求类型
 							timeout: 10000, //超时时间设置为10秒；
 							success: function(data) {
-
+								if(data>0){
+									mui.toast("新增客户成功!")
+									plus.webview.currentWebview().close()
+								}
 							},
 							error: function(xhr, type, errorThrown) {
 
 							}
 						});
 					})
+				})
+				mui.ready(function() {
+					/*三级联动*/
+					var _getParam = function(obj, param) {
+						return obj[param] || '';
+					};
+					var cityPicker3 = new $.PopPicker({
+						layer: 3
+					});
+					cityPicker3.setData(cityData3);
+					var showCityPickerButton = doc.getElementById('showCityPicker3');
+					var cityResult3 = document.querySelector("[name=bigAddres]");
+					showCityPickerButton.addEventListener('tap', function(event) {
+						cityPicker3.show(function(items) {
+							cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+					}, false);
+
+					
 				})
 			})(mui, document);
 			

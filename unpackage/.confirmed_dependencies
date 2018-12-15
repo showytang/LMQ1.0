@@ -1,128 +1,246 @@
 {
-  "index1.html": {
-    "refer": [
-      "setting.html",
-      "shop.html",
-      "a.html",
-      "goodsManage.html"
-    ],
-    "resources": []
-  },
-  "a.html": {
-    "refer": [
-      "salesindent/salesindent_add_1.html",
-      "salesindent/salesindent_list_headerAndtab.html",
-      "remittance/remittance_list_headerAndtab.html",
-      "sales/sales_list_headerAndtab.html",
-      "customerrecharge/customerrecharge_list_headerAndtab.html",
-      "stock/stock_list_headerAndtab.html",
-      "sales/sales_add_1.html"
-    ],
-    "resources": [
-      "css/mui.min.css"
-    ]
-  },
-  "salesindent/salesindent_add_1.html": {
-    "resources": [
-      "salesindent/salesindent_add_2.html"
-    ],
-    "refer": [
-      "salesindent/salesindent_add_2.html"
-    ]
-  },
-  "goodsManage.html": {
-    "refer": [
-      "goodsAdd.html"
-    ],
-    "resources": []
-  },
-  "salesindent/salesindent_list_headerAndtab.html": {
-    "resources": [
-      "salesindent/salesindent_list.html"
-    ],
-    "refer": [
-      "salesindent/salesindent_list.html",
-      "salesindent/salesindent_add_1.html"
-    ]
-  },
-  "remittance/remittance_list_headerAndtab.html": {
-    "resources": [
-      "remittance/remittance_list.html"
-    ],
-    "refer": [
-      "remittance/remittance_list.html"
-    ]
-  },
-  "sales/sales_list_headerAndtab.html": {
-    "resources": [
-      "sales/sales_list.html"
-    ],
-    "refer": [
-      "sales/sales_list.html"
-    ]
-  },
-  "customerrecharge/customerrecharge_list_headerAndtab.html": {
-    "resources": [
-      "customerrecharge/customerrecharge_list.html"
-    ],
-    "refer": [
-      "customerrecharge/customerrecharge_list.html"
-    ]
-  },
-  "stock/stock_list_headerAndtab.html": {
-    "resources": [
-      "stock/stock_list.html"
-    ],
-    "refer": [
-      "stock/stock_list.html"
-    ]
-  },
-  "index.html": {
-    "refer": [
-      "User_admin.html",
-      "a.html",
-      "goodsManage_h.html"
-    ],
-    "resources": [
-      "css/mui.min.css"
-    ]
-  },
-  "goodsManage_h.html": {
-    "resources": [
-      "goods/goodsManage.html",
-      "css/mui.min.css"
-    ],
-    "refer": [
-      "goods/goodsManage.html"
-    ]
-  },
-  "sales/sales_add_1.html": {
-    "resources": [
-      "sales/sales_add_2.html"
-    ],
-    "refer": [
-      "sales/sales_add_2.html"
-    ]
-  },
-  "salesindent/salesindent_add_2.html": {
-    "refer": [
-      "salesindent/client.html"
-    ],
-    "resources": []
-  },
-  "User_admin.html": {
-    "refer": [
-      "customer/add_client.html"
-    ],
-    "resources": [
-      "css/User_admin.css",
-      "css/mui.min.css",
-      "css/mui.indexedlist.css"
-    ]
-  },
-  "goods/goodsManage.html": {
-    "resources": [
-      "css/mui.min.css"
-    ]
-  }
+	"index1.html": {
+		"refer": [
+			"setting.html",
+			"shop.html",
+			"a.html",
+			"goodsManage.html"
+		],
+		"resources": []
+	},
+	"a.html": {
+		"refer": [
+			"salesindent/salesindent_add_1.html",
+			"salesindent/salesindent_list_headerAndtab.html",
+			"remittance/remittance_list_headerAndtab.html",
+			"sales/sales_list_headerAndtab.html",
+			"customerrecharge/customerrecharge_list_headerAndtab.html",
+			"stock/stock_list_headerAndtab.html",
+			"sales/sales_add_1.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"js/filtrare_time.js"
+		]
+	},
+	"salesindent/salesindent_add_1.html": {
+		"resources": [
+			"salesindent/salesindent_add_2.html"
+		],
+		"refer": [
+			"salesindent/salesindent_add_2.html"
+		]
+	},
+	"goodsManage.html": {
+		"refer": [
+			"goodsAdd.html"
+		],
+		"resources": []
+	},
+	"salesindent/salesindent_list_headerAndtab.html": {
+		"resources": [
+			"salesindent/salesindent_list.html"
+		],
+		"refer": [
+			"salesindent/salesindent_list.html",
+			"salesindent/salesindent_add_1.html"
+		]
+	},
+	"remittance/remittance_list_headerAndtab.html": {
+		"resources": [
+			"remittance/remittance_list.html"
+		],
+		"refer": [
+			"remittance/remittance_list.html"
+		]
+	},
+	"sales/sales_list_headerAndtab.html": {
+		"resources": [
+			"sales/sales_list.html"
+		],
+		"refer": [
+			"sales/sales_list.html"
+		]
+	},
+	"customerrecharge/customerrecharge_list_headerAndtab.html": {
+		"resources": [
+			"customerrecharge/customerrecharge_list.html"
+		],
+		"refer": [
+			"customerrecharge/customerrecharge_list.html"
+		]
+	},
+	"stock/stock_list_headerAndtab.html": {
+		"resources": [
+			"stock/stock_list.html"
+		],
+		"refer": [
+			"stock/stock_list.html"
+		]
+	},
+	"index.html": {
+		"refer": [
+			"User_admin.html",
+			"a.html",
+			"goodsManage_h.html"
+		],
+		"resources": [
+			"css/mui.min.css",
+			"js/vue.js",
+			"js/news.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"js/table/db.js",
+			"js/enter.js",
+			"js/loginUser.js",
+			"js/table/async.js",
+			"img/logo.png"
+		]
+	},
+	"goodsManage_h.html": {
+		"resources": [
+			"goods/goodsManage.html",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"goods/goodsManage.html"
+		]
+	},
+	"sales/sales_add_1.html": {
+		"resources": [
+			"sales/sales_add_2.html"
+		],
+		"refer": [
+			"sales/sales_add_2.html"
+		]
+	},
+	"salesindent/salesindent_add_2.html": {
+		"refer": [
+			"salesindent/client.html"
+		],
+		"resources": [
+			"css/mui.min.css"
+		]
+	},
+	"User_admin.html": {
+		"refer": [
+			"customer/add_client.html",
+			"customer/add_supplier.html",
+			"customer/show_client.html",
+			"customer/show_supplier.html",
+			"customer/updateQuote.html",
+			"customer/cargo_client_add.html"
+		],
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.min.css",
+			"css/mui.indexedlist.css",
+			"js/openModel.js",
+			"js/User_admin.js",
+			"js/mui.indexedlist.js"
+		]
+	},
+	"goods/goodsManage.html": {
+		"resources": [
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"customer/add_client.html": {
+		"resources": [
+			"js/mui.picker.js",
+			"js/mui.poppicker.js",
+			"js/city.data.js",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"css/add_client.css",
+			"js/city.data-3.js",
+			"css/mui.min.css"
+		]
+	},
+	"customer/add_supplier.html": {
+		"resources": [
+			"css/mui.min.css",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"css/add_client.css"
+		]
+	},
+	"customer/show_client.html": {
+		"resources": [
+			"js/show_client.js",
+			"css/mui.min.css",
+			"css/add_client.css"
+		],
+		"refer": [
+			"customer/update_client.html"
+		]
+	},
+	"customer/update_client.html": {
+		"resources": [
+			"js/mui.picker.js",
+			"js/mui.poppicker.js",
+			"css/mui.min.css",
+			"js/city.data.js",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"js/city.data-3.js",
+			"css/add_client.css"
+		]
+	},
+	"customer/show_supplier.html": {
+		"resources": [
+			"css/mui.min.css",
+			"js/show_supplier.js",
+			"css/add_client.css"
+		],
+		"refer": [
+			"customer/update_supplier.html"
+		]
+	},
+	"customer/update_supplier.html": {
+		"resources": [
+			"js/mui.picker.js",
+			"js/mui.poppicker.js",
+			"js/city.data.js",
+			"css/mui.poppicker.css",
+			"css/mui.picker.css",
+			"css/add_client.css",
+			"js/city.data-3.js"
+		]
+	},
+	"customer/updateQuote.html": {
+		"resources": [
+			"css/mui.min.css",
+			"js/mui.js",
+			"css/mui.css"
+		]
+	},
+	"customer/cargo_client_add.html": {
+		"resources": [
+			"js/jquery.min.js",
+			"css/cargo_client_add.html.css",
+			"css/mui.min.css",
+			"js/cargo_client_add.js"
+		],
+		"refer": [
+			"customer/client_supplier.html",
+			"customer/show_client.html",
+			"customer/client.html"
+		]
+	},
+	"customer/client_supplier.html": {
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.min.css",
+			"css/mui.indexedlist.css"
+		]
+	},
+	"customer/client.html": {
+		"resources": [
+			"css/User_admin.css",
+			"css/mui.indexedlist.css",
+			"css/mui.min.css"
+		]
+	}
 }

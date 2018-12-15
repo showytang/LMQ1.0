@@ -79,27 +79,27 @@
 			<div class="mui-input-row">
 				<label>送货地址</label>
 				<!--<button   type='button'>三级联动示例 ...</button>-->
-				<input type="button" class="mui-btn mui-btn-block" id='showCityPicker3'>
+				<label type="button" style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
 				<p name="bigAddres" style="height: 100%;margin-top: 10px;">{{obj.province}} {{obj.city}} {{obj.district}}</p>
 			</div>
 			<div class="mui-input-row">
 				<label>详细地址</label>
-				<input  type="text" name="addres" v-bind:value="obj.addres">
+				<input type="text" name="addres" v-bind:value="obj.addres">
 			</div>
 			<div class="mui-input-row">
 				<label>应收款</label>
 				<input type="text" v-bind:value="obj.balance" name="balance">
 			</div>
-			<div class="mui-input-row">
+			<!--<div class="mui-input-row">
 				<label>初始化收款</label>
 				<input type="text" readonly="true">
-			</div>
+			</div>-->
 			<div class="mui-input-row" style="background-color: white;">
 				<label>备注</label>
 				<input type="text" v-bind:value="obj.remark" name="remark">
 			</div>
 		</div>
-		<button type="button" class="mui-btn mui-btn-danger mui-btn-block">删除</button>
+		<button type="button" id="romveClient" class="mui-btn mui-btn-danger mui-btn-block">删除</button>
 		<script src="../js/mui.min.js"></script>
 		<!--<script src="../js/mui.picker.min.js"></script>-->
 		<script src="../js/mui.picker.js"></script>
@@ -137,12 +137,21 @@
 				});
 				mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
 					var val = document.querySelector("[name=bigAddres]").innerHTML
+					if(obj.verify(".mui-content input") == false) {
+						mui.toast("请输入客户的完整信息");
+						return;
+					}
+					alert(val)
+					if(val === "") {
+						mui.toast("请输入客户的完整信息");
+						return;
+					}
 					var sel = document.querySelector(".mui-input-row select")
 					var index = sel.selectedIndex
 					var lid = sel.options[index].value //客户等级
-					var sel1=document.querySelector(".mui-input-row .pid")
-					var index1=sel1.selectedIndex
-					var pid=sel1.options[index1].value				//折扣编号
+					var sel1 = document.querySelector(".mui-input-row .pid")
+					var index1 = sel1.selectedIndex
+					var pid = sel1.options[index1].value //折扣编号
 					var province = val.substring(0, val.indexOf(" ")) //省
 					var city = val.substring(val.indexOf(" "), val.indexOf("市") + 1) //市
 					var county = val.substring(val.lastIndexOf(" "), val.length) //区
@@ -163,11 +172,13 @@
 					var l = {
 						lid: lid
 					}
-					var p2={pid:pid}
+					var p2 = {
+						pid: pid
+					}
 					var s = {
 						sid: 1
 					} //暂时死值
-					var t = Object.assign(p, c, q, l, s,p2); //组合成JSON对象
+					var t = Object.assign(p, c, q, l, s, p2); //组合成JSON对象
 					//拼接JSON对象
 					for(var item in t) {
 						param[item] = t[item]
@@ -179,10 +190,36 @@
 						type: 'post', //HTTP请求类型
 						timeout: 10000, //超时时间设置为10秒；
 						success: function(data) {
-							if(data>0){
+							if(data > 0) {
 								mui.toast("修改成功!");
-								
+
 							}
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+				})
+				//删除客户
+				mui('body').on('tap', '#romveClient', function() {
+					mui.ajax(obj.url + '/Customer/deleteByCid', {
+						data: {
+							id: cid
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if(data > 0) {
+								mui.toast("删除成功!")
+								plus.webview.getWebviewById("show_client.html").close()
+								plus.webview.getWebviewById("update_client.html").close()
+							} else {
+								mui.toast("已发送业务客户不能删除")
+							}
+							document.querySelector(".mui-backdrop-action.mui-backdrop.mui-active,.mui-bar-backdrop.mui-backdrop.mui-active").remove()
+							//关闭选项栏
+							document.querySelector("#picture").style.display = "none"
 						},
 						error: function(xhr, type, errorThrown) {
 
@@ -208,7 +245,6 @@
 						//return false;
 					});
 				})
-				
 
 			})
 
