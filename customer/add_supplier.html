@@ -41,12 +41,12 @@
 			<div class="mui-input-row">
 				<label>送货地址</label>
 				<!--<button   type='button'>三级联动示例 ...</button>-->
-				<label type="button"  style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
+				<label type="button" style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
 				<p name="bigAddres" style="height: 100%;margin-top: 10px;"></p>
 			</div>
 			<div class="mui-input-row">
 				<label>详细地址</label>
-				<input  type="text" name="addres">
+				<input type="text" name="addres">
 			</div>
 			<div class="mui-input-row">
 				<label>应收款</label>
@@ -67,56 +67,72 @@
 		<script src="../js/city.data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/news.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			(function($, doc) {
 				mui.init()
-				mui.plusReady(function () {
-				    //新增供应商
+				var loginUser = login.getLogin();
+				console.log(JSON.stringify(loginUser));
+				var sid = loginUser.store.id;
+				mui.plusReady(function() {
+					//新增供应商
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
 						var val = document.querySelector("[name=bigAddres]").innerHTML
-						if(obj.verify(".mui-content input")==false) {
+						if(obj.verify(".mui-content input") == false) {
 							mui.toast("请输入客户的完整信息");
 							return;
 						}
-						if(val===""){
+						if(val === "") {
 							mui.toast("请输入客户的完整信息");
 							return;
 						}
-						var sel=document.querySelector(".mui-input-row select")
-						var index=sel.selectedIndex
-						var lid=sel.options[index].value			//客户等级
-						var province=val.substring(0,val.indexOf(" "))	//省
-						var city=val.substring(val.indexOf(" "),val.indexOf("市")+1)		//市
-						var county=val.substring(val.lastIndexOf(" "),val.length)		//区
-						if(city==""){
-							city=province
+						var sel = document.querySelector(".mui-input-row select")
+						var index = sel.selectedIndex
+						var lid = sel.options[index].value //客户等级
+						var province = val.substring(0, val.indexOf(" ")) //省
+						var city = val.substring(val.indexOf(" "), val.indexOf("市") + 1) //市
+						var county = val.substring(val.lastIndexOf(" "), val.length) //区
+						if(city == "") {
+							city = province
 						}
-						var param=obj.getParam(".mui-content")
+						var param = obj.getParam(".mui-content")
 						//转换成对象格式
-						var p={province:province}	
-						var c={city:city}
-						var q={district:county}
-						var l={lid:lid}			
-						var s={sid:1}				//暂时死值
-						var t=Object.assign(p,c,q,l,s);		//组合成JSON对象
+						var p = {
+							province: province
+						}
+						var c = {
+							city: city
+						}
+						var q = {
+							district: county
+						}
+						var l = {
+							lid: lid
+						}
+						var s = {
+							sid: sid
+						} //暂时死值
+						var t = Object.assign(p, c, q, l, s); //组合成JSON对象
 						//拼接JSON对象
-						for(var item in t){
-							param[item]=t[item]
+						for(var item in t) {
+							param[item] = t[item]
 						}
 						alert(JSON.stringify(param))
-						mui.ajax(obj.url+'/Supplier/insertSupplier',{
-							data:param,
-							dataType:'json',//服务器返回json格式数据
-							type:'post',//HTTP请求类型
-							timeout:10000,//超时时间设置为10秒；
-							success:function(data){
-								if(data>0){
+						mui.ajax(obj.url + '/Supplier/insertSupplier', {
+							data: param,
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							success: function(data) {
+								if(data > 0) {
 									mui.toast("新增供应商成功!")
 									plus.webview.currentWebview().close()
 								}
 							},
-							error:function(xhr,type,errorThrown){
-								
+							error: function(xhr, type, errorThrown) {
+
 							}
 						});
 					})
@@ -140,7 +156,7 @@
 							//return false;
 						});
 					}, false);
-					
+
 				})
 			})(mui, document);
 		</script>

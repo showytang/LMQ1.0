@@ -175,10 +175,7 @@
 					var p2 = {
 						pid: pid
 					}
-					var s = {
-						sid: 1
-					} //暂时死值
-					var t = Object.assign(p, c, q, l, s, p2); //组合成JSON对象
+					var t = Object.assign(p, c, q, l,p2); //组合成JSON对象
 					//拼接JSON对象
 					for(var item in t) {
 						param[item] = t[item]

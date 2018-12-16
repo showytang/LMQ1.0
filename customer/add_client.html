@@ -68,22 +68,22 @@
 			</div>
 			<div class="mui-input-row">
 				<label>联系电话</label>
-				<input type="text" name="phone">
+				<input type="number" name="phone">
 			</div>
 			<div class="mui-input-row">
 				<label>送货地址</label>
 				<!--<button   type='button'>三级联动示例 ...</button>-->
-				<label type="button"  style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
+				<label type="button" style="border: 0px;" value="0" class="mui-btn mui-btn-block" id='showCityPicker3'></label>
 				<p name="bigAddres" style="height: 100%;margin-top: 10px;"></p>
 			</div>
 			<div class="mui-input-row">
 				<label>详细地址</label>
 				<input type="text" name="addres">
 			</div>
-			<div class="mui-input-row">
+			<!--<div class="mui-input-row">
 				<label>应收款</label>
 				<input type="text" name="balance">
-			</div>
+			</div>-->
 			<!--<div class="mui-input-row">
 				<label>初始化收款</label>
 				<input type="text" readonly="readonly">
@@ -100,19 +100,25 @@
 		<script src="../js/city.data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/news.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			(function($, doc) {
 				console.log(obj)
 				mui.init()
-				mui.plusReady(function () {
-				    /*添加客户*/
+				var loginUser = login.getLogin();
+				console.log(JSON.stringify(loginUser));
+				var sid = loginUser.store.id;
+				mui.plusReady(function() {
+					/*添加客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
 						var val = document.querySelector("[name=bigAddres]").innerHTML
-						if(obj.verify(".mui-content input")==false) {
+						if(obj.verify(".mui-content input") == false) {
 							mui.toast("请输入客户的完整信息");
 							return;
 						}
-						if(val===""){
+						if(val === "") {
 							mui.toast("请输入客户的完整信息");
 							return;
 						}
@@ -146,7 +152,7 @@
 							pid: pid
 						}
 						var s = {
-							sid: 1
+							sid: sid
 						} //暂时死值
 						var t = Object.assign(p, c, q, l, s, p2); //组合成JSON对象
 						//拼接JSON对象
@@ -160,7 +166,7 @@
 							type: 'post', //HTTP请求类型
 							timeout: 10000, //超时时间设置为10秒；
 							success: function(data) {
-								if(data>0){
+								if(data > 0) {
 									mui.toast("新增客户成功!")
 									plus.webview.currentWebview().close()
 								}
@@ -190,10 +196,8 @@
 						});
 					}, false);
 
-					
 				})
 			})(mui, document);
-			
 		</script>
 	</body>
 

@@ -117,7 +117,10 @@
 		<!--<script src="js/openModel.js"></script>-->
 		<script type="text/javascript" src="../js/news.js"></script>
 		<script type="text/javascript" src="../js/vue.js"></script>
-		<script type="text/javascript" src="../js/zjfclient.js" ></script>
+		<script type="text/javascript" src="../js/zjfclient.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<!--<script src="js/User_admin.js"></script>-->
 		<script>
 			mui.init({
@@ -140,6 +143,10 @@
 
 			});
 			var v = null
+
+			var loginUser = login.getLogin();
+			console.log(JSON.stringify(loginUser));
+			var sid = loginUser.store.id;
 			mui.plusReady(function() {
 				/*查询门店下的客户*/
 				v = new Vue({
@@ -157,9 +164,9 @@
 					}
 				})
 				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname?sid=1', {
+				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
 					data: {
-
+						sid:sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
@@ -185,8 +192,8 @@
 						success: function(data) {
 							//上一个页面想要拿到这个对象  需要为上一个一面添加方法getclientId(obj)
 							var webviewid = plus.webview.currentWebview().opener().id;
-							var webview=plus.webview.getWebviewById(webviewid)
-							webview.evalJS("getclientId("+JSON.stringify(data)+")")
+							var webview = plus.webview.getWebviewById(webviewid)
+							webview.evalJS("getclientId(" + JSON.stringify(data) + ")")
 							plus.webview.currentWebview().hide()
 						},
 						error: function(xhr, type, errorThrown) {}
