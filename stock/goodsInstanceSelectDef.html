@@ -122,7 +122,7 @@
 			var sId;
 			mui.plusReady(function() {
 				var self = plus.webview.currentWebview();
-				self.sId = sId;
+				sId=self.sId;
 				//alert(sId);
 				getData("");
 				mui('body').on('tap','.simGoodsInstance',function(){
@@ -154,7 +154,7 @@
 			function getData(gName) {
 				mui.ajax(n.url + '/goods/queryGoodsInstanceVoAboutDefPriceList', {
 					data: {
-						sId:1
+						sId:sId
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

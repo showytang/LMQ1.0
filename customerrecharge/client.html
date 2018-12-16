@@ -90,7 +90,9 @@
 				<!--</div>-->
 			</div>
 		</div>
-	
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/mui.indexedlist.js"></script>
 		<script type="text/javascript" src="../js/zjfinsert_admin.js"></script>
@@ -98,6 +100,8 @@
 		<script type="text/javascript" src="../js/vue.js"></script>
 		<script type="text/javascript" src="../js/zjfclient.js" ></script>
 		<script>
+			var loginUser = login.getLogin();
+			var sid = loginUser.store.id;
 			mui.init({
 				swipeBack: false
 			});
@@ -135,9 +139,9 @@
 					}
 				})
 				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname?sid=1', {
+				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
 					data: {
-
+						sid:sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

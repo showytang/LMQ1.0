@@ -73,7 +73,7 @@
 		<script src="../js/news.js"></script>
 		<script src="../js/vue.js"></script>
 		<script type="text/javascript">
-			var sId = 1;//默认门店id
+			var sId = plus.webview.currentWebview().sid;//默认门店id
 			mui.init({
 				subpages: [{
 					url: 'goodsInstanceSelectDef.html',
@@ -83,7 +83,7 @@
 						bottom: "0px",
 					},
 					extras: {
-						sId : 1
+						sId : plus.webview.currentWebview().sid
 					}
 				}]
 			});

@@ -218,7 +218,8 @@
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
 					var vw = plus.webview.getWebviewById("goodsInstanceSelect_h.html");
 					vw = plus.webview.create("goodsInstanceSelect_h.html", "goodsInstanceSelect_h.html", {}, {
-						cid: v.cid
+						cid: v.cid,
+						sid:sid
 					});
 					vw.show("slide-in-right");
 				});
@@ -371,8 +372,8 @@
 				console.log("二维码扫到了:" + x);
 				mui.ajax(n.url + "/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice", {
 					data: {
-						gInId: 2,
-						sId: 1,
+						gInId: x,
+						sId: sid,
 						cId: v.cid
 					},
 					dataType: 'json', //服务器返回json格式数据

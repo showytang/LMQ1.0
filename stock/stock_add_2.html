@@ -219,7 +219,8 @@
 					//创建并判断是否存在列表内容窗体
 					var vw = plus.webview.getWebviewById("goodsInstanceSelectDef_h.html");
 					vw = plus.webview.create("goodsInstanceSelectDef_h.html", "goodsInstanceSelectDef_h.html", {}, {
-						cid: 1
+						cid: 1,
+						sid:sid
 					});
 					vw.show("slide-in-right");
 				});
