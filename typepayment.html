@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.cp_ul{
+				margin-top: 50px;
+			}
+			.cp_insert{
+				float: right;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">支付类型</h1>
+		    <a><span class="mui-icon mui-icon-plusempty cp_insert"></span></a>
+		</header>
+		<ul class="mui-table-view mui-table-view-chevron cp_ul">
+			<li class="mui-table-view-cell cp_lili" id="cp_setting" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+			<div class="mui-slider-left mui-disabled">
+				<a class="mui-btn mui-btn-red">删除</a>
+			</div>
+			<div class="mui-slider-handle">
+				<a href="#">{{obj.name}}</a>
+			</div>
+		</li>
+		</ul>
+		
+	</body>
+</html>
+<script type="text/javascript" src="js/vue.js"></script>
+<script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/news.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	var v = new Vue({
+		el: ".cp_ul",
+		data: {
+			list: null,
+		}
+	})
+	async(function*() {
+		//当如果存在时不会创建表，更新版本时会在次创建
+		var db = yield new DB("LMQ", function(a) {
+			createTable(a.target.result);
+		}, 1);
+	});
+	mui.init();
+	async(function*() {
+		var db = yield new DB("LMQ");
+		//获取当前使用的用户
+		var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+		var uid=atuser[0].id;
+		mui.ajax(n.url+'/paytype/queryByUserid',{
+			data:{
+				uid:uid
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				if (data) {
+					console.log(JSON.stringify(data))
+					v.list=data;
+					
+				} else{
+					mui.toast("没有支付类型，请添加！")
+				}
+				
+			},
+			error:function(xhr,type,errorThrown){
+				
+			}
+		});
+	});
+	mui.plusReady(function() {
+		mui('.mui-bar').on('tap','.cp_insert',function(){
+		  plus.webview.create("insertpaytype.html", "insertpaytype.html", {}, {}).show("none")
+		}) 
+		var btnArray = ['确认', '取消'];
+		mui('.cp_ul').on('tap', '.mui-btn', function() {
+			var dataid = this.parentNode.parentNode.getAttribute("data-id");
+			/*var id=this.getElementById('.cp_lili').parentNode().getAttribute("data-id");*/
+			/*var id= document.getParent(".cp_lili").getAttribute("data-id");*/
+			mui.confirm('是否确认删除？', '温馨提示', btnArray, function(e) {
+				if (e.index == 0) {
+					mui.ajax(n.url+'/paytype/deleteByPrimaryKey',{
+						data:{
+							id:dataid
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							if (data) {
+								plus.webview.create("index.html", "index.html", {}, {}).show("none")
+							} else{
+								
+							}
+						},
+						error:function(xhr,type,errorThrown){
+							
+						}
+					});
+				} else {
+					setTimeout(function() {
+						
+					}, 0);
+				}
+			});
+		});
+	})
+</script>	
