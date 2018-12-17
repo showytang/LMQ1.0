@@ -144,7 +144,7 @@
 				</div>
 				<!--各种价格-->
 				<div id="priceSec">
-					<div class="titleSec" v-for="(p,index) in list">
+					<div class="titleSec" style="display: none;" v-for="(p,index) in list">
 						<label class="label">{{p.name}}</label>
 						<input v-bind:data-agio="p.agio" v-bind:data-id="p.id" style="width: 75%;" class="input" type="number" placeholder="请输入价格">
 					</div>
@@ -291,7 +291,7 @@
 					this.classList.toggle("mui-icon-arrowup");
 					var priceDivs = document.querySelector("#priceSec").querySelectorAll(".titleSec");
 					for(var i = 0; i < priceDivs.length; i++) {
-						if(this.classList.contains("mui-icon-arrowup")) {
+						if(this.classList.contains("mui-icon-arrowdown")) {
 							priceDivs[i].style.display = "none";
 						} else {
 							priceDivs[i].style.display = "block";
