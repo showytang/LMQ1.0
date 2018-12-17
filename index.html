@@ -486,11 +486,13 @@
 <script type="text/javascript" src="js/enter.js"></script>
 <script type="text/javascript" charset="utf-8">
 	async(function*() {
+		
 		//当如果存在时不会创建表，更新版本时会在次创建
 		var db = yield new DB("LMQ", function(a) {
 			createTable(a.target.result);
 		}, 1);
 	});
+	
 	mui.init();
 	var v = new Vue({
 		el: ".cp_classname",
@@ -508,6 +510,12 @@
 			var db = yield new DB("LMQ");
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+			if(!atuser || atuser.length==0){
+				mui.alert("登录用户超时，请重新登录.",function(){
+					plus.webview.create("admin.html","admin.html").show("none");
+				});
+				return;
+			}
 			var alluser = yield db.get("user"); //获取全部登入用户
 			v.list = alluser;
 			/*ajax发送登入的用户到服务端 以JSON格式*/
@@ -525,21 +533,23 @@
 				},
 				error: function(xhr, type, errorThrown) {}
 			});
-			mui.ajax(n.url + '/Store/CurrentStore',{
-				data:{
-					user1:atuser[0].user1
-				},
-				dataType:'json',//服务器返回json格式数据
-				type:'post',//HTTP请求类型
-				timeout:10000,//超时时间设置为10秒；
-				success:function(data){
-					
-				},
-				error:function(xhr,type,errorThrown){
-					
-				}
-			});
-			var name=JSON.stringify(atuser[0].store.name)
+			console.log("111111111111111"+JSON.stringify(atuser));
+// 			mui.ajax(n.url + '/Store/CurrentStore',{
+// 				data:{
+// 					user1:atuser[0].user1
+// 				},
+// 				dataType:'json',//服务器返回json格式数据
+// 				type:'post',//HTTP请求类型
+// 				timeout:10000,//超时时间设置为10秒；
+// 				success:function(data){
+// 					
+// 				},
+// 				error:function(xhr,type,errorThrown){
+// 					
+// 				}
+// 			});
+			var name=JSON.stringify(atuser[0].defaultStore.name)
+			console.log("111")
 			document.querySelector(".cp_head").innerHTML=name;
 	});
 	function eachStore(slist) {
