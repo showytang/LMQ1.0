@@ -7,6 +7,7 @@
 		<title></title>
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<style type="text/css">
+			
 			.mui-card {
 				margin-left: 0px;
 				margin-right: 0px;
@@ -332,7 +333,7 @@
 												<img class="mui-media-object" src="http://placehold.it/400x300">
 											</div>
 											<div class="mui-media-body cp_div">
-												<a href="#" class="cp_head">1111111111</a>
+												<a href="#" class="cp_head">加载中...</a>
 											</div>
 										</a>
 									</li>
@@ -341,16 +342,20 @@
 									<ul class="mui-table-view mui-table-view-chevron">
 										<li class="mui-table-view-cell mui-collapse">
 											<a class="mui-navigate-right" href="#">切换用户</a>
-											<ul class="mui-table-view mui-table-view-chevron" id="cp_ul">
-												<li class="mui-table-view-cell" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+											<ul class="mui-table-view mui-table-view-chevron cp_ul" id="OA_task_1">
+												<!--<li class="mui-table-view-cell" v-for="(obj,index) in list" v-bind:data-id="obj.id">
 													<a href="#">{{obj.name}}</a>
+												</li>-->
+												<li class="mui-table-view-cell cp_lili" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+													<div class="mui-slider-left mui-disabled">
+														<a class="mui-btn mui-btn-red">删除</a>
+													</div>
+													<div class="mui-slider-handle">
+														<a href="#">{{obj.name}}</a>
+													</div>
 												</li>
-												<!--<li class="mui-table-view-cell"><a href="#">赵举峰</a>
-											</li>
-											<li class="mui-table-view-cell"><a href="#">今天脚脚也要开心</a>
-											</li>-->
 											</ul>
-										</li>
+										</ li>
 										<li class="mui-table-view-cell mui-collapse">
 											<a class="mui-navigate-right" href="#">支付管理</a>
 											<ul class="mui-table-view mui-table-view-chevron">
@@ -504,10 +509,6 @@
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
 			var alluser = yield db.get("user"); //获取全部登入用户
-			if(!alluser || alluser.length==0){
-				
-				return;
-			}
 			v.list = alluser;
 			/*ajax发送登入的用户到服务端 以JSON格式*/
 			var sid=JSON.stringify(alluser[0].id);
@@ -524,7 +525,21 @@
 				},
 				error: function(xhr, type, errorThrown) {}
 			});
-			var name=JSON.stringify(atuser[0].name)
+			mui.ajax(n.url + '/Store/CurrentStore',{
+				data:{
+					user1:atuser[0].user1
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					
+				},
+				error:function(xhr,type,errorThrown){
+					
+				}
+			});
+			var name=JSON.stringify(atuser[0].store.name)
 			document.querySelector(".cp_head").innerHTML=name;
 	});
 	function eachStore(slist) {
@@ -537,7 +552,6 @@
 			var a = document.createElement("a");
 			a.innerHTML = slist[i].name;
 			a.setAttribute("attrid",slist[i].id);
-			console.log("秀" + JSON.stringify(slist[i]))
 			aa.appendChild(a);
 			document.querySelector(".store").appendChild(aa);
 		}
@@ -548,6 +562,7 @@
 			if(!menuListName[i-1]){
 				continue;
 			}
+			console.log(menuListName[i-1]);
 			a[i].setAttribute("name", menuListName[i-1]);
 		}
 		
@@ -556,18 +571,18 @@
 			menuListName[i] + ".html",
 			menuListName[i], {
 				top: "0px",
-				bottom: "45px",
-				left:"100%"//,
-//				zindex : 100
+				bottom: "45px"
 			});
-			a.show("none");
 		}
 	}
-	var menuListName = ["a", "goodsManage_h","User_admin"];
+	var menuListName = ["a", "goodsManage"];
 	mui.plusReady(function() {
 		initTab();
 		/*cpp*/
 		/*新增页面*/
+		mui('body').on('tap', '#cp_payment', function(e) {
+			plus.webview.create("typepayment.html", "typepayment.html", {}, {}).show("none")
+		});
 		mui('body').on('tap', '#cp_insertshop', function(e) {
 			plus.webview.create("shop.html", "shop.html", {}, {}).show("none")
 		});
@@ -579,37 +594,25 @@
 		//选项卡切换
 		mui('body').on('tap', '.mui-tab-item', function() {
 			var name = this.getAttribute("name");
+			console.log(name)
 			if(name=="home"){
 				if(currentWebView){
-					//currentWebView.hide("none");
-					currentWebView.setStyle({left:"100%"})
+					currentWebView.hide("none");
 				}
-				currentWebView = null;
 				return;				
 			}
-//			plus.webview.currentWebview().hide();
 			var webview = plus.webview.getWebviewById(name);
 			if(webview) {
-				if(currentWebView && currentWebView.id == webview.id){
-					return;
-				}
-				webview.setStyle({left:"0px"});
 				if(currentWebView){
-					currentWebView.setStyle({left:"100%"});
+					currentWebView.hide("none");
 				}
-				/*webview.show("none",0,function(){
-						if(currentWebView){
-							//currentWebView.hide("slide-in-right",1000);
-						}
-				});*/
+				webview.show("none");
 				currentWebView = webview;
-				
-				
 				return;
 			}
 		})
 		/*点击切换用户*/
-		mui('#cp_ul').on('tap', '#cp_ul li', function() {
+		mui('.cp_ul').on('tap', '.cp_ul li', function() {
 			var dataid = this.getAttribute("data-id");
 			async(function*() {
 				var db = yield new DB("LMQ");
@@ -619,6 +622,9 @@
 				var alluser = yield db.get("user", parseInt(dataid));
 				if(alluser) {
 					alluser.active = "true";
+					if(!alluser.defaultStore){
+						alluser.defaultStore = alluser.store;
+					}
 					yield db.put("user", alluser);
 					var name=alluser.name;
 					var pwd=alluser.pwd;
@@ -629,31 +635,27 @@
 		/*点击切换门店*/
 		mui('.cp_outlet').on('tap','.cp_shop a',function(){
 			var attrid = this.getAttribute("attrid");
-		  	mui.ajax(n.url + '/User/queryuser1',{
+		  	/**/
+		  	mui.ajax(n.url + '/Store/CurrentStore',{
 		  		data:{
-		  			user1:attrid
+		  			id:attrid
 		  		},
 		  		dataType:'json',//服务器返回json格式数据
 		  		type:'post',//HTTP请求类型
 		  		timeout:10000,//超时时间设置为10秒；
 		  		success:function(data){
-	  				async(function*() {
-					var db = yield new DB("LMQ");
-					var atuser = yield db.index("user", "active", "true");
-					atuser[0].active = "false"; //把当前登入用户改为false
-					db.put("user", atuser[0]);
-						if(data) {
-							data.active = "true";
-							yield db.put("user", data);
-							var name=data.name;
-							var pwd=data.pwd;
-							loginenter.Login(name,pwd);
-						}
-					})
-		  			var name= data.name;
-		  			var pwd = data.pwd;
-		  			alert(name+"aaa"+pwd)
-		  			loginenter.Login(name,pwd);
+		  			console.log(JSON.stringify(data[0]))
+		  			if(data && data[0]){
+		  				async(function*() {
+							var db = yield new DB("LMQ");
+							//获取当前使用的用户
+							var user = yield db.index("user","active","true");
+							user[0].defaultStore = data[0];
+							yield db.put("user",user[0]);
+							console.log(JSON.stringify(user[0]))
+						});
+		  				
+		  			}
 		  		},
 		  		error:function(xhr,type,errorThrown){
 		  			
@@ -661,5 +663,30 @@
 		  	});
 		  	
 		}) 
+		var btnArray = ['确认', '取消'];
+		mui('#OA_task_1').on('tap', '.mui-btn', function() {
+			var elem = this;
+			var li = elem.parentNode.parentNode;
+			var dataid = this.parentNode.parentNode.getAttribute("data-id");
+			/*var id=this.getElementById('.cp_lili').parentNode().getAttribute("data-id");*/
+			/*var id= document.getParent(".cp_lili").getAttribute("data-id");*/
+			mui.confirm('确认删除该账号？', '温馨提示', btnArray, function(e) {
+				if (e.index == 0) {
+					li.parentNode.removeChild(li);
+					async(function*() {
+						var db = yield new DB("LMQ");
+						yield db.delete("user", parseInt(dataid));
+						var user = yield db.index("user","active","true");
+						if (!user[0]) {
+							plus.webview.create("admin.html","admin.html",{},{}).show("none")
+						}
+					})
+				} else {
+					setTimeout(function() {
+						
+					}, 0);
+				}
+			});
+		});
 	})
 </script>
