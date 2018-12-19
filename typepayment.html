@@ -104,7 +104,7 @@
 						timeout:10000,//超时时间设置为10秒；
 						success:function(data){
 							if (data) {
-								plus.webview.create("index.html", "index.html", {}, {}).show("none")
+								plus.webview.getLaunchWebview().show("none");
 							} else{
 								
 							}

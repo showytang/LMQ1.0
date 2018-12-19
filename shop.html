@@ -9,27 +9,30 @@
 		<link href="css/mui.picker.css" rel="stylesheet" />
 		<link href="css/mui.poppicker.css" rel="stylesheet" />
 		<style type="text/css">
-			#showCityPicker3{
+			#showCityPicker3 {
 				color: #000000;
 			}
-			.mui-input-group .mui-input-row{
+			
+			.mui-input-group .mui-input-row {
 				color: black;
 			}
-			.mui-input-group{
+			
+			.mui-input-group {
 				margin-top: 50px;
 			}
-			#cp_insertshop{
+			
+			#cp_insertshop {
 				margin-top: 10px;
 			}
 		</style>
 	</head>
-	
+
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">新增门店</h1>
 		</header>
-		<div class="mui-content">
+		<div class="mui-content a">
 			<div class="mui-input-row">
 				<label>门店名称:</label>
 				<input type="text" placeholder="" name="name">
@@ -45,16 +48,20 @@
 			</div>
 			<div class="mui-input-row">
 				<label>店员电话:</label>
-				<input type="text" placeholder="" name="phone">
+				<input type="text" placeholder="" name="account">
 			</div>
 			<div class="mui-input-row">
 				<label>店铺密码:</label>
 				<input type="password" placeholder="请输入八位以上的数字或字母" name="pwd">
 			</div>
-			<div class="mui-input-row">
+			<div class="mui-input-row cp_name">
 				<label>类型名称:</label>
-				<input type="text" placeholder="" name="type">
+				<!--<input type="text" placeholder="" name="type">-->
+				<select class="mui-btn mui-btn-block select" style="width:65%;color: #000000;padding-left:0px;background-color: #efeff4;" name="type">
+					<option v-bind:data-id="obj.id"  v-for="(obj,index) in list" v-bind:value="obj.id">{{obj.name}}</option>
+				</select>
 			</div>
+
 			<button type="button" id="cp_insertshop" class="mui-btn mui-btn-blue mui-btn-block">新增</button>
 		</div>
 		<script src="js/mui.min.js"></script>
@@ -62,96 +69,158 @@
 		<script src="js/mui.poppicker.js"></script>
 		<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/new.js" type="text/javascript" charset="utf-8"></script>
-
+		<script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/vue.js"></script>
+		<script type="text/javascript" src="js/news.js" ></script>
 		<script type="text/javascript">
 			(function($, doc) {
+				mui.init()
+				mui.ready(function() {
 					mui.init()
-					mui.ready(function() {
-						mui.init()
-						/*三级联动*/
-						var _getParam = function(obj, param) {
-							return obj[param] || '';
-						};
-						var cityPicker3 = new $.PopPicker({
-							layer: 3
-						});
-						cityPicker3.setData(cityData3);
-						var showCityPickerButton = doc.getElementById('showCityPicker3');
-						var cityResult3 = document.querySelector("[name=bigAddres]");
-						/*mui('body').on('tap', showCityPickerButton, function() {
-							cityPicker3.show(function(items) {
-								cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
-								//返回 false 可以阻止选择框的关闭
-								//return false;
-							});
-						})*/
-						showCityPickerButton.addEventListener('tap', function(event) {
-						 	cityPicker3.show(function(items) {
-								cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
-								//返回 false 可以阻止选择框的关闭
-								//return false;
-							});
-
-						}, false);
-						
-						mui('body').on('tap', '#cp_insertshop', function() {
-							var val=document.querySelector("#showCityPicker3").innerHTML;
-							alert(val)
-							var province=val.substring(0,val.indexOf(" "))	//省
-							var city=val.substring(val.indexOf(" "),val.indexOf("市")+1)		//市
-							var county=val.substring(val.lastIndexOf(" "),val.length)		//区
-							if(city==""){
-								city=province
-							}
-							var param=obj.getParam(".mui-content")
-							alert(param)
-							//转换成对象格式
-							var p={province:province}	
-							var c={city:city}
-							var q={district:county}
-/*							var l={lid:lid}	*/		
-						/*	var s={sid:1}	*/			//暂时死值
-							var t=Object.assign(p,c,q);		//组合成JSON对象
-							//拼接JSON对象
-							for(var item in t){
-								param[item]=t[item]
-							}
-							alert(JSON.stringify(param));
-							mui.ajax(obj.url+'/User/sessionUser',{
-								data:param,
-								dataType:'json',//服务器返回json格式数据
-								type:'post',//HTTP请求类型
-								timeout:10000,//超时时间设置为10秒；
-								success:function(data){
-									
+					var v = new Vue({
+						el: ".cp_name",
+						data: {
+							list: null,
+						}
+					})
+					async(function*() { //同步
+						var db = yield new DB("LMQ");
+						//获取当前使用的用户
+						var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+						console.log("好家伙" + JSON.stringify(atuser[0].store.storetype.level))
+						if(atuser[0].store.storetype.level != null) {
+							var aa = parseInt(atuser[0].store.storetype.level);
+							mui.ajax(n.url + '/Storetype/queryBylevel', {
+								data: {
+									level: aa
 								},
-								error:function(xhr,type,errorThrown){
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									console.log(JSON.stringify(data))
+									v.list = data;
+								},
+								error: function(xhr, type, errorThrown) {
+
+								}
+							});
+						} else {
+
+						}
+					});
+					/*三级联动*/
+					var _getParam = function(obj, param) {
+						return obj[param] || '';
+					};
+					var cityPicker3 = new $.PopPicker({
+						layer: 3
+					});
+					cityPicker3.setData(cityData3);
+					var showCityPickerButton = doc.getElementById('showCityPicker3');
+					var cityResult3 = document.querySelector("[name=bigAddres]");
+					/*mui('body').on('tap', showCityPickerButton, function() {
+						cityPicker3.show(function(items) {
+							cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+					})*/
+					showCityPickerButton.addEventListener('tap', function(event) {
+						cityPicker3.show(function(items) {
+							cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
+							//返回 false 可以阻止选择框的关闭
+							//return false;
+						});
+
+					}, false);
+
+					mui('body').on('tap', '#cp_insertshop', function() {
+						var param=n.getParam(".a")
+						var val = document.querySelector("[name=bigAddres]").innerHTML
+						var province = val.substring(0, val.indexOf(" ")) //省
+						var city = val.substring(val.indexOf(" "), val.indexOf("市") + 1) //市
+						var county = val.substring(val.lastIndexOf(" "), val.length) //区
+						var sel = document.querySelector(".cp_name .select")
+						var index = sel.selectedIndex
+						var sid = sel.options[index].value //客户等级
+						console.log(city)
+						if(city == "") {
+							city = province
+						}
+						var p = {
+							province: province
+						}
+						var c = {
+							city: city
+						}
+						var q = {
+							district: county
+						}
+						var l ={
+							stid: sid
+						}
+						var t = Object.assign(p, c, q ,l); //组合成JSON对象
+						//拼接JSON对象
+						for(var item in t) {
+							param[item] = t[item]
+						}
+						var name=document.querySelector("[name=name]").value
+						var account=document.querySelector("[name=account]").value
+						var address=document.querySelector("[name=address]").value
+						var pwd=document.querySelector("[name=pwd]").value
+						/*alert(name+""+address+""+phone+""+pwd+""+province+""+city+""+county+""+lid)*/
+						console.log()
+						async(function*() { //同步
+							var db = yield new DB("LMQ");
+							//获取当前使用的用户
+							var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+							var Parentid = parseInt(atuser[0].store.id);
+							var c={"name":name,"address":address,"province":province,"city":city,"district":county,"stid":sid,"Parented":Parentid,"user":{"name":account,"pwd":pwd}}
+							param.Parented = Parentid;
+							mui.ajax(n.url + '/Store/insertSelective', {
+								data:JSON.stringify(c),
+								dataType: 'json', //服务器返回json格式数据
+								type: 'post', //HTTP请求类型
+								timeout: 10000, //超时时间设置为10秒；
+								contentType:"application/json;charset=utf-8",
+								success: function(data) {
+									if (data) {
+										mui.toast("新增成功！")
+										plus.webview.create("index.html","index.html",{},{}).show("none")
+									} else{
+										mui.toast("新增失败！")
+									}
+								},
+								error: function(xhr, type, errorThrown) {
 									
 								}
 							});
-						})
-
+						});
+						
 					})
 
-					/*电话号码正则*/
-					function checkPhone() {
-						var phone = document.getElementById('phone').value;
-						if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))) {
-							alert("手机号码有误，请重填");
-							return false;
-						}
+				})
+
+				/*电话号码正则*/
+				function checkPhone() {
+					var phone = document.getElementById('phone').value;
+					if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))) {
+						alert("手机号码有误，请重填");
+						return false;
 					}
-					/*密码正则*/
-					function isPassword(s) {
-						if(typeof(parseInt(s[0])) == 'number') return "NO";
-						var reg = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)\S{8,}$/;
-						var result = reg.test(s);
-						if(result == "true")
-							return "YES";
-					}
-					var s = "0ssssssss";
-					var t = isPassword(s);
+				}
+				/*密码正则*/
+				function isPassword(s) {
+					if(typeof(parseInt(s[0])) == 'number') return "NO";
+					var reg = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)\S{8,}$/;
+					var result = reg.test(s);
+					if(result == "true")
+						return "YES";
+				}
+				var s = "0ssssssss";
+				var t = isPassword(s);
 			})(mui, document);
 		</script>
 
