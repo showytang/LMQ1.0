@@ -571,11 +571,13 @@
 			menuListName[i] + ".html",
 			menuListName[i], {
 				top: "0px",
-				bottom: "45px"
+				bottom: "45px",
+				left:"100%"//,
 			});
+			a.show("none");
 		}
 	}
-	var menuListName = ["a", "goodsManage"];
+	var menuListName = ["a", "goodsManage_h","User_admin"];
 	mui.plusReady(function() {
 		initTab();
 		/*cpp*/
@@ -597,17 +599,33 @@
 			console.log(name)
 			if(name=="home"){
 				if(currentWebView){
+					//currentWebView.hide("none");
+					currentWebView.setStyle({left:"100%"})
 					currentWebView.hide("none");
 				}
+				currentWebView = null;
 				return;				
 			}
+//			plus.webview.currentWebview().hide();
 			var webview = plus.webview.getWebviewById(name);
 			if(webview) {
+				if(currentWebView && currentWebView.id == webview.id){
+					return;
+				}
+				webview.setStyle({left:"0px"});
 				if(currentWebView){
+					currentWebView.setStyle({left:"100%"});
 					currentWebView.hide("none");
 				}
+				/*webview.show("none",0,function(){
+						if(currentWebView){
+							//currentWebView.hide("slide-in-right",1000);
+						}
+				});*/
 				webview.show("none");
 				currentWebView = webview;
+				
+				
 				return;
 			}
 		})
