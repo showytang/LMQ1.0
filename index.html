@@ -343,6 +343,9 @@
 										<li class="mui-table-view-cell mui-collapse">
 											<a class="mui-navigate-right" href="#">切换用户</a>
 											<ul class="mui-table-view mui-table-view-chevron cp_ul" id="OA_task_1">
+												<!--<li class="mui-table-view-cell" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+													<a href="#">{{obj.name}}</a>
+												</li>-->
 												<li class="mui-table-view-cell cp_lili" v-for="(obj,index) in list" v-bind:data-id="obj.id">
 													<div class="mui-slider-left mui-disabled">
 														<a class="mui-btn mui-btn-red">删除</a>
@@ -381,11 +384,6 @@
 										<li class="mui-table-view-cell" id="cp_insertshop">
 											<a style="text-align: center;color: #FF3B30;">
 												新增门店
-											</a>
-										</li>
-										<li class="mui-table-view-cell" id="cp_inserttype">
-											<a style="text-align: center;color: #FF3B30;">
-												新增门店类型
 											</a>
 										</li>
 									</ul>
@@ -493,7 +491,6 @@
 			createTable(a.target.result);
 		}, 1);
 	});
-	
 	mui.init();
 	var v = new Vue({
 		el: ".cp_classname",
@@ -505,20 +502,12 @@
 	window.onload = function() {
 		var height = window.screen.height;
 		document.querySelector(".outo-scroll").style.height = height+"px";
-		indexLogin();
 	}
-	function indexLogin(){
-		async(function*() { //同步
+	async(function*() { //同步
 			login.getLogin();
 			var db = yield new DB("LMQ");
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-			if(!atuser || atuser.length==0){
-				mui.alert("登录用户超时，请重新登录.",function(){
-					plus.webview.create("admin.html","admin.html").show("none");
-				});
-				return;
-			}
 			var alluser = yield db.get("user"); //获取全部登入用户
 			v.list = alluser;
 			/*ajax发送登入的用户到服务端 以JSON格式*/
@@ -536,17 +525,24 @@
 				},
 				error: function(xhr, type, errorThrown) {}
 			});
-			var name=JSON.stringify(atuser[0].defaultStore.name)
+			mui.ajax(n.url + '/Store/CurrentStore',{
+				data:{
+					user1:atuser[0].user1
+				},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				success:function(data){
+					
+				},
+				error:function(xhr,type,errorThrown){
+					
+				}
+			});
+			var name=JSON.stringify(atuser[0].store.name)
 			document.querySelector(".cp_head").innerHTML=name;
-		});
-		
-	}
-	
+	});
 	function eachStore(slist) {
-		var asa=document.querySelector(".cp_shop").childNodes;
-			for(var i=0;i<asa.length;i++){
-				asa[i].remove()
-			}
 		for(var i = 0; i < slist.length; i++) {
 			if(slist[i].list) {
 				eachStore(slist[i].list);
@@ -585,9 +581,6 @@
 	mui.plusReady(function() {
 		initTab();
 		/*cpp*/
-		mui('body').on('tap', '#cp_inserttype', function(e) {
-			plus.webview.create("insertType.html", "insertType.html", {}, {}).show("none")
-		});
 		/*新增页面*/
 		mui('body').on('tap', '#cp_payment', function(e) {
 			plus.webview.create("typepayment.html", "typepayment.html", {}, {}).show("none")
@@ -654,7 +647,6 @@
 					var name=alluser.name;
 					var pwd=alluser.pwd;
 					loginenter.Login(name,pwd);
-					indexLogin();
 				}
 			})
 		})
