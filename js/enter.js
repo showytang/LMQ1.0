@@ -20,9 +20,11 @@ var loginenter = {
 						/*data.id="1";
 						yield db.put("store", data);*/
 					});
-					plus.webview.getLaunchWebview().show("none");
+					//mui.fire(plus.webview.getWebviewById("index.html"),‘refresh’);
+					//plus.webview.getLaunchWebview().show("none");
+					//plus.webview.getWebviewById("index.html").show();
 					//跳转页面
-					//plus.webview.create("index.html", "index.html", {}, {}).show("none")
+					plus.webview.create("index.html", "index.html", {}, {}).show("none")
 				} else {
 					mui.toast("你没有对象您输入的账号或者密码错误！")
 				}

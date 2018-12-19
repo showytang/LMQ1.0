@@ -26,17 +26,6 @@
 					loginenter.Login(name,pwd);
 				})
 
-				/* mui('body').on('tap', '.getLogin', function() {
-					async(function*() {
-						var db = yield new DB("LMQ");
-						//获取当前使用的用户
-						var user = yield db.index("user","active","true");
-						console.log(JSON.stringify(user[0]));
-						//获取当前使用的用户
-						var user1 = yield db.get("user",1);
-						console.log(JSON.stringify(user1));
-					});
-				}) */
 			})
 		</script>
 	</head>
@@ -55,6 +44,5 @@
 			</form>
 		</div>
 		<button type="button" class="login mui-btn mui-btn-blue mui-btn-block">登陆用户</button>
-		<button type="button" class="getLogin mui-btn mui-btn-blue mui-btn-block">获取登陆用户</button>
 	</body>
 </html>
