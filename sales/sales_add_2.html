@@ -67,7 +67,7 @@
 									<a class="mui-btn mui-btn-red">删除</a>
 								</div>
 								<div class="mui-slider-handle mui-row">
-									<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+									<div class="mui-col-xs-2"><img v-bind:src="url+s.url" width="50px" height="50px" /></div>
 									<div class="mui-col-xs-10">
 										<div class="mui-row">
 											<span hidden="" name="user1">{{s.user1}}</span>
@@ -165,7 +165,8 @@
 					salesdetails: [],
 					money: null,
 					cid: null,
-					cname: null
+					cname: null,
+					url:n.url+"/"
 				}
 			});
 			mui.init({
