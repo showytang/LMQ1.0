@@ -69,7 +69,7 @@
 						cancel: "取消"
 					}, function(e) {
 						if(e.index == 1) { //添加商品
-							var webview = plus.webview.create("goodsAdd_h.html", "goodsAdd_h.html", {}, {});
+							var webview = plus.webview.create("goods/goodsAdd_h.html", "goodsAdd_h.html", {}, {});
 							webview.show("slide-in-right");
 						} else if(e.index == 2) { //打印
 							var webview = plus.webview.getWebviewById("goodsManage.html");

@@ -77,7 +77,7 @@
 							<div class="mui-col-xs-7 mui-row">
 
 								<div class="mui-col-xs-3">
-									<img src="" width="50px" height="50px" />
+									<img v-bind:src="url+s.imgurl" width="50px" height="50px" />
 								</div>
 								<div class="mui-col-xs-6" style="font-size: 0.9em;">
 									<div class="">
@@ -110,7 +110,7 @@
 						<a class="mui-navigate">
 							<div class="mui-input-row ">
 								<label>定金</label>
-								<input type="number" v-bind:value="Salesindent.deposi" />
+								<input type="number" disabled="disabled" v-bind:value="Salesindent.deposi" />
 							</div>
 						</a>
 					</li>
@@ -175,7 +175,8 @@
 				el: ".mui-content",
 				data: {
 					Salesindent: {},
-					stime: ""
+					stime: "",
+					url:n.url+"/"
 				}
 			});
 			//通过ajax查询出信息并赋值vue对象

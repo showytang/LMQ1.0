@@ -78,8 +78,9 @@
 							<div class="mui-col-xs-7 mui-row">
 
 								<div class="mui-col-xs-3">
-									<img src="" width="50px" height="50px" />
+									<img v-bind:src="url+s.imgurl" width="50px" height="50px" />
 								</div>
+								<span hidden="" name="imgurl">{{s.imgurl}}</span>
 								<span hidden="" name="id">{{s.id}}</span>
 								<span hidden="" name="user1">{{s.user1}}</span>
 								<div class="mui-col-xs-6" style="font-size: 0.9em;">
@@ -180,7 +181,8 @@
 			var v = new Vue({
 				el: ".mui-content",
 				data: {
-					Salesindent: {}
+					Salesindent: {},
+					url:n.url+"/"
 
 				},
 				methods: {
@@ -217,7 +219,7 @@
 
 			function newAddSales() {
 				v.Salesindent.salesindentdetails = n.getSpanParam("#OA_task", ".mui-table-view-cell");
-				console.log(JSON.stringify(v.Salesindent));
+				console.log("这是我的"+JSON.stringify(v.Salesindent));
 
 				var vw = plus.webview.getWebviewById("salesindent_add_sales_1.html");
 

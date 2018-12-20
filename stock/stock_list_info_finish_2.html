@@ -98,7 +98,7 @@
 							</div>-->
 							
 							<div class="mui-slider-handle mui-row">
-								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-2"><img v-bind:src="url+s.url" width="50px" height="50px" /></div>
 								<div class="mui-col-xs-10">
 									<div class="mui-row">
 										<div class="mui-col-xs-6"><span name="user2">{{s.user1}}</span></div>
@@ -194,7 +194,8 @@
 				data: {
 					stock:{},
 					stockdetail:[],
-					stime: ""
+					stime: "",
+					url:n.url+"/"
 				}
 			});
 			//通过ajax查询出信息并赋值vue对象
