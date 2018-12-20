@@ -69,7 +69,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			//将时间段条件的中文显示到顶部条件位置
 			function showtcondition(){
@@ -87,6 +87,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 // 				mui('table').on('tap','tbody',function(){
 // 					var name="salesStatistics_Detail.html";
 // 					var newwebview=plus.webview.getWebviewById(name)
@@ -130,16 +133,17 @@
 					}
 			})
 			mui.ready(function () {
-				this.condition.date=0
+				// this.condition.date=0
 				this.condition.customer=1
 				this.condition.goodsid=0
+				this.condition.storeid=tzx.getLogin().store.id
 				v.condition=this.condition
 				query()
-				showtcondition()
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'SalesStatistics',{
+				showtcondition()
+				mui.ajax(tzx.getURL()+'SalesStatistics',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
