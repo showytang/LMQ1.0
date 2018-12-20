@@ -16,7 +16,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-		    <h1 class="mui-title">支付类型新增</h1>
+		    <h1 class="mui-title">门店类型新增</h1>
 		</header>
 		<div class="mui-content">
 			<form id='login-form' class="mui-input-group">
@@ -26,9 +26,13 @@
 				</div>
 			</form>
 		</div>
-		<button type="button" class="cp_paytype mui-btn mui-btn-blue mui-btn-block">新增类型</button>
+		<button type="button" class="cp_paytype mui-btn mui-btn-blue mui-btn-block">新增门店类型</button>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
 	</body>
-</html>
+
 <script type="text/javascript" src="js/vue.js"></script>
 <script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
@@ -43,11 +47,11 @@
 					var db = yield new DB("LMQ");
 					//获取当前使用的用户
 					var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-					var uid=atuser[0].id;
-					mui.ajax(n.url+'/paytype/insertPaytype',{
+					var level=atuser[0].store.storetype.level+1;
+					mui.ajax(n.url+'/Storetype/insertSelective',{
 						data:{
 							name:name,
-							uid:uid
+							Level:level
 						},
 						dataType:'json',//服务器返回json格式数据
 						type:'post',//HTTP请求类型
@@ -68,4 +72,4 @@
 				});
 			}) 
 		})
-		</script>
+</script>

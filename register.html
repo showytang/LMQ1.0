@@ -85,15 +85,10 @@
 						}
 					})
 					async(function*() { //同步
-						var db = yield new DB("LMQ");
-						//获取当前使用的用户
-						var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-						console.log("好家伙" + JSON.stringify(atuser[0].store.storetype.level))
 						if(atuser[0].store.storetype.level != null) {
-							var aa = parseInt(atuser[0].store.storetype.level);
 							mui.ajax(n.url + '/Storetype/queryBylevel', {
 								data: {
-									level: aa
+									level: 1
 								},
 								dataType: 'json', //服务器返回json格式数据
 								type: 'post', //HTTP请求类型
