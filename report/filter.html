@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>筛选</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<!-- <script type="text/javascript" src="../js/vue.js"></script> -->
+	<!-- <link rel="stylesheet" type="text/css" href="../css/tzx.css"/> -->
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.mui-content ul{padding: 0;background-color: white;}
+		.mui-content>ul>li{list-style-type: none;padding: 10px 10px;border-bottom: 1px solid #c0c0c0;}
+		.mui-content>ul>li>a{display: flex;justify-content: space-between;margin: 0;text-decoration: none;position: relative;}
+		.mui-content>ul>li>a>span{display: block;}
+	/* 	.mui-plus .plus{display: inline;}
+		.plus{display: none;}
+		.mui-popover {height: 300px;} */
+		.mui-content>ul>li>a>input[type=date]{width: 100%;padding: 0;margin: 0;position: absolute;top: -10px;padding-left: 60%;background-color: rgba(1,1,1,0);border: 0px;}
+		.d{display: none;}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class=" mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">筛选</h1>
+			<a class=" mui-pull-right mui-icon mui-icon-checkmarkempty"></a>
+		</header>
+		<div class="mui-content">
+			<ul>
+				<li id="middlePopoverDate" ><a href="javscript:void(0)" class=""><span>快速区间</span><span class="t_date">全部</span></a></li>
+				
+				<li class="d"><a href="javscript:void(0)" class=""><input type="date" name="starttime" id="starttime" value="" /><span>开始时间</span><span class="v" ></span></a></li>
+				<li class="d"><a href="javscript:void(0)" class=""><input type="date" name="endtime" id="endtime" value="" /><span>结束时间</span><span class="v" ></span></a></li>
+			</ul>
+			<ul class="OptionCondition">
+				<li id="middlePopoverOrder" ><a href="javscript:void(0)" class=""><span>排序方式</span><span class="t_order"></span></a></li>
+				<li id="middlePopoverSupplier" ><a href="javscript:void(0)" class=""><span>供应商</span><span class="t_supplier"></span></a></li>
+				<li id="middlePopoverCustomer" ><a href="javscript:void(0)" class=""><span>客户</span><span class="t_customer"></span></a></li>
+				<li id="middlePopoverGoodsType" ><a href="javscript:void(0)" class=""><span>商品类型</span><span class="t_goodstype"></span></a></li>
+				<li id="middlePopoverGoods" ><a href="javscript:void(0)" class=""><span>商品</span><span class="t_goodsid"></span></a></li>
+			</ul>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+// 			var showOptionCondition={optionname:'profit',optionvalue:'00111'},
+// 			function setshowOptionCondition(optionname){
+// 				this.showOptionCondition.optionname=optionname
+// 				var list= document.querySelectorAll(".OptionCondition li")
+// 				for(var i=0;i<tzx.showOptionCondition.length;i++){
+// 					if(tzx.showOptionCondition[i].optionname==showOptionCondition.optionname){
+// 						for(var j=0;j<list.length;j++){
+// 							if(tzx.showOptionCondition[i].substring(j,1)==0){
+// 								list[j].style.display="none"
+// 							}
+// 						}
+// 						
+// 					}
+// 				}
+// 			}
+			var current="filter.html";
+			//设置筛选条件
+			function setfilter(preWebview){
+				console.log("筛选-设置"+preWebview);
+				alert(preWebview)
+				prewebview=preWebview;;
+			}
+			function getclientId(data){
+				this.condition.customer=data.id
+				alert(JSON.stringify(data))
+			}
+			// 筛选条件
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function initCondition(c){
+				console.log("数据f:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				// alert(JSON.stringify(this.condition))
+			}
+			//设置条件-时间段
+			function setDate(date){
+				alert(this.condition.date)
+				this.condition.date=date
+				document.querySelector(".t_date").innerText=tzx.timeName[this.condition.date]
+			}
+			//设置条件-排序
+			function setOrder(order){
+				this.condition.order=order
+			}
+			//设置条件-顾客
+			function getclientId(customer){
+				this.condition.customer=customer.id
+				document.querySelector(".t_customer").innerText=customer.name
+				console.log(JSON.stringify(customer))
+				plus.webview.currentWebview().show()
+				plus.webview.getWebviewById("f_client.html").close()
+				// alert("顾客")
+			}
+			//设置条件-供应商
+			function getSupperObj(supplier){
+				this.condition.supplier=supplier
+				document.querySelector(".t_supplier").innerText=supplier.name
+				console.log(JSON.stringify(supplier))
+				plus.webview.currentWebview().show()
+				plus.webview.getWebviewById("f_supper.html").close()
+			}
+			//设置条件-商品类型
+			function setgoodstype(goodstype){
+				this.condition.goodstype=goodstype.typeId
+				var typeName=goodstype.typeName
+				document.querySelector(".t_goodstype").innerText=typeName
+				// alert("商品类型")
+				plus.webview.currentWebview().show()
+				// plus.webview.getWebviewById("goodsStypeStatistics_h.html").close()
+				// plus.webview.getWebviewById("goodsStypeStatistics.html").close()
+			}
+			//设置条件-商品
+			function setGoodsid(data){
+				this.condition.goodsid=data.goodsInstanceId
+				var gname=data.goodsName
+				var standardName=data.standardName
+				console.log(JSON.stringify(data))
+				document.querySelector(".t_goodsid").innerHTML=gname+standardName
+				// alert("商品")
+				plus.webview.currentWebview().show()
+				// plus.webview.getWebviewById("goodsInstanceStatistics_h.html").close()
+				// plus.webview.getWebviewById("goodsInstanceStatistics.html").close()
+			}
+			mui.plusReady(function () {
+				//取消返回
+				mui('header').on('tap','.mui-pull-left',function(){
+					var currentV= plus.webview.currentWebview();
+					currentV.hide("slide-out-right")
+					plus.webview.getWebviewById(currentV.opener().id).show("slide-in-left")
+				})
+				//保存退出
+				mui('header').on('tap','.mui-pull-right',function(){
+					saveAndExit()
+				})
+				var n;
+				mui('body').on('tap','#middlePopoverDate',function(){
+					// 弹出系统选择按钮框
+					console.log(this.innerHTML)
+					if(n==null){
+						n = plus.nativeUI.actionSheet({title:"选择时间段",cancel:"取消",buttons:[{title:"全部"},{title:"本年"},{title:"本季"},{title:"本月"},{title:"本周"},{title:"本日"},{title:"自定义"}]}, function(e){
+							console.log("User pressed: "+e.index);
+							//e.index:0取消 -1点击外部 12345---为顺序选择
+							if(e.index>0&&e.index<=7){
+								this.condition.date=e.index-1
+								document.querySelector(".t_date").innerHTML=tzx.timeName[this.condition.date]
+								// alert(this.condition.date+"-"+e.index)
+								var list= document.querySelectorAll(".d")
+								for(var i=0;i<list.length;i++){
+									list[i].style.display="none"
+								}
+								if(e.index==7){
+									// alert("自定义")
+									var list= document.querySelectorAll(".d")
+									for(var i=0;i<list.length;i++){
+										list[i].style.display="block"
+									}
+								}
+							}
+							n=null
+						} );
+					}
+				}) 
+				mui('body').on('tap','#middlePopoverSupplier',function(){
+					// 弹出系统选择按钮框
+					console.log(this.innerHTML)
+					if(n==null){
+						n = plus.nativeUI.actionSheet({title:"选择供应商",cancel:"取消",buttons:[{title:"全部"},{title:"本年"}]}, function(e){
+							console.log("User pressed: "+e.index);
+							//e.index:0取消 -1点击外部 12345---为顺序选择
+							if(e.index==1){
+								this.condition.supplier=0
+								document.querySelector(".t_supplier").innerHTML="全部"
+							}
+							if(e.index==2){
+								// alert("指定客户")
+								var webviewSelectCustomer=plus.webview.create("../stock/supper.html","f_supper.html",{},{})
+								plus.webview.currentWebview().hide("none")
+								webviewSelectCustomer.show("none")
+							}
+							n=null
+						} );
+					}
+				})
+				mui('body').on('tap','#middlePopoverCustomer',function(){
+					// 弹出系统选择按钮框
+					console.log(this.innerHTML)
+					if(n==null){
+						n = plus.nativeUI.actionSheet({title:"选择客户",cancel:"取消",buttons:[{title:"全部"},{title:"零售客户"},{title:"批发客户"},{title:"指定单个客户"}]}, function(e){
+							console.log("User pressed: "+e.index);
+							//e.index:0取消 -1点击外部 12345---为顺序选择
+							if(e.index>0&&e.index<4){
+								this.condition.date=e.index-1
+								document.querySelector(".t_customer").innerHTML=tzx.timeName[this.condition.customer]
+							}
+							if(e.index==4){
+								// alert("指定客户")
+								var webviewSelectCustomer=plus.webview.create("zjf/client.html","f_client.html",{},{})
+								plus.webview.currentWebview().hide("none")
+								webviewSelectCustomer.show("none")
+							}
+							n=null
+						} );
+					}
+				})
+				mui('body').on('tap','#middlePopoverGoodsType',function(){
+					// 弹出系统选择按钮框
+					console.log(this.innerHTML)
+					if(n==null){
+						n = plus.nativeUI.actionSheet({title:"选择商品类型",cancel:"取消",buttons:[{title:"全部"},{title:"选择"}]}, function(e){
+							console.log("User pressed: "+e.index);
+							//e.index:0取消 -1点击外部 12345---为顺序选择
+							if(e.index==1){
+								this.condition.goodstype=e.index-1
+								document.querySelector(".t_goodstype").innerHTML="全部"
+							}
+							if(e.index==2){
+								// alert("指定商品类型")
+								var webviewSelectCustomer=plus.webview.create("goodsStypeStatistics_h.html","goodsStypeStatistics_h.html",{},{})
+								plus.webview.currentWebview().hide()
+								webviewSelectCustomer.show("none")
+							}
+							n=null
+						} );
+					}
+				})
+				mui('body').on('tap','#middlePopoverGoods',function(){
+					// 弹出系统选择按钮框
+					console.log(this.innerHTML)
+					if(n==null){
+						n = plus.nativeUI.actionSheet({title:"选择商品",cancel:"取消",buttons:[{title:"全部"},{title:"指定单个商品"}]}, function(e){
+							console.log("User pressed: "+e.index);
+							//e.index:0取消 -1点击外部 12345---为顺序选择
+							if(e.index==1){
+								this.condition.goodsid=e.index-1
+								document.querySelector(".t_goodsid").innerHTML=this.condition.goodsid
+							}else if(e.index==2){
+								// alert("指定客户")
+								var webviewSelectCustomer=plus.webview.create("goodsInstanceStatistics_h.html","goodsInstanceStatistics_h.html",{},{})
+								plus.webview.currentWebview().hide()
+								webviewSelectCustomer.show("none")
+							}
+							n=null
+						} );
+					}
+				})
+			})
+			
+			//保存退出
+			function saveAndExit(){
+				console.log("筛选-保存退出");
+				this.condition.startdate=document.querySelector("[name=starttime]").value
+				this.condition.enddate=document.querySelector("[name=endtime]").value
+				if(this.condition.startdate==null||this.condition.startdate==""){
+					this.condition.startdate='2017-1-1'
+				}
+				if(this.condition.enddate==null||this.condition.enddate==""){
+					this.condition.enddate='2019-1-1'
+				}
+				var currentV= plus.webview.currentWebview();
+				currentV.hide("slide-out-right")
+				plus.webview.getWebviewById(currentV.opener().id).show("slide-in-left")
+				var parentV=plus.webview.getWebviewById(currentV.opener().id).evalJS("setcondition("+JSON.stringify(this.condition)+")")
+				var parentV=plus.webview.getWebviewById(currentV.opener().id).evalJS("query()")
+			}
+			
+
+
+		</script>
+	</body>
+</html>

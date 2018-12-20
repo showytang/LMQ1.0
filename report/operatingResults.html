@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>经营业绩报告</title>
+	<link rel="stylesheet" href="../css/mui.min.css">
+    <script src="../js/mui.min.js"></script>
+	<!-- <script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script> -->
+	<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/> -->
+	<!-- <script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		/* h5{text-align: center;margin: 0;padding: 6px;background-color:#5555ff;color: white;} */
+		.cur{padding: 0;}
+		.cur li{padding: 5px;display: flex;justify-content: space-between;background-color: white;margin-top: 10px;}
+		.tcondition li{width: 100%;}
+	</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-icon mui-icon-arrowthinleft" id="icon-left" name="report.html"></span>
+			<h1 class="mui-title">经营业绩报告</h1>
+			<span class="mui-icon mui-icon-gear" id="icon-right" name="filter.html" name="profitReport.html"></span>
+		</header>
+		<div class="mui-content">
+			<ul class="tcondition">
+				<li>全部</li>
+			</ul>
+			<!-- <h5>全部</h5> -->
+			<ul class="cur">
+				<li name="chartIncome.html"><span><span class="mui-icon mui-icon-paperclip"></span>销售收入</span><span><span></span class="income"></span></li>
+				<li name="chartProfit.html"><span><span class="mui-icon mui-icon-paperclip"></span>销售成本</span><span><span></span class="cost"></span></li>
+				<li name="chartExpenses.html"><span><span class="mui-icon mui-icon-paperclip"></span>经营费用</span><span><span></span class="expenses"></span></li>
+				
+			</ul>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				alert(JSON.stringify(this.condition))
+				// plus.webview.getWebviewById("filter.html").close()
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			var current="operatingResults.html";
+			mui.plusReady(function () {
+				mui.back=function () {
+				    tzx.back(current)	
+				}
+				mui('header').on('tap','#icon-right',function(){
+					tzx.gotoFilter(current)
+				})
+				mui('header').on('tap','#icon-left',function(){
+					tzx.back(current)
+				})
+				mui('ul').on('tap','li',function(){
+					var name=this.getAttribute("name");
+					var newwebview=plus.webview.getWebviewById(name)
+					if(newwebview==null){
+						var newwebview=plus.webview.create(name,name,{},{});
+					}
+					plus.webview.currentWebview().hide("slide-out-right")
+					newwebview.show("slide-in-right");
+				})
+				query()
+				
+			})
+			function query(){
+				showtcondition()
+			}
+			
+		</script>
+		
+	</body>
+</html>

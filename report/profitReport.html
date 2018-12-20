@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>利润统计</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<script src="../js/jquery-1.12.4.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+	<script src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		table{height: 100%;background-color: white;}
+		table tbody{margin: 1em 0;}
+		.totaltr{height: 80px; width: 100%;}
+		.total{position: fixed;bottom: 0px;width: 100%;}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">
+				<span>利润统计</span>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#a" data-toggle="tab">按客户</a></li>
+					<li><a href="#b" data-toggle="tab">按货品</a></li>
+				</ul>
+			</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content tab-content" id="all">
+			<ul class="tcondition">
+				<li>全部客户</li>
+				<li>2018.11.01-2018.11.30</li>
+			</ul>
+			<ul class="listtitle">
+				<li>折后金额</li><li>成本</li><li>利润</li><li>利润率</li>
+			</ul>
+			<div class="tab-pane active" id="a">
+
+				<table class="table" border="0" c cellspacing="" cellpadding="" style="margin-bottom: 50px;">
+					<!-- <tr><td>折后金额</td><td>成本</td><td>利润</td><td>利润率</td></tr> -->
+					<tbody v-for="(obj,index) in kh" v-on:click="jump(obj.cid)">
+						<tr><td colspan="4">{{obj.cname}}</td></tr>
+						<tr><td>{{obj.paymoney}}</td><td>{{obj.costmoney}}</td><td>{{obj.paymoney-obj.costmoney}}</td><td>{{obj.profitability}}%</td></tr>
+					</tbody>
+				</table>
+				<div class="total">
+					<span><p>折后金额</p><p>{{totalpaymoneykh}}</p></span>
+					<span><p>成本</p><p>{{totalcostmoneykh}}</p></span>
+					<span><p>利润</p><p>{{totalpaymoneykh-totalcostmoneykh}}</p></span>
+					<span><p>利润率</p><p>{{totalprofitability}}%</p></span>
+				</div>
+			</div>
+			<div class="tab-pane" id="b">
+				<table class="table" border="0" c cellspacing="" cellpadding="" style="margin-bottom: 50px;">
+					<!-- <tr><td>折后金额</td><td>成本</td><td>利润</td><td>利润率</td></tr> -->
+						<tbody v-for="(obj,index) in hp" v-on:click="jump1(obj.goodsinstanceid)">
+							<tr><td colspan="3">{{obj.gname}} {{obj.standardName}}</td><td>{{obj.count}}<span>{{obj.bname}}</span></td></tr>
+							<tr><td>{{obj.paymoney}}</td><td>{{obj.costmoney}}</td><td>{{obj.paymoney-obj.costmoney}}</td><td>{{obj.profitability}}%</td></tr>
+						</tbody>
+				</table>
+				<div class="total" style="">
+					<span><p>折后金额</p><p>{{totalpaymoneyhp}}</p></span>
+					<span><p>成本</p><p>{{totalcostmoneyhp}}</p></span>
+					<span><p>利润</p><p>{{totalpaymoneyhp-totalcostmoneyhp}}</p></span>
+					<span><p>数量</p><p>{{totalcount}}</p></span>
+				</div>
+			</div>
+		</div>
+		<!-- 设置适应高度 -->
+		<!-- <script type="text/javascript">
+			var h=window.innerHeight
+			// alert(h)
+			document.querySelector("body").style.height=h+"px";
+			document.querySelector(".table").style.height=h-45-25-37-50+"px";
+		</script> -->
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+
+			var current="profitReport.html";
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	tzx.gotoFilter(current)
+					var webviewf=plus.webview.getWebviewById("filter.html")
+// 					webviewf.onloaded=function(){
+// 						webviewf.evalJS("setshowOptionCondition("+'profit'+")")
+// 						
+// 					}
+			    })
+			})
+			
+		</script>
+		<script>
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				alert(JSON.stringify(this.condition))
+				// plus.webview.getWebviewById("filter.html").close()
+				v.condition=c
+				query()
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			mui.ready(function(){
+				v=new Vue({
+					el:"#all",
+					data:{
+						kh:[],	//客户
+						hp:[],	//货品
+						customer:'',
+						time:'',
+						totalpaymoneykh:0,
+						totalcostmoneykh:0,
+						totalprofitability:0,
+						totalpaymoneyhp:0,
+						totalcostmoneyhp:0,
+						totalcount:0,
+						condition:{}
+					},
+					methods:{
+						jump:function(cid){
+							console.log(cid)
+							var name="profitReport_Detail.html";
+							var newwebview=plus.webview.getWebviewById("profitReport_Detail.html")
+							if(newwebview==null){
+								var newwebview=plus.webview.create(name,name,{},{});
+							}
+							plus.webview.currentWebview().hide("slide-out-right")
+							newwebview.show("slide-in-right");
+							//条件传递到子窗体
+							v.condition.customer=cid
+							v.condition.goodsid=0
+							newwebview.evalJS("setcondition("+JSON.stringify(v.condition)+")")
+							newwebview.evalJS("query()")
+						},
+						jump1:function(gid){
+							console.log(gid)
+							var name="profitReport_Detail.html";
+							var newwebview=plus.webview.getWebviewById("profitReport_Detail.html")
+							if(newwebview==null){
+								var newwebview=plus.webview.create(name,name,{},{});
+							}
+							plus.webview.currentWebview().hide("slide-out-right")
+							newwebview.show("slide-in-right");
+							//条件传递到子窗体
+							v.condition.customer=0
+							v.condition.goodsid=gid
+							// var c={customer:0,goodsid:gid,date:this.condition.date}
+							// newwebview.evalJS("setquery("+JSON.stringify(c)+")")
+							newwebview.evalJS("setcondition("+JSON.stringify(v.condition)+")")
+							newwebview.evalJS("query()")
+						}
+					}
+				})
+				this.condition.storeid=login.getLogin().id
+				this.condition.storeid=login.getLogin().store.id
+				v.condition=this.condition
+				query()
+			})
+			//处理条件并查询
+			function query(){
+				showtcondition()	//显示时间段-条件  所有报表通用
+				var data={
+						date:this.condition.date,
+						storeid:this.condition.storeid,
+						order:this.condition.order,
+						goodstype:this.condition.goodstype,
+						goodsid:this.condition.goodsid,
+						customer:this.condition.customer,
+					}
+				if(condition.startdate!=null){
+					data.startdate=condition.startdate,
+					data.enddate=condition.enddate
+				}
+				console.log(data)
+				// alert("查询条件:"+JSON.stringify(this.condition))
+				querykh()
+				queryhp()
+			}
+			//查询数据
+			function querykh(){
+				mui.ajax(tzx.url+'profitCustomer',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.kh=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function queryhp(){
+				console.log(this.condition)
+				mui.ajax(tzx.url+'profitGoods',{
+					data:JSON.stringify(this.condition),
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},
+					contentType:"application/json",
+					success:function(data){
+						console.log(data)
+						v.hp=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				v.condition=this.condition
+				mui.each(v.kh,function(index,item){
+					item.profitability=((item.paymoney-item.costmoney)/item.costmoney*100).toFixed(2)
+					v.totalpaymoneykh+=item.paymoney
+					v.totalcostmoneykh+=item.costmoney
+				})
+				mui.each(v.hp,function(index,item){
+					item.profitability=((item.paymoney-item.costmoney)/item.costmoney*100).toFixed(2)
+					v.totalpaymoneyhp+=item.paymoney
+					v.totalcostmoneyhp+=item.costmoney
+					v.totalcount+=item.count
+				})
+				v.totalprofitability=((v.totalpaymoneykh-v.totalcostmoneykh)/v.totalcostmoneykh*100).toFixed(2)
+			}
+		</script>
+		
+	</body>
+</html>
