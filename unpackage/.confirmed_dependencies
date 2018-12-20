@@ -373,10 +373,5 @@
 		"resources": [
 			"css/mui.min.css"
 		]
-	},
-	"remittance/remittance_add_2.html": {
-		"resources": [
-			"css/mui.min.css"
-		]
 	}
 }
