@@ -30,7 +30,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-			<h1 class="mui-title">新增门店</h1>
+			<h1 class="mui-title">注册门店</h1>
 		</header>
 		<div class="mui-content a">
 			<div class="mui-input-row">
@@ -62,7 +62,7 @@
 				</select>
 			</div>
 
-			<button type="button" id="cp_insertshop" class="mui-btn mui-btn-blue mui-btn-block">新增</button>
+			<button type="button" id="cp_insertshop" class="mui-btn mui-btn-blue mui-btn-block">注册</button>
 		</div>
 		<script src="js/mui.min.js"></script>
 		<script src="js/mui.picker.js"></script>
@@ -85,10 +85,9 @@
 						}
 					})
 					async(function*() { //同步
-						if(atuser[0].store.storetype.level != null) {
 							mui.ajax(n.url + '/Storetype/queryBylevel', {
 								data: {
-									level: 1
+									level: 0
 								},
 								dataType: 'json', //服务器返回json格式数据
 								type: 'post', //HTTP请求类型
@@ -100,8 +99,6 @@
 								error: function(xhr, type, errorThrown) {
 								}
 							});
-						} else {
-						}
 					});
 					/*三级联动*/
 					var _getParam = function(obj, param) {
@@ -167,9 +164,7 @@
 							var db = yield new DB("LMQ");
 							//获取当前使用的用户
 							var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-							var Parentid = parseInt(atuser[0].store.id);
-							var c={"name":name,"address":address,"province":province,"city":city,"district":county,"stid":sid,"Parented":Parentid,"user":{"name":account,"pwd":pwd}}
-							param.Parented = Parentid;
+							var c={"name":name,"address":address,"province":province,"city":city,"district":county,"stid":sid,"user":{"name":account,"pwd":pwd}}
 							mui.ajax(n.url + '/Store/insertSelective', {
 								data:JSON.stringify(c),
 								dataType: 'json', //服务器返回json格式数据
@@ -179,7 +174,11 @@
 								success: function(data) {
 									if (data) {
 										mui.toast("新增成功！")
-										plus.webview.create("index.html","index.html",{},{}).show("none")
+										var as=plus.webview.getWebviewById("admin.html")
+										if (as==null) {
+											as=plus.webview.create("admin.html", "admin.html", {}, {})
+										} 
+										as.show();
 									} else{
 										mui.toast("新增失败！")
 									}
