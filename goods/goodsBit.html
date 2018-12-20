@@ -66,6 +66,9 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/news.js"></script>
 		<script src="../js/vue.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init();
 			var vue = new Vue({
@@ -104,10 +107,13 @@
 				}) 
 			})
 			function getData(){
+				var loginUser = login.getLogin()
+				var sid = loginUser.store.id;
+				console.log(sid);
 				//初始化数据
 				mui.ajax(n.url + "/goods/queryBitBySid", {
 					data: {
-
+						sId:sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

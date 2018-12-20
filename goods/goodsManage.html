@@ -100,6 +100,9 @@
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/news.js"></script>
 		<script src="../js/vue.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({
 				pullRefresh: {
@@ -161,9 +164,13 @@
 			}
 			//数据初始化
 			function getData(name) {
+				var loginUser = login.getLogin()
+				var sid = loginUser.store.id;
+				console.log(sid);
 				mui.ajax(n.url + '/goods/queryGoodsHome', {
 					data: {
-						goodsName: name
+						goodsName: name,
+						sId:sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
