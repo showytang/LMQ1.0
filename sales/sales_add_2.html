@@ -368,6 +368,7 @@
 						v.salesdetails[i].takeinmoney = data.takeinmoney;
 						v.salesdetails[i].money = data.takeinmoney * v.salesdetails[i].count;
 						document.querySelector("#sumMoney").innerHTML = document.querySelector("#sumMoney").innerHTML - (-v.salesdetails[i].money);
+						v.salesdetails[i].url=data.url;
 						sumCount();
 						key = false;
 						return;
