@@ -101,7 +101,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			
 			var current="stockWarning.html";
@@ -116,12 +116,12 @@
 				}
 			})
 			mui.ready(function () {
-				this.condition.storeid=1
+				this.condition.storeid=tzx.getLogin().store.id
 				query()
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'stockWarning',{
+				mui.ajax(tzx.getURL()+'stockWarning',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型

@@ -6,7 +6,7 @@
 		<title>收支统计</title>
 	<link rel="stylesheet" href="../css/mui.min.css">
     <script src="../js/mui.min.js"></script>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/vue.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
 	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
@@ -149,7 +149,7 @@
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'income/queryAll',{
+				mui.ajax(tzx.getURL()+'income/queryAll',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -177,7 +177,7 @@
 			    	tzx.gotoFilter(current)
 			    })
 				mui.back=function () {
-					tzx.back(current,"index.html")	
+					tzx.back(current)	
 				}
 
 				

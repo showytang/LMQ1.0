@@ -1,11 +1,18 @@
 document.write("<script src='js/mui.min.js'></script>");
-document.write("<script src='js/loginUser.js' type='text/javascript'></script>");
+document.write("<script src='../js/loginUser.js' type='text/javascript'></script>");
+document.write("<script src='../js/news.js' type='text/javascript'></script>");
 var tzx={
 	url:"http://192.168.43.76:8080/",
 	// url:"http://127.0.0.1:8080/",
 	// url:"http://172.20.10.3:8080/",
 	// url:"http://192.168.42.41:8080/",
 	// url:"http://192.168.191.1:8080/",
+	getURL:function(){
+		return ''+n.url+'/'
+	},
+	getLogin:function(){
+		return login.getLogin()
+	},
 	timeName:['全部','本年','本季','本月','本周','本日','自定义'],//用于date(0-7)时间段表示的中文含义，
 	queryIncomeType:[{queryCode:'queryXS',queryName:'销售收入'},{queryCode:'querySK',queryName:'收订金/欠款'},{queryCode:'queryJH',queryName:'进货支出'},{queryCode:'queryFK',queryName:'付订金/欠款'},{queryCode:'queryWY',queryName:'物业管理'}],
 	showOptionCondition:[

@@ -6,7 +6,7 @@
 		<title>销售收入</title>
 	<link rel="stylesheet" href="../css/mui.min.css">
     <script src="../js/mui.min.js"></script>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
 	<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
@@ -97,7 +97,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			//将时间段条件的中文显示到顶部条件位置
 			function showtcondition(){
@@ -112,13 +112,13 @@
 				this.condition.date=6
 				this.condition.startdate="2017-1-1"
 				this.condition.enddate="2017-2-5"
-				this.condition.storeid=login.getLogin().store.id
+				this.condition.storeid=tzx.getLogin().store.id
 				query()
 				showtcondition()	//显示时间段-条件  所有报表通用
 			})
 			//查询数据
 			function query(cid,gid){
-				mui.ajax(tzx.url+'chartIncome',{
+				mui.ajax(tzx.getURL()+'chartIncome',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型

@@ -85,7 +85,7 @@
 			})
 			mui.ready(function () {
 				// this.condition.customer=1
-				this.condition.date=0
+				// this.condition.date=0
 				this.condition.storeid=login.getLogin().store.id
 				v.tconditionId=this.condition.customer
 				// query()
@@ -93,7 +93,7 @@
 			//查询数据
 			function query(){
 				showtcondition()	//显示时间段-条件  所有报表通用
-				mui.ajax(tzx.url+'receiptArrearage_Detail',{
+				mui.ajax(tzx.getURL()+'receiptArrearage_Detail',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -128,7 +128,7 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 					var c={id:v.tconditionId,name:v.name}
-					alert(JSON.stringify(c))
+					// alert(JSON.stringify(c))
 					if(v.t==0){
 						plus.webview.getWebviewById("filter.html").evalJS("getclientId("+JSON.stringify(c)+")")
 					}else{
@@ -136,6 +136,9 @@
 						plus.webview.getWebviewById("filter.html").evalJS("setGoodsid("+JSON.stringify(c)+")")
 					}
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

@@ -203,6 +203,7 @@
 			mui.ready(function() {
 				// this.condition.customer = 1
 				// this.condition.goodsid = 0
+				this.condition.storeid=tzx.getLogin().store.id
 				// query()
 			})
 			mui.plusReady(function() {
@@ -220,11 +221,14 @@
 						plus.webview.getWebviewById("filter.html").evalJS("setGoodsid("+JSON.stringify(c)+")")
 					}
 				})
+				mui.back=function () {
+					tzx.back(current)	
+				}
 			})
 			//查询数据
 			function query() {
 				showtcondition()
-				mui.ajax(tzx.url + 'profitDetail', {
+				mui.ajax(tzx.getURL() + 'profitDetail', {
 					data: this.condition,
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型

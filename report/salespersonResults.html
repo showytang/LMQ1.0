@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="../css/mui.min.css">
     <script src="../js/mui.min.js"></script>
 	<script src="../js/vue.js"></script>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
 	<script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/echarts.js"></script>
@@ -96,7 +96,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			//将时间段条件的中文显示到顶部条件位置
 			function showtcondition(){
@@ -140,14 +140,14 @@
 			}
 			
 			mui.ready(function () {
-				this.condition.date=0
-				this.condition.storeid=1
+				// this.condition.date=0
+				this.condition.storeid=tzx.getLogin().store.id
 				query()
-				showtcondition()	//显示时间段-条件  所有报表通用
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'salesPersonRank',{
+				showtcondition()	//显示时间段-条件  所有报表通用
+				mui.ajax(tzx.getURL()+'salesPersonRank',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型

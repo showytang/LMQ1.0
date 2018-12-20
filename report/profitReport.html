@@ -6,12 +6,13 @@
 		<title>利润统计</title>
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
-	<script src="../js/jquery-1.12.4.js"></script>
+	<script src="../js/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
 	<script src="../js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../js/vue.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
 	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="../js/loginUser.js"></script> -->
 	<style type="text/css">
 		table{height: 100%;background-color: white;}
 		table tbody{margin: 1em 0;}
@@ -89,11 +90,10 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 					var webviewf=plus.webview.getWebviewById("filter.html")
-// 					webviewf.onloaded=function(){
-// 						webviewf.evalJS("setshowOptionCondition("+'profit'+")")
-// 						
-// 					}
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 			})
 			
 		</script>
@@ -111,7 +111,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 				// plus.webview.getWebviewById("filter.html").close()
 				v.condition=c
 				query()
@@ -175,8 +175,10 @@
 						}
 					}
 				})
-				this.condition.storeid=login.getLogin().id
-				this.condition.storeid=login.getLogin().store.id
+				// this.condition.storeid=login.getLogin().store.id
+				// this.condition.storeid=tzx.getLogin().store.id
+				// this.condition.storeid=tzx.getLogin().store.id
+				this.condition.storeid=tzx.getLogin().store.id
 				v.condition=this.condition
 				query()
 			})
@@ -202,7 +204,7 @@
 			}
 			//查询数据
 			function querykh(){
-				mui.ajax(tzx.url+'profitCustomer',{
+				mui.ajax(tzx.getURL()+'profitCustomer',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -220,7 +222,7 @@
 			}
 			function queryhp(){
 				console.log(this.condition)
-				mui.ajax(tzx.url+'profitGoods',{
+				mui.ajax(tzx.getURL()+'profitGoods',{
 					data:JSON.stringify(this.condition),
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
