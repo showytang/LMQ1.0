@@ -425,11 +425,15 @@
 			//商品传值
 			function getgoodsInfo(data) {
 				var key = true;
+				console.log(data.url+"这是我的");
 				for(var i = 0; i < v.salesindentdetails.length; i++) {
 					if(v.salesindentdetails[i].user1 == data.user1) {
+						
 						v.salesindentdetails[i].count = v.salesindentdetails[i].count - (-data.count);
 						v.salesindentdetails[i].takeinmoney = data.takeinmoney;
 						v.salesindentdetails[i].money = data.takeinmoney * v.salesindentdetails[i].count;
+						v.salesindentdetails[i].url=data.url;
+						
 						sumCount();
 						key = false;
 						return;

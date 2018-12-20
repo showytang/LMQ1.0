@@ -74,7 +74,7 @@
 						<!--<li class="mui-table-view-cell" v-for="(s,index) in Salesindent.salesindentdetails" v-on:click="updateInfo(index)">-->
 						<li class="mui-table-view-cell" v-for="(s,index) in Salesindent.salesindentdetails" v-bind:index="index">
 							<div class="mui-row">
-								<div class="mui-col-xs-2"><img src="" width="50px" height="50px" /></div>
+								<div class="mui-col-xs-2"><img v-bind:src="url+s.url" width="50px" height="50px" /></div>
 								<div class="mui-col-xs-10">
 									<span hidden="" name="id">{{s.id}}</span>
 									<span hidden="" name="user1">{{s.user1}}</span>
@@ -223,7 +223,8 @@
 			var v = new Vue({
 				el: ".mui-content",
 				data: {
-					Salesindent: {}
+					Salesindent: {},
+					url:n.url+"/"
 				},
 				updated: function() {
 
@@ -360,6 +361,7 @@
 						v.Salesindent.salesindentdetails[i].takeinmoney = data.takeinmoney;
 						console.log(v.Salesindent.salesindentdetails[i].user2+":"+data.user2+"你好");
 						v.Salesindent.salesindentdetails[i].user2=data.user2;
+						v.Salesindent.salesindentdetails[i].url=data.url;
 						v.sumCount();
  						key = false;
 						return;
