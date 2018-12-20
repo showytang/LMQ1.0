@@ -89,6 +89,7 @@
 				json.takeinmoney = vue.goodsInstance.price;
 				json.money = json.count * json.takeinmoney;
 				json.user2 = vue.goodsInstance.name;
+				json.url = vue.goodsInstance.url;
 				console.log(JSON.stringify(json));
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().opener().id).evalJS("getgoodsInfo(" + JSON.stringify(json) + ")");
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().id).close();
