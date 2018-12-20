@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>库存警告</title>
+	<link rel="stylesheet" href="../css/mui.min.css">
+  <script src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+
+	<style type="text/css">
+		.tcondition li{width: 100%;}
+		.mui-control-content {
+			/* min-height: 215px; */
+		}
+		.mui-control-content .mui-loading {
+			margin-top: 51px;
+		}
+		.mui-table-view-cell:after {left:0;}
+		.mui-table-view-cell{display: flex;flex-direction: row;justify-content: space-between;}
+		.mui-table-view-cell>span{}
+		/* .total{position: fixed;bottom: 0px;width: 100%;} */
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">库存警告</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">全部</a>
+					<a class="mui-control-item" href="#item2mobile">充足</a>
+					<a class="mui-control-item" href="#item3mobile">短缺</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper" style="overflow: auto;">
+							<div class="mui-scroll" >
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell" v-for="obj,index in xs"><span>{{obj.gname}}{{obj.standardName}}({{obj.bname}})</span><span><span>{{obj.count}}</span><span class="">{{obj.bname}}</span></span></li>
+									
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<template v-for = "obj,index in xs">
+										<li class="mui-table-view-cell" v-if = "obj.count >= mixcount"><span>{{obj.gname}}{{obj.standardName}}({{obj.bname}})</span><span><span>{{obj.count}}</span><span class="">{{obj.bname}}</span></span></li>
+									</template>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<template v-for = "obj,index in xs">
+										<li class="mui-table-view-cell" v-if = "obj.count < mixcount"><span>{{obj.gname}}{{obj.standardName}}({{obj.bname}})</span><span><span>{{obj.count}}</span><span class="">{{obj.bname}}</span></span></li>
+									</template>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="total">
+					<span><p>全部总计(件)</p><p>{{totalcount}}</p></span>
+					<span><p>短缺(种)</p><p>{{totalless}}</p></span>
+				</div>
+			</div>
+		</div>
+		<!-- 设置适应高度 -->
+		<script type="text/javascript">
+			var h=window.innerHeight
+			// alert(h)
+			document.querySelector("body").style.height=h+"px";
+			document.querySelector(".mui-slider-group").style.height=h-44-24-38-2-50+"px";
+		</script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				alert(JSON.stringify(this.condition))
+			}
+			
+			var current="stockWarning.html";
+			var v=new Vue({
+				el : ".mui-content",
+				data : {
+					xs:[{gname:"aaa",count:"bbb",time:"2000-01-01 00:00:00",standardName:"白色"},{gname:"ccc",count:"ddd",time:"2000-01-02 00:00:00"}],
+					lasttime:"1900-1-1",
+					totalcount:0,
+					totalless:0,
+					mixcount:20	//设置最小值,不满足则为短缺
+				}
+			})
+			mui.ready(function () {
+				this.condition.storeid=1
+				query()
+			})
+			//查询数据
+			function query(){
+				mui.ajax(tzx.url+'stockWarning',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.xs=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				mui.each(v.xs,function(index,item){
+					v.totalcount+=item.count
+					if(item.count<=v.mixcount){
+						v.totalless++
+					}
+				})
+			}
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	// tzx.gotoFilter(current)
+			    })
+					mui.back=function () {
+						tzx.back(current,"index.html")	
+					}
+			})
+
+			mui.init({
+				swipeBack: false
+			});
+			(function($) {
+				$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+		</script>
+		
+	</body>
+</html>

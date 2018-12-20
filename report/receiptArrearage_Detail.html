@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>应收欠款明细</title>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		table{height: 100%;background-color: white;}
+		table tbody{margin: 1em 0;}
+		.table>tbody>tr{display: flex;justify-content: space-around;}
+		.totaltr{height: 80px; width: 100%;}
+		.inittotal{position: fixed;bottom: 50px;width: 100%;}
+		.total{position: fixed;bottom: 0px;width: 100%;}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">应收欠款明细</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content tab-content">
+			<ul class="tcondition">
+				<li>{{name}}</li>
+				<li>2018.11.01-2018.11.30</li>
+			</ul>
+			<table class="table" border="0" c cellspacing="" cellpadding="" style="margin-bottom: 70px;">
+				<tr><td>增加</td><td>回收</td><td>期末</td></tr>
+				<tbody v-for="obj,index in lr">
+					<tr><td>{{obj.reason}}</td><td style="text-align: right;">{{obj.bh}}</td></tr>
+					<tr><td>{{obj.addMoney}}</td><td>{{obj.backMoney}}</td><td>{{obj.finalMoney}}</td></tr>
+				</tbody>
+			</table>
+			<div class="inittotal" style="background-color: #00aaaa;">初期结存：<span>{{initMoney}}</span></div>
+			<div class="total">
+				<span><p>增加合计</p><p>{{totaladdMoney}}</p></span>
+				<span><p>回收合计</p><p>{{totalbackMoneyy}}</p></span>
+				<span><p>期末合计</p><p>{{totalfinalMoney}}</p></span>
+			</div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				// alert(JSON.stringify(this.condition))
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			var current="receiptArrearage_Detail.html";
+			var v=new Vue({
+				el : ".mui-content",
+				data : {
+					lr:{},
+					totaladdMoney:0,
+					totalbackMoneyy:0,
+					totalfinalMoney:0,
+					name:'abc',
+					initMoney:0,
+					tconditionId: "1",
+					t:0
+				}
+			})
+			mui.ready(function () {
+				// this.condition.customer=1
+				this.condition.date=0
+				this.condition.storeid=login.getLogin().store.id
+				v.tconditionId=this.condition.customer
+				// query()
+			})
+			//查询数据
+			function query(){
+				showtcondition()	//显示时间段-条件  所有报表通用
+				mui.ajax(tzx.url+'receiptArrearage_Detail',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.lr=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				v.initMoney=v.lr[0].initMoney
+				v.name=v.lr[0].name
+				v.tconditionId=this.condition.customer
+				mui.each(v.lr,function(index,item){
+					v.totalfinalMoney+=item.addMoney
+					v.totalfinalMoney-=item.backMoney
+					item.finalMoney=v.totalfinalMoney
+					v.totaladdMoney+=item.addMoney
+					v.totalbackMoneyy+=item.backMoney
+				})
+			}
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	tzx.gotoFilter(current)
+					var c={id:v.tconditionId,name:v.name}
+					alert(JSON.stringify(c))
+					if(v.t==0){
+						plus.webview.getWebviewById("filter.html").evalJS("getclientId("+JSON.stringify(c)+")")
+					}else{
+						var c={goodsInstanceId:v.tconditionId,goodsName:v.name,standardName:""}
+						plus.webview.getWebviewById("filter.html").evalJS("setGoodsid("+JSON.stringify(c)+")")
+					}
+			    })
+				
+			})
+
+			
+		</script>
+	</body>
+</html>

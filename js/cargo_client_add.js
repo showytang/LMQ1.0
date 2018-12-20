@@ -22,11 +22,10 @@ mui.plusReady(function() {
 			plus.webview.getWebviewById("goodsInstanceCustomer_h.html").evalJS("getpid("+pid+")")*/
 		}
 	})
-	mui('body').on('tab', '#hiden', function() {
+	mui('body').on('click', '#hiden', function() {
 		var data = {}
 		data.cid = cid;
 		data.pid = pid;
-		console.log(plus.webview.getWebviewById("goodsCustomerPrice.html"))
 		plus.webview.getWebviewById("goodsInstanceCustomer.html").evalJS("getObj(" + JSON.stringify(data) + ")");
 		plus.webview.getWebviewById("goodsCustomerPrice.html").evalJS("getObj(" + JSON.stringify(data) + ")");
 	})

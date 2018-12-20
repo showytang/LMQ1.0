@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>经营费用</title>
+	<link rel="stylesheet" href="../css/mui.min.css">
+    <script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+		.tcondition li{width: 100%;}
+		.content{overflow: scroll;}
+
+	</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<span class="mui-icon mui-icon-arrowthinleft" id="icon-left" name="report.html"></span>
+			<h1 class="mui-title">经营费用</h1>
+			<span class="mui-icon mui-icon-gear" id="icon-right" name="filter.html" name="profitReport.html"></span>
+		</header>
+		<div class="mui-content">
+			<ul class="tcondition">
+				<li>全部</li>
+			</ul>
+			<div class="content">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell"><span>经营支出</span><span><span>-70231321</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+					<li class="mui-table-view-cell"><span>物业管理</span><span><span>-70231321</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+					
+				</ul>
+			</div>
+			
+		</div>
+		<!-- 设置适应高度 -->
+		<script type="text/javascript">
+			var h=window.innerHeight
+			// alert(h)
+			document.querySelector("body").style.height=h+"px";
+			document.querySelector(".content").style.height=h-44-24+"px";
+		</script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={conditionTime:"",conditionCustomer:""}
+			function setcondition(c){
+				
+			}
+			
+			var current="runningExpenses.html";
+			mui.plusReady(function () {
+				mui('header').on('tap','#icon-right',function(){
+					news.gotoFilter(current)
+				})
+				mui('header').on('tap','#icon-left',function(){
+					news.back(current)
+				})
+				mui('ul').on('tap','li',function(){
+					var name=this.getAttribute("name");
+					var newwebview=plus.webview.getWebviewById(name)
+					if(newwebview==null){
+						var newwebview=plus.webview.create(name,name,{},{});
+					}
+					plus.webview.currentWebview().hide("slide-out-right")
+					newwebview.show("slide-in-right");
+				})
+
+				
+			})
+
+			
+		</script>
+		
+	</body>
+</html>

@@ -56,7 +56,7 @@
 							if(data){
 								mui.toast("新增成功！")
 								console.log(JSON.stringify(data))
-								plus.webview.getLaunchWebview().show("none");
+								plus.webview.create("index.html", "index.html", {}, {}).show("none")
 							}else{
 								mui.toast("新增失败！")
 							}

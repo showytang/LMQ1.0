@@ -1,0 +1,70 @@
+button{margin-top: 10px;}
+body{background-color: f1f1f1;}
+dd{background-color: white;margin: 0px 0px;padding:0px 20px 10px 20px;}
+
+
+#icon-left{float: left;}
+#icon-right{float: right;}
+#topPopover {
+	position: fixed;
+	top: 16px;
+	right: 6px;
+}
+
+/* 标题 */
+.mui-title{display: flex;flex-direction: row;justify-content: center;}
+.mui-title span{width: 40%;display: inline-block;}
+.mui-title ul{width: 40%;display: inline-block; border-bottom:0px;}
+.mui-title ul li{/* width: 40%; */margin-bottom:0px;}
+.mui-title>ul>li>a{padding: 0;font-size: 0.6em;}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{background-color: skyblue;}
+
+ul li{list-style-type: none;}
+/* 标题下当前条件显示 */
+.tcondition{width: 100%;margin: 0;padding: 2px;list-style-type: none;background-color: #5555ff;}
+.tcondition li{border-left:  1px solid #ccc;font-size: 0.8em;text-align: center;display: inline-block;width: 49%;color: white;}
+.tcondition li:first-child{border-left: none;}
+/* 条件下的数据列表标题 */
+.listtitle{width: 100%;margin: 0;padding: 2px;list-style-type: none;display: flex;justify-content: space-around;}
+.listtitle li{font-size: 0.8em;text-align: center;display: inline-block;}
+.listcontent .mui-table-view-cell{display: block;}
+
+/* 选项卡标题样式改动 */
+.mui-control-item{}
+
+
+/* 底部总计 */
+.total{display: flex;flex-direction: row;justify-content: space-around;height: 50px;background-color: royalblue;}
+.total span{border-left:  1px solid #ccc;width: 49%;text-align: center;vertical-align: middle;}
+.total span:first-child{border-left: none;}
+.total span p:last-child{color: white;}
+/* ul样式-mui-table-view改动 */
+.mui-table-view-cell:after {left:0;}
+.mui-table-view-cell{display: flex;flex-direction: row;justify-content: space-between;}
+.mui-table-view-cell>span{}
+
+/* tabletitle表格标题样式 */
+.tabtitle{background-color: #f5f5f5;font-size: 0.4em;color: #aaa;t}
+
+/* tabDetail表格明细列表样式 */
+.table{width: 100%;}
+.tabDetail tr th{font-size: 1em;color: royalblue;font-weight: 400;}
+.tabtime td{background-color: #f5f5f5;font-size: 0.8em;color: #aaa;}
+.tabid td{font-size: 0.7em;color: #aaa;}
+.tabname td{font-size: 1em;color: #0062CC;}
+.tabcount{font-size: 0.9em;}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{border: 0;}
+.tabDetail>tbody+tbody {border-top: 0;}
+.tabcount+.tabid{border-top: 1px solid #f5f5f5;}
+/* 最右边的td和th右靠 */
+.tabDetail tr th{font-size: 0.8em;}
+.tabDetail th:last-child {text-align: right;}
+.tabcount td:last-child{text-align: right;}
+
+/* 规格 */
+.standardName{font-size: 0.8em;}
+
+/* .table>tbody>tr{display: flex;justify-content: space-around;} */
+
+/* .mui-content{position: fixed;top: 0px;width: 100%;} */
+

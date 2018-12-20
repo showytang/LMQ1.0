@@ -22,7 +22,7 @@
 			</div>
 			<div class="mui-input-row" v-if="goodsInstance.ptype==-1">
 				<label>大客户报价</label>
-				<input type="number" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" name="remark" placeholder="">
+				<input type="number" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" name="remark"  placeholder="">
 			</div>
 			<div class="mui-input-row" v-if="goodsInstance.ptype!=-1">
 				<label>大客户报价</label>
@@ -33,20 +33,13 @@
 
 		<script src="../js/mui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" src="../js/news.js"></script>
-		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/news.js" ></script>
 		<script type="text/javascript">
 			mui.init();
 			var vue;
 			var cid;
-			var loginUser = login.getLogin();
-			console.log(JSON.stringify(loginUser));
-			var sid = loginUser.store.id;
-
-			function getObj(data) {
-				cid = data.cid
+			function getObj(data){
+				cid=data.cid
 			}
 			mui.plusReady(function() {
 				var webview = plus.webview.getWebviewById("customer/cargo_client_add.html");
@@ -62,44 +55,45 @@
 				mui('body').on('tap', '[type=button]', function() {
 					var temp = {};
 					temp.gid = document.querySelector("[name=goodsInstanceId]").value
-					temp.cid = cid
-					temp.sid = sid //门店
-					temp.id = document.querySelector("[name=id]").value
+					temp.cid=cid
+					temp.sid=1		//门店
+					temp.id=document.querySelector("[name=id]").value
 					temp.monye = document.querySelector("[name=remark]").value
-					if(goodsInstance.ptype == -1) {
-						mui.ajax(obj.url + '/QuotedPrice/updateByIdQuoteprice', {
-							data: temp,
-							dataType: 'json', //服务器返回json格式数据
-							type: 'post', //HTTP请求类型
-							timeout: 10000, //超时时间设置为10秒；
-							success: function(data) {
-								if(data > 0) {
+					if(goodsInstance.ptype==-1){
+						mui.ajax(obj.url+'/QuotedPrice/updateByIdQuoteprice',{
+							data:temp,
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								if(data>0){
 									mui.toast("修改成功！");
 									plus.webview.getWebviewById("goodsCustomerPrice_h.html").close();
 									plus.webview.getWebviewById("goodsCustomerPrice.html").close();
 									plus.webview.currentWebview().close()
 								}
 							},
-							error: function(xhr, type, errorThrown) {
-
+							error:function(xhr,type,errorThrown){
+								
 							}
 						});
 						return;
 					}
-					mui.ajax(obj.url + '/QuotedPrice/addQuoteprice', {
-						data: temp,
-						dataType: 'json', //服务器返回json格式数据
-						type: 'post', //HTTP请求类型
-						timeout: 10000, //超时时间设置为10秒；
-						success: function(data) {
-							if(data > 0) {
-								mui.toast("报价成功！");
-								plus.webview.currentWebview().close()
+					mui.ajax(obj.url+'/QuotedPrice/addQuoteprice',{
+							data:temp,
+							dataType:'json',//服务器返回json格式数据
+							type:'post',//HTTP请求类型
+							timeout:10000,//超时时间设置为10秒；
+							success:function(data){
+								if(data>0){
+									mui.toast("报价成功！");
+									plus.webview.currentWebview().close()
+								}
+							},
+							error:function(xhr,type,errorThrown){
 							}
-						},
-						error: function(xhr, type, errorThrown) {}
-					});
-
+						});
+										
 				})
 			})
 		</script>

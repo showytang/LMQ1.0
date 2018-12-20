@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>进货统计</title>
+	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="../css/report.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+	<script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="../js/pace.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css">
+
+		table{height: 100%;background-color: white;}
+		.totaltr{height: 80px; width: 100%;}
+		.total{position: fixed;bottom: 0px;width: 100%;}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">进货统计</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content tab-content">
+			<ul class="tcondition">
+				<li>全部商品</li>
+				<li>2018.11.01-2018.11.30</li>
+			</ul>
+			<div class="tab-pane active">
+				<table class="table" border="0" c cellspacing="" cellpadding="" style="margin-bottom: 50px;">
+					<!-- <tr><th c colspan="2">全部往来单位</th><th colspan="2">2018.11.01-2018.11.30</th></tr> -->
+					<tr class="tabtitle"><td>货品名称/数量</td><td></td><td></td><td>金额</td></tr>
+					<tbody v-for="obj,index in jh" v-on:click="jump(obj.goodsinstanceid)">
+						<tr><td colspan="4">{{obj.gname}}</td></tr>
+						<tr><td>{{obj.count}}{{obj.bname}}</td><td></td><td></td><td>{{obj.paymoney}}</td></tr>
+					</tbody>
+				</table>
+				
+			</div>
+			<div class="total">
+				<span><p>合计数量</p><p>{{totalcount}}</p></span>
+				<span><p>合计金额</p><p>{{totalpaymoney}}</p></span>
+			</div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				alert(JSON.stringify(this.condition))
+				// plus.webview.getWebviewById("filter.html").close()
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			
+			var current="purchasingStatistics.html";
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	tzx.gotoFilter(current)
+			    })
+				mui('table').on('tap','tbody',function(){
+					var name="purchasingStatistics_Detail.html";
+					var newwebview=plus.webview.getWebviewById(name)
+					if(newwebview==null){
+						var newwebview=plus.webview.create(name,name,{},{});
+					}
+					plus.webview.currentWebview().hide("slide-out-right")
+					newwebview.show("slide-in-right");
+				})
+				
+			})
+			var v=new Vue({
+				el : ".mui-content",
+				data : {
+					jh:[],
+					lasttime:"1900-1-1",
+					totalpaymoney:0,
+					totalcostmoney:0,
+					totalcount:0,
+					totalmoney:0
+				},
+					methods:{
+						jump:function(gid){
+							var name="purchasingStatistics_Detail.html";
+							var newwebview=plus.webview.getWebviewById("purchasingStatistics_Detail.html")
+							if(newwebview==null){
+								var newwebview=plus.webview.create(name,name,{},{});
+							}
+							plus.webview.currentWebview().hide("slide-out-right")
+							newwebview.show("slide-in-right");
+							var c=this.condition
+							c.customer=0
+							c.goodsid=gid
+							newwebview.evalJS("setcondition("+JSON.stringify(c)+")")
+						}
+					}
+			})
+			mui.ready(function () {
+				this.condition.date=0
+				this.condition.storeid=1
+				query()
+				showtcondition()
+			})
+			//查询数据
+			function query(){
+				mui.ajax(tzx.url+'purchasingStatistics',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.jh=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				mui.each(v.jh,function(index,item){
+					console.log(item)
+					v.totalcostmoney+=item.costmoney
+					v.totalpaymoney+=item.paymoney
+					v.totalcount+=item.count
+					v.totalmoney+=item.money
+				})
+			}
+			
+			
+		</script>
+	</body>
+</html>
