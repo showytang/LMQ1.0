@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>报表</title>
+	<script src="js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/tzx.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="css/report.css"/>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">报表</h1>
+	</header>
+	<div id="" style="height: 44px;"></div>
+	<div class="content">
+		<dl>
+			<dt class="catalog">综合报表</dt>
+			<dd class="page">
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="profitReport.html">利润统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="incomeReport.html">收支统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="operatingResults.html">经营业绩报告</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="salespersonResults.html">营业员统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="customerRank.html">客户销售排名</button>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="catalog">业务统计报表</dt>
+			<dd class="page">
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="salesStatistics.html">销售统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="purchasingStatistics.html">进货统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="stockStatistics.html">库存统计</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="stockWarning.html">库存预警</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="salesRank.html">货品销售排名</button>
+			</dd>
+		</dl>
+		<dl>
+			<dt class="catalog">欠款统计报表</dt>
+			<dd class="page">
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="receiptArrearage.html">应收欠款</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="payArrearage.html">应付欠款</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="receiptAccount.html">应收对账</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined" name="payAccount.html">应付对账</button>
+			</dd>
+		</dl>
+	</div>
+
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+		var current="report.html";
+		var nid=0;
+		function showAG(id){
+			nid=id; 
+		}
+		mui.plusReady(function () {
+			// location.href="report.html";
+		    mui('.page').on('tap','button',function(){
+				var name=this.getAttribute("name");
+				var newwebview=plus.webview.getWebviewById(name)
+				if(newwebview==null){
+					var newwebview=plus.webview.create("report/"+name,name,{},{mid:"1"});
+				}
+				plus.webview.currentWebview().hide("slide-out-right")
+				newwebview.show("slide-in-right");
+		    })
+			mui.back=function () {
+			    news.back(current,"index.html")	
+			}
+		})
+    </script>
+</body>
+</html>

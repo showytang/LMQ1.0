@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>利润统计明细</title>
+		<link rel="stylesheet" type="text/css" href="../css/mui.min.css" />
+		<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="../css/tzx.css" />
+		<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+
+		<style type="text/css">
+			.mui-control-content {
+				background-color: white;
+				min-height: 215px;
+				height: 100%;
+			}
+
+			.mui-control-content .mui-loading {
+				margin-top: 50px;
+			}
+
+			..mui-slider-group {
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">利润统计明细</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<ul class="tcondition">
+				<li>{{tconditionName}}</li>
+				<li>2018.11.01-2018.11.30</li>
+			</ul>
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">交易数量</a>
+					<a class="mui-control-item" href="#item2mobile">金额</a>
+					<a class="mui-control-item" href="#item3mobile">利润</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" v-for="(obj,index) in lr" time="obj.time">
+									<li v-if="obj.time!=lasttime">{{obj.time}}</li>
+									<!-- <input type="hidden" v-model="lasttime=obj.time" v-model="totalpaymoney+=obj.paymoney" /> -->
+									<li v-if="tcondition==1" class="mui-table-view-cell">
+										<span>{{obj.gname}}<span class="standardName">{{obj.standardName}}</span></span>
+										<span>{{obj.paymoney/obj.count}}*{{obj.count}}{{obj.bname}}</span>
+									</li>
+									<li v-if="tcondition==0" class="mui-table-view-cell">
+										<span>{{obj.cname}}<span class="standardName"></span></span>
+										<span>{{obj.paymoney/obj.count}}*{{obj.count}}{{obj.bname}}</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" v-for="(obj,index) in lr" time="obj.time">
+									<li>{{obj.time}}</li>
+									<li v-if="tcondition==1" class="mui-table-view-cell">
+										<span>{{obj.gname}}<span class="standardName">{{obj.standardName}}</span></span>
+										<span>{{obj.paymoney}}</span>
+									</li>
+									<li v-if="tcondition==0" class="mui-table-view-cell">
+										<span>{{obj.cname}}<span class="standardName"></span></span>
+										<span>{{obj.paymoney}}</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" v-for="(obj,index) in lr" time="obj.time">
+									<li>{{obj.time}}</li>
+									<li v-if="tcondition==1" class="mui-table-view-cell">
+										<span>{{obj.gname}}<span class="standardName">{{obj.standardName}}</span></span>
+										<span>{{(obj.paymoney-obj.costmoney)/obj.costmoney*100}}%</span>
+									</li>
+									<li v-if="tcondition==0" class="mui-table-view-cell">
+										<span>{{obj.cname}}<span class="standardName"></span></span>
+										<span>{{(obj.paymoney-obj.costmoney)/obj.costmoney*100}}%</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="total">
+					<span>
+						<p>折后金额</p>
+						<p>{{totalpaymoney}}</p>
+					</span>
+					<span>
+						<p>成本</p>
+						<p>{{totalcostmoney}}</p>
+					</span>
+					<span>
+						<p>利润</p>
+						<p>{{totalpaymoney-totalcostmoney}}</p>
+					</span>
+					<span>
+						<p>数量</p>
+						<p>{{totalcount}}</p>
+					</span>
+					<!-- <span><p>利润率</p><p>{{(totalpaymoney-totalcostmoney)/totalcostmoney*100}}%</p></span> -->
+				</div>
+			</div>
+
+		</div>
+		<!-- 设置适应高度 -->
+		<script type="text/javascript">
+			var h = window.innerHeight
+			document.querySelector("body").style.height = h + "px";
+			var div = document.querySelector("#slider")
+			document.querySelector(".mui-slider-group").style.height = h - 45 - 25 - 40 - 50 + "px";
+			mui.init({
+				swipeBack: false
+			});
+			(function($) {
+				$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+		</script>
+		<script type="text/javascript">
+			
+
+			function setquery(c) {
+				if (c.customer != 0) {
+					this.condition.customer = c.customer
+					this.condition.date=c.date
+				} else {
+					this.condition.goodsid = c.goodsid
+					this.condition.date=c.date
+				}
+				// alert(JSON.stringify(c))
+			}
+			var condition = {
+				date: "0",
+				startdate: "2017-1-1",
+				enddate: "2017-1-1",
+				customer: "1",
+				supplier: "0",
+				storeid: "1",
+				order: "0",
+				goodstype: "0",
+				goodsid: "0",
+				userid: "0"
+			}
+
+			function setcondition(c) {
+				// console.log("数据:" + c)
+				this.condition.date = c.date
+				this.condition.startdate = c.startdate
+				this.condition.enddate = c.enddate
+				this.condition.customer = c.customer
+				this.condition.supplier = c.supplier
+				this.condition.storeid = c.storeid
+				this.condition.order = c.order
+				this.condition.goodstype = c.goodstype
+				this.condition.goodsid = c.goodsid
+				this.condition.userid = c.userid
+				// alert(JSON.stringify(c))
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition() {
+				if (this.condition.date != 6) {
+					document.querySelector(".tcondition li:last-child").innerText = tzx.timeName[this.condition.date]
+				} else {
+					document.querySelector(".tcondition li:last-child").innerText = this.condition.startdate + " ~ " + this.condition.enddate
+				}
+			}
+			var current = "profitReport_Detail.html";
+			var v = new Vue({
+				el: ".mui-content",
+				data: {
+					lr: [],
+					lasttime: "1900-1-1",
+					totalpaymoney: 0,
+					totalcostmoney: 0,
+					totalcount: 0,
+					tconditionName: "无",
+					tconditionId: "1",
+					tcondition: 0,
+					t:0
+				}
+			})
+			mui.ready(function() {
+				// this.condition.customer = 1
+				// this.condition.goodsid = 0
+				// query()
+			})
+			mui.plusReady(function() {
+				mui('header').on('tap', '.mui-pull-left', function() {
+					tzx.back(current)
+				})
+				mui('header').on('tap', '.mui-pull-right', function() {
+					tzx.gotoFilter(current)
+					var c={id:v.tconditionId,name:v.tconditionName}
+					 alert(JSON.stringify(c))
+					if(v.t==0){
+						plus.webview.getWebviewById("filter.html").evalJS("getclientId("+JSON.stringify(c)+")")
+					}else{
+						var c={goodsInstanceId:v.tconditionId,goodsName:v.tconditionName,standardName:""}
+						plus.webview.getWebviewById("filter.html").evalJS("setGoodsid("+JSON.stringify(c)+")")
+					}
+				})
+			})
+			//查询数据
+			function query() {
+				showtcondition()
+				mui.ajax(tzx.url + 'profitDetail', {
+					data: this.condition,
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success: function(data) {
+						console.log(data)
+						v.lr = data
+						total()
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(type);
+					}
+				});
+			}
+
+			function total() {
+				mui.each(v.lr, function(index, item) {
+					v.totalcostmoney += item.costmoney
+					v.totalpaymoney += item.paymoney
+					v.totalcount += item.count
+				})
+				if (this.condition.customer != 0) {
+					v.tconditionName = v.lr[0].cname
+					v.tconditionId=v.lr[0].cid
+					v.tcondition = 1
+				}else{
+					v.t=1
+					v.tconditionName = v.lr[0].gname + v.lr[0].standardName
+					v.tcondition = 0
+				}
+			}
+		</script>
+	</body>
+</html>

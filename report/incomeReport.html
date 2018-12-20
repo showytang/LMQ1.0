@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>收支统计</title>
+	<link rel="stylesheet" href="../css/mui.min.css">
+    <script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var w=$(window).width()
+		var h=$(window).height()
+		$(function(){
+			$("body").css("height",h+"px")
+			// $("mui-content").css("height",(h-44)+"px")
+			$(".mui-slider-group").css("height",(h-44-24-38-2-50)+"px")
+		})
+	</script>
+	<style type="text/css">
+		.tcondition li{width: 100%;}
+		.mui-control-content {
+			/* min-height: 215px; */
+		}
+		.mui-control-content .mui-loading {
+			margin-top: 51px;
+		}
+		.mui-table-view-cell:after {left:0;}
+		.mui-table-view-cell{display: flex;flex-direction: row;justify-content: space-between;}
+		.mui-table-view-cell>span{}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收支统计</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content">
+			<ul class="tcondition">
+				<li>全部</li>
+			</ul>
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="#item1mobile">全部</a>
+					<a class="mui-control-item" href="#item2mobile">收入</a>
+					<a class="mui-control-item" href="#item3mobile">支出</a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper" style="overflow: auto;">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell" v-on:click="jump(0)"><span>销售收入</span><span><span>{{lr.xs}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(1)"><span>收订金/欠款</span><span><span>{{lr.dj+lr.cz}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(2)"><span>进货支出</span><span><span>{{lr.jh}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(3)"><span>付订金/欠款</span><span><span>{{lr.fk}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(4)"><span>物业管理</span><span><span>0</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell" v-on:click="jump(0)"><span>销售收入</span><span><span>{{lr.xs}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(1)"><span>收订金/欠款</span><span><span>{{lr.dj+lr.cz}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell" v-on:click="jump(2)"><span>进货支出</span><span><span>{{lr.jh}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(3)"><span>付订金/欠款</span><span><span>{{lr.fk}}</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+									<li class="mui-table-view-cell" v-on:click="jump(4)"><span>物业管理</span><span><span>0</span><span class="mui-icon mui-icon-arrowright"></span></span></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="total">
+					<span><p>收入</p><p>{{totalincome}}</p></span>
+					<span><p>支出</p><p>{{totalexpense}}</p></span>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				// alert(JSON.stringify(this.condition))
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			var current="incomeReport.html";
+			var v=new Vue({
+				el : ".mui-content",
+				data : {
+					lr:{},
+					totalincome:0,
+					totalexpense:0
+				},
+				methods:{
+					jump:function(queryIncomeTypeId){
+						var name="incomeReport_Detail.html";
+						var newwebview=plus.webview.getWebviewById("incomeReport_Detail.html")
+						if(newwebview==null){
+							var newwebview=plus.webview.create(name,name,{},{});
+						}
+						plus.webview.currentWebview().hide("slide-out-right")
+						newwebview.show("slide-in-right");
+						newwebview.evalJS("setqueryIncomeTypeId("+queryIncomeTypeId+")")
+						newwebview.evalJS("query()")
+						
+					}
+				}
+			})
+			mui.ready(function () {
+				this.condition.date=0
+				this.condition.storeid=login.getLogin().store.id
+				query()
+				showtcondition()
+			})
+			//查询数据
+			function query(){
+				mui.ajax(tzx.url+'income/queryAll',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.lr=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				v.totalincome=v.lr.xs+v.lr.dj+v.lr.cz
+				v.totalexpense=v.lr.jh+v.lr.fk
+			}
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	tzx.gotoFilter(current)
+			    })
+				mui.back=function () {
+					tzx.back(current,"index.html")	
+				}
+
+				
+			})
+
+			mui.init({
+				swipeBack: false
+			});
+			(function($) {
+				$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+			})(mui);
+		</script>
+		
+	</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>收支统计明细</title>
+	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/mui.min.js"></script>
+    <link href="../css/mui.min.css" rel="stylesheet"/>
+	<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="../css/report.css"/>
+	<!-- <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/> -->
+	<!-- <script src="../js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<script type="text/javascript" src="../js/pace.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
+	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+	</script>
+	<style type="text/css">
+		.mui-title>ul>li>a{padding: 0 0;font-size: 0.6em;}
+		table{height: 100%;background-color: white;}
+		.totaltr{height: 80px; width: 100%;}
+		.table>tbody>tr>td{padding: 4px;}
+		.tabcount :first-child{color: #aaa;}
+		.total{position: fixed;bottom: 0px;width: 100%;}
+	</style>
+	</head>
+	<body>
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class=" mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">收支统计</h1>
+			<a class="mui-icon mui-icon-bars mui-pull-right"></a>
+		</header>
+		<div class="mui-content tab-content">
+			<ul class="tcondition">
+				<li>{{queryName}}</li>
+				<li>2018.11.01-2018.11.30</li>
+			</ul>
+				<table class="table tabDetail" border="0" c cellspacing="" cellpadding=""  style="margin-bottom: 50px;">
+					<tbody class="tabcontent" v-for="(obj,index) in lr"  time="obj.time">
+						<tr class="tabtime" v-if="obj.time!=lasttime"><td colspan="4">{{obj.time}}</td></tr>
+						<tr class="tabid"><td colspan="4">{{obj.bh}}</td></tr>
+						<tr class="tabname"><td colspan="4">{{obj.name}}</td></tr>
+						<tr class="tabcount"><td colspan="2">{{obj.lx}}</td><td colspan="2">{{obj.money}}</td></tr>
+					</tbody>
+					
+				</table>
+				<div class="total">
+					<span><p>合计金额：￥<span>{{totalmoney}}</span></p></span>
+				</div>
+			
+
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var queryIncomeTypeId="0"
+			function setqueryIncomeTypeId(queryIncomeTypeId){
+				this.queryIncomeTypeId=queryIncomeTypeId
+			}
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			function setcondition(c){
+				console.log("数据:"+c)
+				this.condition.date=c.date
+				this.condition.startdate=c.startdate
+				this.condition.enddate=c.enddate
+				this.condition.customer=c.customer
+				this.condition.supplier=c.supplier
+				this.condition.storeid=c.storeid
+				this.condition.order=c.order
+				this.condition.goodstype=c.goodstype
+				this.condition.goodsid=c.goodsid
+				this.condition.userid=c.userid
+				// alert(JSON.stringify(this.condition))
+			}	
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
+			}
+			var current="incomeReport_Detail.html";
+			var v=new Vue({
+				el : ".mui-content",
+				data : {
+					lr:{},
+					lasttime:"1900-1-1",
+					totalmoney:0,
+					queryName:""
+				}
+			})
+			mui.ready(function () {
+				// this.condition.date=0
+				// this.condition.storeid=login.getLogin().store.id
+				// this.queryIncomeTypeId=0	//查询的收支类型-存在tzx.js中的queryIncomeType对象中
+				// setqueryIncomeTypeId(1)
+				// query()
+			})
+			//查询数据
+			function query(){
+				showtcondition()	//显示时间段-条件
+				// alert(this.queryIncomeTypeId+"---"+tzx.queryIncomeType[this.queryIncomeTypeId].queryCode)
+				console.log(JSON.stringify(tzx.queryIncomeType[this.queryIncomeTypeId]))
+				mui.ajax(tzx.url+'income/'+tzx.queryIncomeType[this.queryIncomeTypeId].queryCode,{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						v.lr=data
+						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function total(){
+				v.queryName=tzx.queryIncomeType[queryIncomeTypeId].queryName
+				mui.each(v.lr,function(index,item){
+					item.time=item.time.substring(0,10)
+					v.totalmoney+=item.money
+				})
+			}
+			mui.plusReady(function () {
+			    mui('header').on('tap','.mui-pull-left',function(){
+			    	tzx.back(current)
+			    })
+			    mui('header').on('tap','.mui-pull-right',function(){
+			    	tzx.gotoFilter(current)
+			    })
+				
+			})
+
+			
+		</script>
+	</body>
+</html>
