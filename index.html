@@ -413,6 +413,10 @@
 	    		        <span class="mui-icon mui-icon-gear"></span>
 	    		        <span class="mui-tab-label">设置</span>
 	    		    </a>
+	    		     <a class="mui-tab-item">
+	    		        <span class="mui-icon mui-icon-gear"></span>
+	    		        <span class="mui-tab-label">报表</span>
+	    		    </a>
 	    		</nav>
 	            <!-- 主页面内容容器 -->
 	            <div class="mui-content mui-scroll-wrapper">
@@ -432,7 +436,7 @@
 										<div style="padding-bottom: 1rem;">￥<span class="todaysales">加载中...</span></div>
 										<div>今日销售额</div>
 									</div>
-								</div>
+								</div> 
 			
 							</div>
 							<div class="mui-col-xs-12 lmq-header-select">
@@ -505,6 +509,28 @@
 		var height = window.screen.height;
 		document.querySelector(".outo-scroll").style.height = height+"px";
 		indexLogin();
+		unXer();
+	}
+	function unXer(bb){
+		/*var bb=login.getLogin().store.id;
+		console.log("weiyu"+JSON.stringify(bb))*/
+		mui.ajax(n.url+'/todaySales',{
+			data:{
+				storeid:bb
+			},
+			dataType:'json',//服务器返回json格式数据
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			success:function(data){
+				console.log("data"+data)
+				document.querySelector(".todaysales").innerHTML=data[0];
+				document.querySelector(".monthsales").innerHTML=data[1];
+				document.querySelector(".stock").innerHTML=parseInt(data[2]);
+			},
+			error:function(xhr,type,errorThrown){
+				
+			}
+		});
 	}
 	function indexLogin(){
 		async(function*() { //同步
@@ -512,6 +538,9 @@
 			var db = yield new DB("LMQ");
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+			console.log("JSON"+JSON.stringify(atuser[0]))
+			var bb = parseInt(atuser[0].store.id);
+			unXer(bb);
 			if(!atuser || atuser.length==0){
 				mui.alert("登录用户超时，请重新登录.",function(){
 					plus.webview.create("admin.html","admin.html").show("none");
@@ -580,7 +609,7 @@
 			a.show("none");
 		}
 	}
-	var menuListName = ["a", "goodsManage_h","User_admin"];
+	var menuListName = ["a", "goodsManage_h","User_admin","report"];
 	mui.plusReady(function() {
 		initTab();
 		/*cpp*/
