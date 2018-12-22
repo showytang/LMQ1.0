@@ -88,7 +88,6 @@
 						var db = yield new DB("LMQ");
 						//获取当前使用的用户
 						var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-						console.log("好家伙" + JSON.stringify(atuser[0].store.storetype.level))
 						if(atuser[0].store.storetype.level != null) {
 							var aa = parseInt(atuser[0].store.storetype.level);
 							mui.ajax(n.url + '/Storetype/queryBylevel', {
@@ -172,9 +171,8 @@
 							var db = yield new DB("LMQ");
 							//获取当前使用的用户
 							var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-							var Parentid = parseInt(atuser[0].store.id);
-							var c={"name":name,"address":address,"province":province,"city":city,"district":county,"stid":sid,"Parented":Parentid,"user":{"name":account,"pwd":pwd}}
-							param.Parented = Parentid;
+							var Parentid = atuser[0].store.id;
+							var c={"name":name,"address":address,"province":province,"city":city,"district":county,"stid":sid,"parented":Parentid,"user":{"name":account,"pwd":pwd}}
 							mui.ajax(n.url + '/Store/insertSelective', {
 								data:JSON.stringify(c),
 								dataType: 'json', //服务器返回json格式数据
@@ -184,7 +182,11 @@
 								success: function(data) {
 									if (data) {
 										mui.toast("新增成功！")
-										plus.webview.create("index.html","index.html",{},{}).show("none")
+										var as=plus.webview.getWebviewById("index.html")
+										if (as==null) {
+											as=plus.webview.create("index.html", "index.html", {}, {})
+										} 
+										as.show();
 									} else{
 										mui.toast("新增失败！")
 									}

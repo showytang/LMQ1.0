@@ -97,14 +97,14 @@
 			})
 			mui.ready(function () {
 				this.condition.customer=4
-				this.condition.date=0
+				// this.condition.date=0
 				this.condition.storeid=login.getLogin().store.id
 				query()
 			})
 			//查询数据
 			function query(){
 				showtcondition()	//显示时间段-条件  所有报表通用
-				mui.ajax(tzx.url+'receiptAccount',{
+				mui.ajax(tzx.getURL()+'receiptAccount',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -138,6 +138,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

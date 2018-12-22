@@ -84,14 +84,14 @@
 			})
 			mui.ready(function () {
 				// this.condition.supplier=1
-				this.condition.date=0
+				// this.condition.date=0
 				this.condition.storeid=login.getLogin().store.id
 				query()
 			})
 			//查询数据
 			function query(){
 				showtcondition()
-				mui.ajax(tzx.url+'paytArrearage_Detail',{
+				mui.ajax(tzx.getURL()+'paytArrearage_Detail',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -108,14 +108,14 @@
 				});
 			}
 			function total(){
-				v.initMoney=v.lr[0].initMoney
-				v.name=v.lr[0].name
 				mui.each(v.lr,function(index,item){
 					v.totalfinalMoney+=item.addMoney
 					v.totalfinalMoney-=item.backMoney
 					item.finalMoney=v.totalfinalMoney
 					v.totaladdMoney+=item.addMoney
 					v.totalbackMoneyy+=item.backMoney
+					v.initMoney=item.initMoney
+					v.name=item.name
 				})
 			}
 			mui.plusReady(function () {
@@ -125,6 +125,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

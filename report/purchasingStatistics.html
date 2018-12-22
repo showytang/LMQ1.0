@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>进货统计</title>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
 	<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
@@ -64,7 +64,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 				// plus.webview.getWebviewById("filter.html").close()
 			}
 			//将时间段条件的中文显示到顶部条件位置
@@ -84,15 +84,18 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
-				mui('table').on('tap','tbody',function(){
-					var name="purchasingStatistics_Detail.html";
-					var newwebview=plus.webview.getWebviewById(name)
-					if(newwebview==null){
-						var newwebview=plus.webview.create(name,name,{},{});
-					}
-					plus.webview.currentWebview().hide("slide-out-right")
-					newwebview.show("slide-in-right");
-				})
+// 				mui('table').on('tap','tbody',function(){
+// 					var name="purchasingStatistics_Detail.html";
+// 					var newwebview=plus.webview.getWebviewById(name)
+// 					if(newwebview==null){
+// 						var newwebview=plus.webview.create(name,name,{},{});
+// 					}
+// 					plus.webview.currentWebview().hide("slide-out-right")
+// 					newwebview.show("slide-in-right");
+// 				})
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 			var v=new Vue({
@@ -103,7 +106,8 @@
 					totalpaymoney:0,
 					totalcostmoney:0,
 					totalcount:0,
-					totalmoney:0
+					totalmoney:0,
+					condition:{}
 				},
 					methods:{
 						jump:function(gid){
@@ -114,22 +118,21 @@
 							}
 							plus.webview.currentWebview().hide("slide-out-right")
 							newwebview.show("slide-in-right");
-							var c=this.condition
-							c.customer=0
-							c.goodsid=gid
-							newwebview.evalJS("setcondition("+JSON.stringify(c)+")")
+							v.condition.goodsid=gid
+							newwebview.evalJS("setcondition("+JSON.stringify(v.condition)+")")
+							newwebview.evalJS("query()")
 						}
 					}
 			})
 			mui.ready(function () {
-				this.condition.date=0
-				this.condition.storeid=1
+				// this.condition.date=0
+				this.condition.storeid=tzx.getLogin().store.id
 				query()
-				showtcondition()
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'purchasingStatistics',{
+				showtcondition()
+				mui.ajax(tzx.getURL()+'purchasingStatistics',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -146,6 +149,7 @@
 				});
 			}
 			function total(){
+				v.condition=this.condition
 				mui.each(v.jh,function(index,item){
 					console.log(item)
 					v.totalcostmoney+=item.costmoney

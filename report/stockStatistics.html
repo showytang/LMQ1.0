@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>库存统计</title>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
@@ -84,7 +84,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			//将时间段条件的中文显示到顶部条件位置
 			function showtcondition(){
@@ -135,7 +135,7 @@
 			//查询数据
 			function query(){
 				showtcondition()
-				mui.ajax(tzx.url+'stockstatistics',{
+				mui.ajax(tzx.getURL()+'stockstatistics',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -172,6 +172,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

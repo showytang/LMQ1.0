@@ -242,6 +242,7 @@
 				mui('body').on('tap', '.mui-icon-plusempty', function() {
 					//创建并判断是否存在列表内容窗体
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					console.log(sid)
 					var vw = plus.webview.getWebviewById("goodsInstanceSelect_h.html");
 					vw = plus.webview.create("goodsInstanceSelect_h.html", "goodsInstanceSelect_h.html", {}, {
 						cid: v.cid,

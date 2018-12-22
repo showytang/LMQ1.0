@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>收支统计明细</title>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
 	<script src="../js/echarts.js" type="text/javascript" charset="utf-8"></script>
@@ -104,7 +104,7 @@
 				showtcondition()	//显示时间段-条件
 				// alert(this.queryIncomeTypeId+"---"+tzx.queryIncomeType[this.queryIncomeTypeId].queryCode)
 				console.log(JSON.stringify(tzx.queryIncomeType[this.queryIncomeTypeId]))
-				mui.ajax(tzx.url+'income/'+tzx.queryIncomeType[this.queryIncomeTypeId].queryCode,{
+				mui.ajax(tzx.getURL()+'income/'+tzx.queryIncomeType[this.queryIncomeTypeId].queryCode,{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -134,6 +134,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

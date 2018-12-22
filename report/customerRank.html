@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="../css/mui.min.css">
     <script src="../js/mui.min.js"></script>
 	<script src="../js/vue.js"></script>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="../css/tzx.css"/>
 	<script src="../js/tzx.js" type="text/javascript" charset="utf-8"></script>
@@ -50,7 +50,7 @@
 				this.condition.goodstype=c.goodstype
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
-				alert(JSON.stringify(this.condition))
+				// alert(JSON.stringify(this.condition))
 			}
 			//将时间段条件的中文显示到顶部条件位置
 			function showtcondition(){
@@ -75,7 +75,7 @@
 			})
 			//查询数据
 			function query(){
-				mui.ajax(tzx.url+'customerRank',{
+				mui.ajax(tzx.getURL()+'customerRank',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型

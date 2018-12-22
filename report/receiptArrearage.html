@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>应收欠款</title>
-	<script src="../js/jquery-1.12.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/mui.min.js"></script>
     <link href="../css/mui.min.css" rel="stylesheet"/>
 	<link rel="stylesheet" type="text/css" href="../css/report.css"/>
@@ -100,14 +100,13 @@
 			})
 			mui.ready(function () {
 				
-				this.condition.storeid=login.getLogin().id
 				this.condition.storeid=login.getLogin().store.id
 				query()
 			})
 			//查询数据
 			function query(){
 				showtcondition()	//显示时间段-条件  所有报表通用
-				mui.ajax(tzx.url+'receiptArrearage',{
+				mui.ajax(tzx.getURL()+'receiptArrearage',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -139,6 +138,9 @@
 			    mui('header').on('tap','.mui-pull-right',function(){
 			    	tzx.gotoFilter(current)
 			    })
+				mui.back=function () {
+					tzx.back(current)	
+				}
 				
 			})
 

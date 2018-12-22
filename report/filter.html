@@ -178,7 +178,7 @@
 					// 弹出系统选择按钮框
 					console.log(this.innerHTML)
 					if(n==null){
-						n = plus.nativeUI.actionSheet({title:"选择供应商",cancel:"取消",buttons:[{title:"全部"},{title:"本年"}]}, function(e){
+						n = plus.nativeUI.actionSheet({title:"选择供应商",cancel:"取消",buttons:[{title:"全部"},{title:"指定"}]}, function(e){
 							console.log("User pressed: "+e.index);
 							//e.index:0取消 -1点击外部 12345---为顺序选择
 							if(e.index==1){
@@ -208,7 +208,7 @@
 							}
 							if(e.index==4){
 								// alert("指定客户")
-								var webviewSelectCustomer=plus.webview.create("zjf/client.html","f_client.html",{},{})
+								var webviewSelectCustomer=plus.webview.create("../customer/client.html","f_client.html",{},{})
 								plus.webview.currentWebview().hide("none")
 								webviewSelectCustomer.show("none")
 							}
