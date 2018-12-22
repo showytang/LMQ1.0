@@ -119,16 +119,18 @@
 			<div id="standardTop">
 				<div class="title">类目下的规格</div>
 				<form class="mui-input-group" v-if="list" v-for="(l,index) in list">
-					<span class="mui-icon mui-icon-closeempty StandardCloseBtn" ></span>
+					<span class="mui-icon mui-icon-closeempty StandardCloseBtn" v-bind:data-standardId="l.id" ></span>
 					<!--规格名称-->
 					<input type="text"
-					 class="standardTitle" style="margin: 0px; padding: 0px;" v-bind:value="l.name">
+					 class="standardTitle" v-bind:standardAndId = "l.standardAndId" v-bind:data-standardId="l.id" style="margin: 0px; padding: 0px;" v-bind:value="l.name">
 					 <!--规格值-->
 					<div class="tandardSec mui-row" v-bind:data-standardId="l.id">
-						<div class="simStandardValue bgGraw mui-col-xs-4"><input class="input" placeholder="规格值名称" type="text"></div>
-						<div class="simStandard mui-col-xs-4 divStandard standardSelected" v-bind:data-standardInsId="sI.id" v-for="(sI,index1) in l.sInList" style="border-style: solid;">
-							<input class="input" type="text" placeholder="规格名称" v-bind:value="sI.name"  >
-							 <span  class="closeStandardBtn mui-icon mui-icon-closeempty"></span>
+						<div class="simStandardValue bgGraw mui-col-xs-4">
+							<input class="input" placeholder="规格值名称" value="" type="text">
+						</div>
+						<div class="simStandard mui-col-xs-4 divStandard standardSelected"  v-for="(sI,index1) in l.sInList" style="border-style: solid;">
+							<input class="input" v-bind:standardAndId="sI.standardAndId" type="text" placeholder="规格名称" v-bind:data-standardInsId="sI.id" v-bind:value="sI.name"  >
+							 <span  class="closeStandardBtn mui-icon mui-icon-closeempty" v-bind:data-standardId="l.id" v-bind:data-standardInsId="sI.id"></span>
 						</div>
 					</div>
 				</form>
@@ -146,7 +148,12 @@
 		<script src="../js/news.js"></script>
 		<script src="../js/vue.js"></script>
 		<script type="text/javascript">
+			var tId = 0;//默认顶级
+			var deleteStandardId = [];
+			var deleteStandardInId = [];
+			var stypeName = "";
 			mui.init();
+			var oldStandard;
 			mui.ready(function() {
 				console.log(n.url+"/goods/queryALLStandardByTid");
 				mui('body').on('tap', '.LastStypeSec', function() {
@@ -154,25 +161,36 @@
 					webview.show("slide-in-right");
 				})
 				//添加类目
-				mui('body').on('tap','#submitBtn',function(){
+				//mui('body').on('tap','#submitBtn',function(){
 				  //验证输入完整性
 				  //console.log(document.querySelector("#standardTop").innerHTML);
-				  getStandardData();
-				}) 
+				  //getStandardData();
+				//}) 
 				//规格值输入
 				mui('body').on('change','.simStandard input',function(){
-				  if(!this.value.length>0)
-				  	this.parentElement.parentElement.removeChild(this.parentElement);//空值删除
-				  else
-				  	this.parentElement.setAttribute("data-standardInsId","--"+this.value);
-				  	
+					for(var i = 0;i<vue.list.length;i++){
+					  	for(var j=0;j<vue.list[i].sInList.length;j++){
+					  		if(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId")
+					  			||
+					  			vue.list[i].sInList[j].standardAndId == this.getAttribute("standardAndId")
+					  			){
+					  			vue.list[i].sInList[j].name = this.value;
+				  				return;
+					  		}	
+					  	}
+					}
 				}) 
 				//规格输入
 				mui('body').on('change','.standardTitle',function(){
-				  if(!this.value.length>0)
-				  	this.parentElement.parentElement.removeChild(this.parentElement);//空值删除
-				  else
-				  	this.nextElementSibling.setAttribute("data-standardId","--"+this.value);
+				  for(var i = 0;i<vue.list.length;i++){
+				  	if(vue.list[i].id == this.getAttribute("data-standardId")
+				  	||
+				  	vue.list[i].standardAndId == this.getAttribute("standardAndId")
+				  	){
+				  		vue.list[i].name = this.value;
+				  		return;
+				  	}
+				  }
 				}) 
 			})
 			var vue = new Vue({
@@ -182,8 +200,12 @@
 				}
 			});
 			function setGoodsType(d){//{"typeName":"服装","typeId":"1"}
+				deleteStandardId = [];
+				deleteStandardInId = [];
 				var typeObj = eval('('+d+')');
+				tId = typeObj.typeId;
 				var nq = document.querySelector(".stypeName");
+				stypeName = typeObj.typeName;
 				nq.innerText = typeObj.typeName;
 				nq.setAttribute("data-typeId",typeObj.typeId);
 				//根据类目查询属性值
@@ -195,8 +217,13 @@
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
+						oldStandard = JSON.stringify(data);
 						console.log(JSON.stringify(data));
 						vue.list = data;
+						/*if(data!=null&&data.length>0){
+							tId = data[0].tid;
+							alert(data[0].tid);
+						}*/
 					},
 					error:function(xhr,type,errorThrown){
 						
@@ -204,14 +231,23 @@
 				});//ajax结束
 			}
 			mui.plusReady(function() {
-				mui('body').on('tap', '#addStypeBtn', function() {
+				/*mui('body').on('tap', '#addStypeBtn', function() {
 					var webview = plus.webview.create("goodsAddStype.html", "goodsAddStype.html", {}, {});
 					webview.show("slide-in-right");
-				})
+				})*/
 				//添加自定义属性
 				mui('body').on('change', '#addStandard', function() {
 					if(addStandard.value.length != 0) {
-						//最顶层规格div id=standardTop
+						//不能名称相同
+						for(var i =0;i<vue.list.length;i++){
+							if(vue.list[i].name == addStandard.value){
+								addStandard.value = "";
+								plus.nativeUI.toast("温馨提示：不能重复添加规格");
+								return; 
+							}
+						}
+						
+						/*//最顶层规格div id=standardTop
 						var target = document.querySelector("#standardTop");
 						//新增自定义规格部分
 						var form = document.createElement("form");
@@ -244,19 +280,71 @@
 						div.appendChild(div1);
 						div1.appendChild(input);
 						//div.appendChild(div2);
-						target.appendChild(form);
+						target.appendChild(form);*/
+						
+						//添加到vue中
+						var newStandard ={};
+						newStandard.name = addStandard.value;
+						newStandard.standardAndId = addStandard.value;
+						newStandard.tid = tId;
+						newStandard.sInList = [];
+						vue.list.push(newStandard);
+						console.log(JSON.stringify(vue.list));
 					}
 					this.value = "";
+					
+					
 				})
 				//添加自定义属性值
-				mui('body').on('input', '.bgGraw', function() {
-					this.classList.add("divStandard"); //自定义规格标记
+				mui('body').on('change', '.bgGraw', function() {
+					var inputNode = this.querySelector("input");
+					//不能为空
+					if(!inputNode.value.length>0)
+						return;
+					//不能重复添加名称相同的规格值
+					for(var i = 0;i<vue.list.length;i++){
+						if(vue.list[i].id == this.parentElement.getAttribute("data-standardId")
+						||
+						vue.list[i].standardAndId == this.parentElement.previousElementSibling.value
+						){
+							if(vue.list[i].sInList.length == 0){
+								//添加到vue中
+								var newStandardIns = {};
+								newStandardIns.name = this.children[0].value;
+								newStandardIns.standardAndId = this.parentElement.getAttribute("data-standardId") + this.children[0].value;
+								vue.list[i].sInList.push(newStandardIns);
+								inputNode.value = "";
+								return;
+							}
+							for(var j=0;j<vue.list[i].sInList.length;j++){
+								if(this.children[0].value == vue.list[i].sInList[j].name//非自定义
+								||
+								(this.parentElement.getAttribute("data-standardId")+this.children[0].value) ==  vue.list[i].sInList[j].standardAndId
+								){
+									inputNode.value = "";
+									plus.nativeUI.toast("温馨提示：不能重复添加规格值");
+									return;
+								}
+								if(vue.list[i].sInList.length-1 == j){//没有找到
+									//添加到vue中
+									var newStandardIns = {};
+									newStandardIns.name = this.children[0].value;
+									newStandardIns.standardAndId = this.parentElement.getAttribute("data-standardId") + this.children[0].value;
+									vue.list[i].sInList.push(newStandardIns);
+									inputNode.value = "";
+									return;
+								}
+							}
+						}
+					}
+					/*this.classList.add("divStandard"); //自定义规格标记
 					this.classList.remove("bgGraw");
-					this.classList.add("standardSelected"); //选中样式
-					this.style.borderColor = "#0000FF";
-					this.style.borderStyle = "solid";
+					//this.classList.add("standardSelected"); //选中样式
+					//this.style.borderColor = "#0000FF";
+					//this.style.borderStyle = "solid";
 					var span = document.createElement("span");
 					span.className = "closeStandardBtn mui-icon mui-icon-closeempty";
+					span.setAttribute("newStandard",this.value+this.parentElement.getAttribute("data-standardId"));//作为删除标识
 					this.appendChild(span);
 					//新节点（自定义规格值）
 					var div = document.createElement("div");
@@ -267,25 +355,35 @@
 					input.type = "text";
 					div.appendChild(input);
 					//console.log(this.parentElement.children[0].value);
-					this.parentElement.insertBefore(div, this.parentElement.children[0]);
+					this.parentElement.insertBefore(div, this.parentElement.children[0]);*/
+					
+					
+					
+					
 				})
 				//删除规格
 				mui('body').on('tap','.StandardCloseBtn',function(e){
 					//删除数据
 				  	for(var i = 0;i<vue.list.length;i++){
-				  		if(vue.list[i].id == this.nextElementSibling.nextElementSibling.getAttribute("data-standardId")){
+				  		if(vue.list[i].id == this.getAttribute("data-standardId")){
+				  			deleteStandardId.push(vue.list[i].id)
 				  			vue.list.splice(i,1);
+				  			if(deleteStandardId[deleteStandardId.length-1] == null)
+				  				deleteStandardId.splice(deleteStandardId.length-1,0);
 				  		}
 				  	}
 				  	
 				}) 
-				//规格删除按钮
+				//规格值删除按钮
 				mui('body').on('tap', '.closeStandardBtn', function(e) {
 					for(var i = 0;i<vue.list.length;i++){
-				  		if(vue.list[i].id == this.parentElement.parentElement.getAttribute("data-standardId")){
+				  		if(vue.list[i].id == this.getAttribute("data-standardId")){
 				  			for(var j=0;j<vue.list[i].sInList.length;j++){
-				  				if(vue.list[i].sInList[j].id == this.parentElement.getAttribute("data-standardInsId")){
+				  				if(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId")){
+				  					deleteStandardInId.push(vue.list[i].sInList[j].id);
 				  					vue.list[i].sInList.splice(j,1);
+				  					if(deleteStandardInId[deleteStandardInId.length-1] == null)
+				  						deleteStandardInId.splice(deleteStandardInId.length-1,0);
 				  				}
 				  			}
 				  		}
@@ -336,8 +434,35 @@
 					showNode(type.gtList, node, garde);
 				}
 			}
+			function addStype(){
+				//类目名称为空判断
+				if(stypeName.trim().length == 0){
+					plus.nativeUI.toast("温馨提示：类目名称不能为空");
+					return;
+				}
+					
+				var standardVO = {};
+				standardVO.tId = tId;
+				standardVO.deleteStandardId = deleteStandardId;
+				standardVO.deleteStandardInId = deleteStandardInId;
+				standardVO.oldStandard = eval(oldStandard);
+				standardVO.newStandard = vue.list;
+				mui.ajax(n.url+'/goods/addStype',{
+					data:standardVO,
+					dataType:'json',//服务器返回json格式数据
+					contentType:"application/json;charaset=utf-8",
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					success:function(data){
+						
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(n.url+'/goods/addStype');
+					}
+				});
+			}
 			//获取规格数据（新增规格）
-			function getStandardData(){
+			/*function getStandardData(){
 				//规格集合
 				var standardArr = document.querySelectorAll(".tandardSec");
 				var standardObjs = [];
@@ -354,7 +479,7 @@
 					standardObjs.push(standardObj);
 				}
 				console.log(JSON.stringify(standardObjs));
-			}
+			}*/
 		</script>
 	</body>
 
