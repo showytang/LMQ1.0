@@ -484,21 +484,6 @@
 					}
 				})
 
-				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
-					data: {
-						sid: sid
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						v.list = data;
-					},
-					error: function(xhr, type, errorThrown) {
-
-					}
-				});
 				//供应商
 				v2 = new Vue({
 					el: ".item2mobile",
@@ -514,22 +499,41 @@
 						}
 					}
 				})
-				//查询供应商
-				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier', {
-					data: {
-						sid: sid
 
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						v2.list = data;
-					},
-					error: function(xhr, type, errorThrown) {
+				function pageload(sid) {
+					//查询客户
+					mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
+						data: {
+							sid: sid
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							v.list = data;
+						},
+						error: function(xhr, type, errorThrown) {
 
-					}
-				});
+						}
+					});
+					//查询供应商
+					mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier', {
+						data: {
+							sid: sid
+
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							v2.list = data;
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+				}
+				pageload(sid)
 				v3 = new Vue({
 					el: ".item3mobile1",
 					data: {
