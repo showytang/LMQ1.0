@@ -42,14 +42,9 @@
 			var vue;
 			var cid;
 
-			function getObj(data) {
-				cid = data.cid
-			}
 			mui.plusReady(function() {
-				var webview = plus.webview.getWebviewById("customer/cargo_client_add.html");
-				webview.evalJS("getJsonObj()");
+				cid = plus.webview.currentWebview().cid;
 				var goodsInstance = eval("(" + plus.webview.currentWebview().goodsInstance + ")");
-
 				vue = new Vue({
 					el: ".mui-input-group",
 					data: {
@@ -78,6 +73,7 @@
 									plus.webview.getWebviewById("goodsCustomerPrice_h.html").close();
 									plus.webview.getWebviewById("goodsCustomerPrice.html").close();
 									plus.webview.currentWebview().close()
+									plus.webview.currentWebview().opener().close();
 								}
 							},
 							error: function(xhr, type, errorThrown) {

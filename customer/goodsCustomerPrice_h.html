@@ -31,7 +31,7 @@
 			mui.plusReady(function () {
 			    var webview = plus.webview.getWebviewById("goodsCustomerPrice.html");
 			    if(!webview){
-			    	webview = plus.webview.create("goodsCustomerPrice.html","goodsCustomerPrice.html",{top:45},{goodsInstance:plus.webview.currentWebview().goodsInstance});
+			    	webview = plus.webview.create("goodsCustomerPrice.html","goodsCustomerPrice.html",{top:45},{goodsInstance:plus.webview.currentWebview().goodsInstance,cid:plus.webview.currentWebview().cid});
 			    }
 			    webview.show("slide-in-right");
 			})

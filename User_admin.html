@@ -286,7 +286,7 @@
 											<div v-for="(obj,index) in list">
 												<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
 												<li data-value="AKU" data-tags="AKeSu" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item quoteData" v-bind:data-id="obj1.id">
-													<img src="http://120.78.85.230:8080/commodity/img/123.png" />
+													<img v-bind:src="url+obj1.url" />
 													<p>{{obj1.name}}</p>
 													<p>{{obj1.gname}}</p>
 													<p v-for="(obj2,index) in obj1.standardlist" style="display: inline; margin-right: 10px;">
@@ -502,7 +502,8 @@
 				v3 = new Vue({
 					el: ".item3mobile1",
 					data: {
-						list: null
+						list: null,
+						url:n.url+"/"
 					}
 				})
 
