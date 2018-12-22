@@ -484,21 +484,6 @@
 					}
 				})
 
-				//查询客户
-				mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
-					data: {
-						sid: sid
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						v.list = data;
-					},
-					error: function(xhr, type, errorThrown) {
-
-					}
-				});
 				//供应商
 				v2 = new Vue({
 					el: ".item2mobile",
@@ -514,44 +499,64 @@
 						}
 					}
 				})
-				//查询供应商
-				mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier', {
-					data: {
-						sid: sid
-
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						v2.list = data;
-					},
-					error: function(xhr, type, errorThrown) {
-
-					}
-				});
 				v3 = new Vue({
 					el: ".item3mobile1",
 					data: {
 						list: null
 					}
 				})
-				mui.ajax(obj.url + '/QuotedPrice/queryBySidAll', {
-					data: {
-						sid: sid
 
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						console.log(JSON.stringify(data))
-						v3.list = data
-					},
-					error: function(xhr, type, errorThrown) {
+				function pageload(sid) {
+					//查询客户
+					mui.ajax(obj.url + '/Customer/queryGroupByAcronymname', {
+						data: {
+							sid: sid
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							v.list = data;
+						},
+						error: function(xhr, type, errorThrown) {
 
-					}
-				});
+						}
+					});
+					//查询供应商
+					mui.ajax(obj.url + '/Supplier/queryByIdAllSupplier', {
+						data: {
+							sid: sid
+
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							v2.list = data;
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+					mui.ajax(obj.url + '/QuotedPrice/queryBySidAll', {
+						data: {
+							sid: sid
+
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							console.log(JSON.stringify(data))
+							v3.list = data
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+				}
+				pageload(sid)
+
 				//删除客户
 				mui('body').on('tap', '#delClient', function() {
 					var id = document.querySelector("#picture .show_clientInfo").getAttribute("data-id")
