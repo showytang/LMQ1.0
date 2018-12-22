@@ -108,12 +108,17 @@
 		<script src="../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="../js/news.js"></script>
 		<script type="text/javascript" src="../js/vue.js"></script>
-
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 	<script type="text/javascript">
 		(function($, doc) {
 			mui.init()
 			var v = null
+			var loginUser = login.getLogin();
+			console.log(JSON.stringify(loginUser));
+			var sid = loginUser.store.id;
 			mui.plusReady(function() {
 				var view = plus.webview.currentWebview();
 				var cid = view.cid //客户ID
@@ -176,7 +181,7 @@
 						pid: pid
 					}
 					var s = {
-						sid: 1
+						sid: sid
 					} //暂时死值
 					var t = Object.assign(p, c, q, l, s, p2); //组合成JSON对象
 					//拼接JSON对象
