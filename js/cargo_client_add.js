@@ -15,25 +15,25 @@ mui.plusReady(function() {
 			cid = this.getAttribute("data-id") //客户ID
 			pid = this.getAttribute("data-pid") //客户类型ID
 			plus.webview.create("goodsInstanceCustomer_h.html", "goodsInstanceCustomer_h.html", {}, {
-				/*cid:cid,
-				pid:pid*/
-			}).show("noen")
+				cid:cid,
+				pid:pid
+			}).show("none")
 			/*plus.webview.getWebviewById("goodsInstanceCustomer_h.html").evalJS("getcid("+cid+")")
 			plus.webview.getWebviewById("goodsInstanceCustomer_h.html").evalJS("getpid("+pid+")")*/
 		}
 	})
-	mui('body').on('click', '#hiden', function() {
-		var data = {}
-		data.cid = cid;
-		data.pid = pid;
-		plus.webview.getWebviewById("goodsInstanceCustomer.html").evalJS("getObj(" + JSON.stringify(data) + ")");
-		plus.webview.getWebviewById("goodsCustomerPrice.html").evalJS("getObj(" + JSON.stringify(data) + ")");
-	})
+	//mui('body').on('click', '#hiden', function() {
+		//var data = {}
+		//data.cid = cid;
+		//data.pid = pid;
+		//plus.webview.getWebviewById("goodsInstanceCustomer.html").evalJS("getObj(" + JSON.stringify(data) + ")");
+		//plus.webview.getWebviewById("goodsCustomerPrice.html").evalJS("getObj(" + JSON.stringify(data) + ")");
+	//})
 })
 
-function getJsonObj() {
-	mui.trigger(document.querySelector("#hiden"), "click")
-}
+// function getJsonObj() {
+// 	mui.trigger(document.querySelector("#hiden"), "click")
+// }
 
 /*添加*/
 /*function quotelist(data) {

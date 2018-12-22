@@ -21,12 +21,14 @@ var loginenter = {
 						yield db.put("store", data);*/
 					});
 					//mui.fire(plus.webview.getWebviewById("index.html"),‘refresh’);
-					//plus.webview.getLaunchWebview().show("none");
-					var as=plus.webview.getWebviewById("index.html")
-					if (as==null) {
-						as=plus.webview.create("index.html", "index.html", {}, {})
-					} 
-					as.show();
+					var lweb = plus.webview.getLaunchWebview();
+					lweb.evalJS("reloadIndex()");
+					lweb.show("none");
+// 					var as=plus.webview.getWebviewById("index.html")
+// 					if (as==null) {
+// 						as=plus.webview.create("index.html", "index.html", {}, {})
+// 					} 
+// 					as.show();
 					//plus.webview.getWebviewById("index.html").show();
 					//跳转页面
 					//plus.webview.create("index.html", "index.html", {}, {}).show("none")
@@ -40,3 +42,7 @@ var loginenter = {
 		});
 	}
 }
+
+
+
+

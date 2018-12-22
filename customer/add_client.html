@@ -113,6 +113,7 @@
 				mui.plusReady(function() {
 					/*添加客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
+						document.activeElement.blur();
 						var val = document.querySelector("[name=bigAddres]").innerHTML
 						if(obj.verify(".mui-content input") == false) {
 							mui.toast("请输入客户的完整信息");
@@ -189,6 +190,7 @@
 					var showCityPickerButton = doc.getElementById('showCityPicker3');
 					var cityResult3 = document.querySelector("[name=bigAddres]");
 					showCityPickerButton.addEventListener('tap', function(event) {
+						document.activeElement.blur();
 						cityPicker3.show(function(items) {
 							cityResult3.innerHTML = _getParam(items[0], 'text') + " " + _getParam(items[1], 'text') + " " + _getParam(items[2], 'text');
 							//返回 false 可以阻止选择框的关闭

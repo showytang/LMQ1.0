@@ -121,15 +121,17 @@
 			
 			var cid;
 			var pid;
-			function getObj(data){
-				cid=data.cid
-				pid=data.pid
-				//数据初始化
-				getData(cid, "");
-			}
+// 			function getObj(data){
+// 				cid=data.cid
+// 				pid=data.pid
+// 				//数据初始化
+// 				getData(cid, "");
+// 			}
 			mui.plusReady(function() {
-				var webview = plus.webview.getWebviewById("customer/cargo_client_add.html");
-				webview.evalJS("getJsonObj()");
+				cid = plus.webview.currentWebview().cid;
+				pid = plus.webview.currentWebview().pid;
+				console.log(pid);
+				getData(cid, "");
 				mui('body').on('tap', '.simGoodsInstance', function() {
 					//参数
 					var goodsInstanceId = this.getAttribute("goodsInstanceId");
@@ -143,6 +145,7 @@
 					//console.log("66"+JSON.stringify(goodsInstance));
 
 					var webview = plus.webview.getWebviewById("goodsCustomerPrice_h.html");
+					console.log(111);
 					if(!webview) {
 						webview = plus.webview.create("goodsCustomerPrice_h.html", "goodsCustomerPrice_h.html", {
 							top: 0

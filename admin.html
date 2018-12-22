@@ -21,6 +21,7 @@
 			});
 			mui.plusReady(function() {
 				mui('body').on('tap', '.login', function() {
+					document.activeElement.blur();
 					var name = mui("#account")[0].value;
 				 	var pwd = mui("#password")[0].value;
 					loginenter.Login(name,pwd);

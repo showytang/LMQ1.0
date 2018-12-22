@@ -7,24 +7,23 @@
 		<title></title>
 		<link href="css/mui.min.css" rel="stylesheet" />
 		<style type="text/css">
-			
 			.mui-card {
 				margin-left: 0px;
 				margin-right: 0px;
 			}
-			
+
 			.centerSec {
 				height: 100%;
 				border: 1px solid #0000FF;
 			}
-			
+
 			.circleSec {
 				display: flex;
 				justify-content: center;
 				border: 1px solid #DDDDDD;
 				height: 18em;
 			}
-			
+
 			#circleBtn {
 				width: 10em;
 				height: 10em;
@@ -35,96 +34,97 @@
 				margin-top: 3em;
 				transition: all 0.05s ease-out;
 			}
-			
+
 			.show {
 				box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.15);
 			}
-			
+
 			.selected {
 				/*box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.13), 0 5px 8px rgba(0, 0, 0, 0.3), 0 10px 10px 4px rgba(0, 0, 0, 0.3);*/
 				box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.1), 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 150px rgba(0, 0, 0, 0.15);
 			}
-			
+
 			.titleFont {
 				font-size: 0.7em;
 			}
-			
+
 			.moneySec {
 				border: 1px solid #DDDDDD;
 			}
-			
+
 			.border {
 				border-left: 1px solid #DDDDDD;
 				border-right: 1px solid #DDDDDD;
 			}
-			
+
 			.goAndOutSec {
 				padding-top: 2em;
 				padding-bottom: 2em;
 			}
-			
+
 			.centerFont {
 				position: absolute;
 				top: 8em;
 			}
-			
+
 			.mui-slider-indicator {
 				bottom: 0;
 			}
-			
+
 			.mui-slider {
 				background-color: #f2f2f2;
 			}
-			
+
 			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-object {
 				max-width: 100px;
 				height: 100px;
 				border: 1px solid red;
 				border-radius: 50%;
 			}
-			
+
 			#cp_div {
 				height: 165px;
 			}
+
 			/*门店弹层*/
-			
+
 			.mui-plus .plus {
 				display: inline;
 			}
-			
+
 			.plus {
 				display: none;
 			}
-			
+
 			#topPopover {
 				position: fixed;
 				top: 16px;
 				right: 6px;
 			}
-			
+
 			#topPopover .mui-popover-arrow {
 				left: auto;
 				right: 6px;
 			}
-			
+
 			p {
 				text-indent: 22px;
 			}
-			
+
 			/*span.mui-icon {
 				font-size: 14px;
 				margin-left: -15px;
 				padding-right: 10px;
 			}*/
-			
+
 			.mui-popover {
 				height: 300px;
 			}
-			
+
 			.mui-content {
 				padding: 10px;
 			}
-			
+
 			.mui-popover {
 				position: absolute;
 				z-index: 999;
@@ -142,11 +142,11 @@
 				-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, .1);
 				box-shadow: 0 0 15px rgba(0, 0, 0, .1);
 			}
-			
+
 			.mui-control-content {
 				min-height: 600px;
 			}
-			
+
 			.mui-card {
 				margin-left: 0px;
 				margin-right: 0px;
@@ -313,131 +313,131 @@
 	</head>
 
 	<body>
-		
-		<!-- 主界面菜单同时移动 -->
-	    <!-- 侧滑导航根容器 -->
-	    <div class="mui-off-canvas-wrap mui-draggable">
-	        <!-- 主页面容器 -->
-	        <div class="mui-inner-wrap">
-	            <!-- 菜单容器 -->
-	            <aside class="mui-off-canvas-left" id="offCanvasSide">
-	                <div class="mui-scroll-wrapper">
-	                    <div class="mui-scroll" >
-	                        <!-- 菜单具体展示内容 -->
-	                        <div class="mui-content outo-scroll" id="cp_caidan">
-							<div>
-								<ul class="mui-table-view mui-grid-view">
-									<li class="mui-table-view-cell mui-media mui-col-xs-12">
-										<a href="#">
-											<div class="cp_opp">
-												<img class="mui-media-object" src="http://placehold.it/400x300">
-											</div>
-											<div class="mui-media-body cp_div">
-												<a href="#" class="cp_head">加载中...</a>
-											</div>
-										</a>
-									</li>
-								</ul>
-								<div class="mui-card cp_classname">
-									<ul class="mui-table-view mui-table-view-chevron">
-										<li class="mui-table-view-cell mui-collapse">
-											<a class="mui-navigate-right" href="#">切换用户</a>
-											<ul class="mui-table-view mui-table-view-chevron cp_ul" id="OA_task_1">
-												<li class="mui-table-view-cell cp_lili" v-for="(obj,index) in list" v-bind:data-id="obj.id">
-													<div class="mui-slider-left mui-disabled">
-														<a class="mui-btn mui-btn-red">删除</a>
-													</div>
-													<div class="mui-slider-handle">
-														<a href="#">{{obj.name}}</a>
-													</div>
-												</li>
-											</ul>
-										</ li>
-										<li class="mui-table-view-cell mui-collapse">
-											<a class="mui-navigate-right" href="#">支付管理</a>
-											<ul class="mui-table-view mui-table-view-chevron">
-												<li class="mui-table-view-cell" id="cp_payment">
-													<a href="#">支付类型</a>
-												</li>
-												<li class="mui-table-view-cell">
-													<a href="#">指纹设置</a>
-												</li>
-												<li class="mui-table-view-cell">
-													<a href="#">添加银行卡</a>
-												</li>
-											</ul>
-										</li>
-										<li class="mui-table-view-cell" id="cp_setting">
-											<a href="#">设置</a>
 
-										</li>
-										
-										<li class="mui-table-view-cell mui-collapse cp_outlet">
-											<a class="mui-navigate-right" href="#">切换门店</a>
-											<ul class="mui-table-view mui-table-view-chevron store cp_shop">
-											</ul>
-										</li>
-										
-										<li class="mui-table-view-cell" id="cp_insertshop">
-											<a style="text-align: center;color: #FF3B30;">
-												新增门店
-											</a>
-										</li>
-										<li class="mui-table-view-cell" id="cp_inserttype">
-											<a style="text-align: center;color: #FF3B30;">
-												新增门店类型
+		<!-- 主界面菜单同时移动 -->
+		<!-- 侧滑导航根容器 -->
+		<div class="mui-off-canvas-wrap mui-draggable">
+			<!-- 主页面容器 -->
+			<div class="mui-inner-wrap">
+				<!-- 菜单容器 -->
+				<aside class="mui-off-canvas-left" id="offCanvasSide">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<!-- 菜单具体展示内容 -->
+							<div class="mui-content outo-scroll" id="cp_caidan">
+								<div>
+									<ul class="mui-table-view mui-grid-view">
+										<li class="mui-table-view-cell mui-media mui-col-xs-12">
+											<a href="#">
+												<div class="cp_opp">
+													<img class="mui-media-object" src="http://placehold.it/400x300">
+												</div>
+												<div class="mui-media-body cp_div">
+													<a href="#" class="cp_head">加载中...</a>
+												</div>
 											</a>
 										</li>
 									</ul>
-								</div>
-							</div>
+									<div class="mui-card cp_classname">
+										<ul class="mui-table-view mui-table-view-chevron">
+											<li class="mui-table-view-cell mui-collapse">
+												<a class="mui-navigate-right" href="#">切换用户</a>
+												<ul class="mui-table-view mui-table-view-chevron cp_ul" id="OA_task_1">
+													<li class="mui-table-view-cell cp_lili" v-for="(obj,index) in list" v-bind:data-id="obj.id">
+														<div class="mui-slider-left mui-disabled">
+															<a class="mui-btn mui-btn-red">删除</a>
+														</div>
+														<div class="mui-slider-handle">
+															<a href="#">{{obj.name}}</a>
+														</div>
+													</li>
+												</ul>
+												</ li>
+											<li class="mui-table-view-cell mui-collapse">
+												<a class="mui-navigate-right" href="#">支付管理</a>
+												<ul class="mui-table-view mui-table-view-chevron">
+													<li class="mui-table-view-cell" id="cp_payment">
+														<a href="#">支付类型</a>
+													</li>
+													<li class="mui-table-view-cell">
+														<a href="#">指纹设置</a>
+													</li>
+													<li class="mui-table-view-cell">
+														<a href="#">添加银行卡</a>
+													</li>
+												</ul>
+											</li>
+											<li class="mui-table-view-cell" id="cp_setting">
+												<a href="#">设置</a>
 
+											</li>
+
+											<li class="mui-table-view-cell mui-collapse cp_outlet">
+												<a class="mui-navigate-right" href="#">切换门店</a>
+												<ul class="mui-table-view mui-table-view-chevron store cp_shop">
+												</ul>
+											</li>
+
+											<li class="mui-table-view-cell" id="cp_insertshop">
+												<a style="text-align: center;color: #FF3B30;">
+													新增门店
+												</a>
+											</li>
+											<li class="mui-table-view-cell" id="cp_inserttype">
+												<a style="text-align: center;color: #FF3B30;">
+													新增门店类型
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+							</div>
 						</div>
-	                    </div>
-	                </div>
-	            </aside>
-	            <nav class="mui-bar mui-bar-tab lmq-menu">
-	    		    <a class="mui-tab-item mui-active" name="home">
-	    		        <span class="mui-icon mui-icon-home"></span>
-	    		        <span class="mui-tab-label">首页</span>
-	    		    </a>
-	    		    <a class="mui-tab-item">
-	    		        <span class="mui-icon mui-icon-phone"></span>
-	    		        <span class="mui-tab-label">电话</span>
-	    		    </a>
-	    		    <a class="mui-tab-item">
-	    		        <span class="mui-icon mui-icon-email"></span>
-	    		        <span class="mui-tab-label">邮件</span>
-	    		    </a>
-	    		    <a class="mui-tab-item">
-	    		        <span class="mui-icon mui-icon-gear"></span>
-	    		        <span class="mui-tab-label">设置</span>
-	    		    </a>
-	    		     <a class="mui-tab-item">
-	    		        <span class="mui-icon mui-icon-gear"></span>
-	    		        <span class="mui-tab-label">报表</span>
-	    		    </a>
-	    		</nav>
-	            <!-- 主页面内容容器 -->
-	            <div class="mui-content mui-scroll-wrapper">
-	                <div class="mui-scroll">
-	                	 <!-- 主页面标题 -->
-			            <header class="mui-bar mui-bar-nav">
+					</div>
+				</aside>
+				<nav class="mui-bar mui-bar-tab lmq-menu">
+					<a class="mui-tab-item mui-active" name="home">
+						<span class="mui-icon mui-icon-home"></span>
+						<span class="mui-tab-label">首页</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-phone"></span>
+						<span class="mui-tab-label">电话</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-email"></span>
+						<span class="mui-tab-label">邮件</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-gear"></span>
+						<span class="mui-tab-label">设置</span>
+					</a>
+					<a class="mui-tab-item">
+						<span class="mui-icon mui-icon-gear"></span>
+						<span class="mui-tab-label">报表</span>
+					</a>
+				</nav>
+				<!-- 主页面内容容器 -->
+				<div class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<!-- 主页面标题 -->
+						<header class="mui-bar mui-bar-nav">
 							<span class="mui-icon iconfont icon-saomiao mui-pull-right"></span>
 							<div class="mui-input-row mui-col-xs-11 mui-search">
 								<input type="search" readonly="" class="mui-input-clear" placeholder="" value="请输入货品名称或者关键字">
 							</div>
 						</header>
-	                    <!-- 主界面具体展示内容 -->
-	                    <div class="mui-row lmq-header">
+						<!-- 主界面具体展示内容 -->
+						<div class="mui-row lmq-header">
 							<div class="mui-col-xs-12">
 								<div class="lmq-circle">
 									<div class="lmq-circle-01">
 										<div style="padding-bottom: 1rem;">￥<span class="todaysales">加载中...</span></div>
 										<div>今日销售额</div>
 									</div>
-								</div> 
-			
+								</div>
+
 							</div>
 							<div class="mui-col-xs-12 lmq-header-select">
 								<div></div>
@@ -474,11 +474,11 @@
 								<div>创建商品</div>
 							</div>
 						</div>
-	                </div>
-	            </div>
-	       	 <div class="mui-off-canvas-backdrop"></div>
-	        </div>
-	    </div>
+					</div>
+				</div>
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
 	</body>
 
 </html>
@@ -491,13 +491,13 @@
 <script type="text/javascript" src="js/userSwitch.js"></script>
 <script type="text/javascript" src="js/enter.js"></script>
 <script type="text/javascript" charset="utf-8">
-	async(function*() {
+	async (function*() {
 		//当如果存在时不会创建表，更新版本时会在次创建
 		var db = yield new DB("LMQ", function(a) {
 			createTable(a.target.result);
 		}, 1);
 	});
-	
+
 	mui.init();
 	var v = new Vue({
 		el: ".cp_classname",
@@ -507,50 +507,61 @@
 	})
 	window.onload = function() {
 		var height = window.screen.height;
-		document.querySelector(".outo-scroll").style.height = height+"px";
+		document.querySelector(".outo-scroll").style.height = height + "px";
 		indexLogin();
-		unXer();
 	}
-	function unXer(bb){
+	
+	function reloadIndex(){
+		console.log(1)
+		indexLogin();
+		
+		var goods = plus.webview.getWebviewById("goodsManage.html");
+		goods.evalJS("pulldownRefresh()");
+	}
+
+	function unXer(bb) {
 		/*var bb=login.getLogin().store.id;
 		console.log("weiyu"+JSON.stringify(bb))*/
-		mui.ajax(n.url+'/todaySales',{
-			data:{
-				storeid:bb
+		mui.ajax(n.url + '/todaySales', {
+			data: {
+				storeid: bb
 			},
-			dataType:'json',//服务器返回json格式数据
-			type:'post',//HTTP请求类型
-			timeout:10000,//超时时间设置为10秒；
-			success:function(data){
-				console.log("data"+data)
-				document.querySelector(".todaysales").innerHTML=data[0];
-				document.querySelector(".monthsales").innerHTML=data[1];
-				document.querySelector(".stock").innerHTML=parseInt(data[2]);
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			success: function(data) {
+				console.log("data" + data)
+				document.querySelector(".todaysales").innerHTML = data[0];
+				document.querySelector(".monthsales").innerHTML = data[1];
+				document.querySelector(".stock").innerHTML = parseInt(data[2]);
 			},
-			error:function(xhr,type,errorThrown){
-				
+			error: function(xhr, type, errorThrown) {
+
 			}
 		});
 	}
-	function indexLogin(){
-		async(function*() { //同步
+
+	function indexLogin() {
+		async (function*() { //同步
 			login.getLogin();
 			var db = yield new DB("LMQ");
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
-			console.log("JSON"+JSON.stringify(atuser[0]))
-			var bb = parseInt(atuser[0].store.id);
-			unXer(bb);
-			if(!atuser || atuser.length==0){
-				mui.alert("登录用户超时，请重新登录.",function(){
-					plus.webview.create("admin.html","admin.html").show("none");
+			if (!atuser || atuser.length == 0) {
+				mui.alert("登录用户超时，请重新登录.", function() {
+					plus.webview.create("admin.html", "admin.html").show("none");
 				});
 				return;
 			}
+
+			console.log("JSON" + JSON.stringify(atuser[0]))
+			var bb = parseInt(atuser[0].store.id);
+			unXer(bb);
+
 			var alluser = yield db.get("user"); //获取全部登入用户
 			v.list = alluser;
 			/*ajax发送登入的用户到服务端 以JSON格式*/
-			var sid=JSON.stringify(alluser[0].id);
+			var sid = JSON.stringify(alluser[0].id);
 			/*switchs.getswitch(sid)*/
 			mui.ajax(n.url + '/Store/queryByUserId', {
 				data: {
@@ -564,52 +575,53 @@
 				},
 				error: function(xhr, type, errorThrown) {}
 			});
-			var name=JSON.stringify(atuser[0].defaultStore.name)
-			document.querySelector(".cp_head").innerHTML=name;
+			var name = JSON.stringify(atuser[0].defaultStore.name)
+			document.querySelector(".cp_head").innerHTML = name;
 		});
-		
+
 	}
-	
+
 	function eachStore(slist) {
-		var asa=document.querySelector(".cp_shop").childNodes;
-			for(var i=0;i<asa.length;i++){
-				asa[i].remove()
-			}
-		for(var i = 0; i < slist.length; i++) {
-			if(slist[i].list) {
+		var asa = document.querySelector(".cp_shop").childNodes;
+		for (var i = 0; i < asa.length; i++) {
+			asa[i].remove()
+		}
+		for (var i = 0; i < slist.length; i++) {
+			if (slist[i].list) {
 				eachStore(slist[i].list);
 			}
-			var aa=document.createElement("li")
+			var aa = document.createElement("li")
 			aa.classList.add("mui-table-view-cell");
 			var a = document.createElement("a");
 			a.innerHTML = slist[i].name;
-			a.setAttribute("attrid",slist[i].id);
+			a.setAttribute("attrid", slist[i].id);
 			aa.appendChild(a);
 			document.querySelector(".store").appendChild(aa);
 		}
 	}
+
 	function initTab() {
 		var a = document.querySelectorAll(".lmq-menu a");
-		for(var i = 1; i < a.length; i++) {
-			if(!menuListName[i-1]){
+		for (var i = 1; i < a.length; i++) {
+			if (!menuListName[i - 1]) {
 				continue;
 			}
-			console.log(menuListName[i-1]);
-			a[i].setAttribute("name", menuListName[i-1]);
+			console.log(menuListName[i - 1]);
+			a[i].setAttribute("name", menuListName[i - 1]);
 		}
-		
-		for(var i = 0; i < menuListName.length; i++) {
+
+		for (var i = 0; i < menuListName.length; i++) {
 			var a = plus.webview.create(
-			menuListName[i] + ".html",
-			menuListName[i], {
-				top: "0px",
-				bottom: "45px",
-				left:"100%"//,
-			});
+				menuListName[i] + ".html",
+				menuListName[i], {
+					top: "0px",
+					bottom: "45px",
+					left: "100%" //,
+				});
 			a.show("none");
 		}
 	}
-	var menuListName = ["a", "goodsManage_h","User_admin","report"];
+	var menuListName = ["a", "goodsManage_h", "User_admin", "report"];
 	mui.plusReady(function() {
 		initTab();
 		/*cpp*/
@@ -632,24 +644,30 @@
 		mui('body').on('tap', '.mui-tab-item', function() {
 			var name = this.getAttribute("name");
 			console.log(name)
-			if(name=="home"){
-				if(currentWebView){
+			if (name == "home") {
+				if (currentWebView) {
 					//currentWebView.hide("none");
-					currentWebView.setStyle({left:"100%"})
+					currentWebView.setStyle({
+						left: "100%"
+					})
 					currentWebView.hide("none");
 				}
 				currentWebView = null;
-				return;				
+				return;
 			}
-//			plus.webview.currentWebview().hide();
+			//			plus.webview.currentWebview().hide();
 			var webview = plus.webview.getWebviewById(name);
-			if(webview) {
-				if(currentWebView && currentWebView.id == webview.id){
+			if (webview) {
+				if (currentWebView && currentWebView.id == webview.id) {
 					return;
 				}
-				webview.setStyle({left:"0px"});
-				if(currentWebView){
-					currentWebView.setStyle({left:"100%"});
+				webview.setStyle({
+					left: "0px"
+				});
+				if (currentWebView) {
+					currentWebView.setStyle({
+						left: "100%"
+					});
 					currentWebView.hide("none");
 				}
 				/*webview.show("none",0,function(){
@@ -659,64 +677,64 @@
 				});*/
 				webview.show("none");
 				currentWebView = webview;
-				
-				
+
+
 				return;
 			}
 		})
 		/*点击切换用户*/
 		mui('.cp_ul').on('tap', '.cp_ul li', function() {
 			var dataid = this.getAttribute("data-id");
-			async(function*() {
+			async (function*() {
 				var db = yield new DB("LMQ");
 				var atuser = yield db.index("user", "active", "true");
 				atuser[0].active = "false"; //把当前登入用户改为false
 				db.put("user", atuser[0]);
 				var alluser = yield db.get("user", parseInt(dataid));
-				if(alluser) {
+				if (alluser) {
 					alluser.active = "true";
-					if(!alluser.defaultStore){
+					if (!alluser.defaultStore) {
 						alluser.defaultStore = alluser.store;
 					}
 					yield db.put("user", alluser);
-					var name=alluser.name;
-					var pwd=alluser.pwd;
-					loginenter.Login(name,pwd);
+					var name = alluser.name;
+					var pwd = alluser.pwd;
+					loginenter.Login(name, pwd);
 					indexLogin();
 				}
 			})
 		})
 		/*点击切换门店*/
-		mui('.cp_outlet').on('tap','.cp_shop a',function(){
+		mui('.cp_outlet').on('tap', '.cp_shop a', function() {
 			var attrid = this.getAttribute("attrid");
-		  	/**/
-		  	mui.ajax(n.url + '/Store/CurrentStore',{
-		  		data:{
-		  			id:attrid
-		  		},
-		  		dataType:'json',//服务器返回json格式数据
-		  		type:'post',//HTTP请求类型
-		  		timeout:10000,//超时时间设置为10秒；
-		  		success:function(data){
-		  			console.log(JSON.stringify(data[0]))
-		  			if(data && data[0]){
-		  				async(function*() {
+			/**/
+			mui.ajax(n.url + '/Store/CurrentStore', {
+				data: {
+					id: attrid
+				},
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				success: function(data) {
+					console.log(JSON.stringify(data[0]))
+					if (data && data[0]) {
+						async (function*() {
 							var db = yield new DB("LMQ");
 							//获取当前使用的用户
-							var user = yield db.index("user","active","true");
+							var user = yield db.index("user", "active", "true");
 							user[0].defaultStore = data[0];
-							yield db.put("user",user[0]);
+							yield db.put("user", user[0]);
 							console.log(JSON.stringify(user[0]))
 						});
-		  				
-		  			}
-		  		},
-		  		error:function(xhr,type,errorThrown){
-		  			
-		  		}
-		  	});
-		  	
-		}) 
+
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+
+				}
+			});
+
+		})
 		var btnArray = ['确认', '取消'];
 		mui('#OA_task_1').on('tap', '.mui-btn', function() {
 			var elem = this;
@@ -727,17 +745,17 @@
 			mui.confirm('确认删除该账号？', '温馨提示', btnArray, function(e) {
 				if (e.index == 0) {
 					li.parentNode.removeChild(li);
-					async(function*() {
+					async (function*() {
 						var db = yield new DB("LMQ");
 						yield db.delete("user", parseInt(dataid));
-						var user = yield db.index("user","active","true");
+						var user = yield db.index("user", "active", "true");
 						if (!user[0]) {
-							plus.webview.create("admin.html","admin.html",{},{}).show("none")
+							plus.webview.create("admin.html", "admin.html", {}, {}).show("none")
 						}
 					})
 				} else {
 					setTimeout(function() {
-						
+
 					}, 0);
 				}
 			});
