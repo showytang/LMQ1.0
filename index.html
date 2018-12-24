@@ -626,7 +626,20 @@
 	mui.plusReady(function() {
 		initTab();
 		mui('body').on('tap', '.viewsales', function(e) {
-			plus.webview.create("sales/sales_list_headerAndtab.html", "index/sales/sales_list_headerAndtab.html", {}, {}).show("none")
+			//plus.webview.create("sales/sales_list_headerAndtab.html", "index/sales/sales_list_headerAndtab.html", {}, {}).show("none")
+			//var wv=plus.webview.getWebviewById("sales_list_headerAndtab.html");
+			var url = "sales/sales_list_headerAndtab.html";
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById(url);
+					if(vw) {
+						vw.evalJS("F5()");
+						vw.show("slide-in-right");
+						return;
+					}
+					vw = plus.webview.create(url, url, {}, {});
+					vw.show("slide-in-right");
+			
 		});
 		mui('body').on('tap', '.addsales', function(e) {
 			plus.webview.create("sales/sales_add_1.html", "index/sales/sales_add_1.html", {}, {}).show("none")

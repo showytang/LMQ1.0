@@ -75,8 +75,9 @@
 											<div style="text-align: right;" class="mui-col-xs-6">金额:<span name="money">{{s.money}}</span></div>
 										</div>
 										<div class="mui-row">
-											<div class="mui-col-xs-6">数量:<span name="count">{{s.count}}</span></div>
-											<div style="text-align: right;" class="mui-col-xs-6">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
+											<div class="mui-col-xs-4">数量:<span name="count">{{s.count}}</span></div>
+											<div class="mui-col-xs-4">原价:<span>{{s.primePrice}}</span></div>
+											<div style="text-align: right;" class="mui-col-xs-4">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
 										</div>
 									</div>
 								</div>
@@ -95,10 +96,10 @@
 				<div class="mui-card">
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right">
+							<a class="mui-navigate">
 								<div class="mui-input-row ">
-									<label>营业员</label>
-									<input type="text" readonly="readonly" value="" />
+									<label>商品实际总金额</label>
+									<input type="text" readonly="readonly" v-model="money" />
 								</div>
 							</a>
 						</li>
@@ -164,9 +165,9 @@
 					Salesindent: {},
 					salesdetails: [],
 					money: null,
-					cid: null,
-					cname: null,
-					url:n.url+"/"
+					cid: -1,
+					cname: "零售客户",
+					url: n.url + "/"
 				}
 			});
 			mui.init({
@@ -233,8 +234,7 @@
 					//创建并判断是否存在列表内容窗体
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
 					var vw = plus.webview.getWebviewById("client.html");
-					vw = plus.webview.create("client.html", "client.html", {}, {
-					});
+					vw = plus.webview.create("client.html", "client.html", {}, {});
 					vw.show("slide-in-right");
 				});
 
@@ -246,7 +246,7 @@
 					var vw = plus.webview.getWebviewById("goodsInstanceSelect_h.html");
 					vw = plus.webview.create("goodsInstanceSelect_h.html", "goodsInstanceSelect_h.html", {}, {
 						cid: v.cid,
-						sid:sid
+						sid: sid
 					});
 					vw.show("slide-in-right");
 				})
@@ -255,10 +255,8 @@
 			var thisGoods = 0;
 
 			function setGoods(goods) {
-				//console.log(goods);
 				thisGoods = JSON.parse(goods);
 				console.log(thisGoods.index);
-				console.log(JSON.stringify(v.salesdetails[thisGoods.index]));
 				v.salesdetails[thisGoods.index].money = thisGoods.money;
 				v.salesdetails[thisGoods.index].count = thisGoods.count;
 				v.salesdetails[thisGoods.index].takeinmoney = thisGoods.takeinmoney;
@@ -277,18 +275,25 @@
 			//客户传值
 			function getclientId(data) {
 				console.log(JSON.stringify(data));
+				if(v.cid==data.id){
+					return;
+				}
 				v.cid = data.id;
 				v.cname = data.name;
+				v.salesdetails = [];
+				sumCount();
+				document.querySelector("#count").innerHTML = v.salesdetails.length;
+
 			}
 
 			function addAjax() {
 				var json = n.getParam(".mui-content");
 				json.count = document.querySelector("[name='count']").innerHTML;
-				json.money = document.querySelector("#sumMoney").innerHTML;
+				json.money = v.money;
 				json.sid = sid;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
 				json.status = 2;
-				console.log(JSON.stringify(json)+"我传过来的");
+				console.log(JSON.stringify(json) + "我传过来的");
 				sumCount();
 				mui.ajax(n.url + "/s/addSales", {
 					data: JSON.stringify(json),
@@ -305,7 +310,7 @@
 						}
 						vw = plus.webview.create("sales_list_headerAndtab.html", "sales/sales_list_headerAndtab.html", {}, {});
 						vw.show("slide-in-right");
-						
+
 					},
 					error: function(xhr, type, errorThrown) {}
 				});
@@ -349,12 +354,15 @@
 
 			function sumCount() {
 				var sum = 0;
+				var sumPrime=0;
 				for(var i = 0; i < v.salesdetails.length; i++) {
 					console.log(v.salesdetails[i].money);
 					sum = sum - (-v.salesdetails[i].money);
+					sumPrime = sumPrime - (-v.salesdetails[i].primePrice*v.salesdetails[i].count);
 				};
 				console.log(sum);
 				document.querySelector("#sumMoney").innerHTML = sum;
+				v.money=sumPrime;
 				document.querySelector("#tab").querySelector("[name='user5']").value = sum;
 				document.querySelector("#tab").querySelector("[name='takeinmoney']").value = sum;
 			}
@@ -368,8 +376,9 @@
 						v.salesdetails[i].count = v.salesdetails[i].count - (-data.count);
 						v.salesdetails[i].takeinmoney = data.takeinmoney;
 						v.salesdetails[i].money = data.takeinmoney * v.salesdetails[i].count;
+						v.salesdetails[i].primePrice = data.primePrice;
 						document.querySelector("#sumMoney").innerHTML = document.querySelector("#sumMoney").innerHTML - (-v.salesdetails[i].money);
-						v.salesdetails[i].url=data.url;
+						v.salesdetails[i].url = data.url;
 						sumCount();
 						key = false;
 						return;
@@ -388,8 +397,8 @@
 				console.log("二维码扫到了:" + x);
 				mui.ajax(n.url + "/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice", {
 					data: {
-						gInId: 2,
-						sId: 1,
+						gInId: x,
+						sId: sid,
 						cId: v.cid
 					},
 					dataType: 'json', //服务器返回json格式数据
@@ -406,6 +415,7 @@
 						}
 						json.takeinmoney = data.price;
 						json.money = json.takeinmoney;
+						json.url=data.url;
 						console.log(JSON.stringify(json))
 						getgoodsInfo(json);
 					},

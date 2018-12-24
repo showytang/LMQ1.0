@@ -156,7 +156,7 @@
 					type: 'post', //HTTP请求类型
 					timeout: 10000, //超时时间设置为10秒；
 					success: function(data) {
-
+						
 						v.slist = data;
 						mui(v.slist).each(function(index, element) {
 							console.log("循环遍历出的id:" + element.user2);

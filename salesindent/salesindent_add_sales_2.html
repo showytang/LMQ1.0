@@ -80,11 +80,11 @@
 									<span hidden="" name="user1">{{s.user1}}</span>
 									<div class="mui-row">
 										<div class="mui-col-xs-6"><span name="user2">{{s.user2}}</span></div>
-										<div style="text-align: right;" class="mui-col-xs-6"><span name="money">{{s.count*s.takeinmoney}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6">金额:<span name="money">{{s.count*s.takeinmoney}}</span></div>
 									</div>
 									<div class="mui-row">
-										<div class="mui-col-xs-6"><span name="count">{{s.count}}</span></div>
-										<div style="text-align: right;" class="mui-col-xs-6"><span name="takeinmoney">{{s.takeinmoney}}</span></div>
+										<div class="mui-col-xs-6">数量:<span name="count">{{s.count}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-6">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
 									</div>
 								</div>
 							</div>
@@ -384,8 +384,8 @@
 				console.log("二维码扫到了:"+x);
 				mui.ajax(n.url+"/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice",{
 					data:{
-						gInId:2,
-						sId:1,
+						gInId:14,
+						sId:sid,
 						cId:v.Salesindent.cid
 					},
 					dataType:'json',//服务器返回json格式数据
@@ -405,6 +405,7 @@
 							json.price=data.money;
 						}
 						json.money=json.takeinmoney;
+						json.imgurl=data.url;
 						console.log(JSON.stringify(json))
 						getgoodsInfo(json);
 					},

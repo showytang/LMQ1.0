@@ -90,6 +90,8 @@
 				json.money=json.count*json.takeinmoney;
 				json.gname=vue.goodsInstance.name;
 				json.url=vue.goodsInstance.url;
+				json.primePrice=5000;
+				json.sumPrime=json.primePrice*json.count;
 				console.log(JSON.stringify(json));
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().opener().id).evalJS("getgoodsInfo(" + JSON.stringify(json) + ")");
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().id).close();

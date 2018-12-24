@@ -28,9 +28,6 @@
 			<h1 class="mui-title">关联销售单</h1>
 		</header>
 
-		<nav id="tab" class="mui-bar mui-bar-tab">
-			删除
-		</nav>
 		<script src="../js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init({
@@ -41,8 +38,7 @@
 					url: 'sales_list_info_0_2.html',
 					id: 'sales_list_info_0_2.html',
 					styles: {
-						top: "45px",
-						bottom: document.querySelector("#tab").offsetHeight
+						top: "45px"
 					},
 					extras: {
 						pid:plus.webview.currentWebview().pid
