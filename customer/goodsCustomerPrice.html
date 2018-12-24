@@ -91,6 +91,8 @@
 							if(data > 0) {
 								mui.toast("报价成功！");
 								plus.webview.currentWebview().close()
+								plus.webview.currentWebview().close()
+								plus.webview.currentWebview().opener().close();
 							}
 						},
 						error: function(xhr, type, errorThrown) {}
