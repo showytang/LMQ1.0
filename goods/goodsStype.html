@@ -57,23 +57,9 @@
 		<script type="text/javascript">
 			mui.init()
 			mui.ready(function() {
+				
 				//初始化
-				mui.ajax(n.url + '/goods/queryGoodstypeByParentId', {
-					data: {
-
-					},
-					dataType: 'json', //服务器返回json格式数据
-					type: 'post', //HTTP请求类型
-					timeout: 10000, //超时时间设置为10秒；
-					success: function(data) {
-						//console.log(data);
-						showNode(data, document.querySelector("#stypeSec"), 0);
-					},
-					error: function(xhr, type, errorThrown) {
-
-					}
-				});
-
+				getData();
 				//展开事件
 				mui('body').on('tap', '.arrowBtn', function(e) {
 					if(this.classList.contains("mui-icon-arrowdown")) {
@@ -117,6 +103,8 @@
 					type.typeId = typeId;
 					var typeJson = JSON.stringify(type);
 					webview.evalJS("setGoodsType(" + typeJson + ")");
+					//清空规格值（不管是否改变类目都执行清除）
+					webview.evalJS("clearStandardJson()");
 					//关闭当前窗体
 					var webview = plus.webview.getWebviewById("goodsStype_h.html");
 			   	    if(webview != null){
@@ -174,6 +162,25 @@
 					//子类
 					showNode(type.gtList, node, garde);
 				}
+			}
+			function getData(){
+				document.querySelector("#stypeSec").innerHTML ="";
+				//初始化
+				mui.ajax(n.url + '/goods/queryGoodstypeByParentId', {
+					data: {
+
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						//console.log(data);
+						showNode(data, document.querySelector("#stypeSec"), 0);
+					},
+					error: function(xhr, type, errorThrown) {
+
+					}
+				});
 			}
 		</script>
 	</body>

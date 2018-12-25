@@ -416,7 +416,19 @@
 				standardJson = standardInArr;
 				t.querySelector("label").innerText = "规格设置（已选择）";
 			}
-
+			//清除单品规格信息（在重新选择类目之后）
+			function clearStandardJson(){
+				standardJson = "";
+				//
+				document.querySelector("#goodsStandardBtn").querySelector("label").innerText = "规格设置（可选）";
+				//清除规格界面
+				var webview = plus.webview.getWebviewById("goodsAddStandard.html");
+				var webviewHead = plus.webview.getWebviewById("goodsAddStandard_h.html");
+				if(webview==null){
+					webviewHead.close("none");
+					webview.close("none");
+				}
+			}
 			//图片上传方法和商品添加
 			var imgs = [];
 			var zipImgs = [];
@@ -489,7 +501,8 @@
 				plus.webview.currentWebview().close("slide-out-right");
 				//添加规格界面
 				if(plus.webview.getWebviewById("goodsAddStandard.html")) {
-					plus.webview.getWebviewById("goodsAddStandard.html").close("slide-out-right");
+					plus.webview.getWebviewById("goodsAddStandard.html").close("none");
+					plus.webview.getWebviewById("goodsAddStandard_h.html").close("slide-out-right");
 				}
 			}
 			//初始化
