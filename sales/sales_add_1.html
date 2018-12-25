@@ -22,8 +22,9 @@
 		<header class="mui-bar mui-bar-nav">
 			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">新增销售单</h1>
-			<a style="font-size: 2.2em;" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
-		</header>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right"></a>
+<!--			<a style="font-size: 2.2em;" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+-->		</header>
 		
 		<script src="../js/mui.min.js"></script>
 
@@ -59,6 +60,33 @@
 					v.evalJS("addAjax()");
 					plus.webview.currentWebview().close("slide-out-right");
 				});
+				
+				
+				mui('body').on('tap', '#menu', function() {
+					document.activeElement.blur();
+					// 弹出系统选择按钮框
+					plus.nativeUI.actionSheet({
+						title: "选项",
+						cancel: "取消",
+						buttons: [{
+							title: "新增"
+						}, {
+							title: "打印"
+						}]
+					}, function(e) {
+						if(e.index == 1) {
+							//新增事件
+							var v = plus.webview.getWebviewById("sales_add_2.html");
+					v.evalJS("addAjax()");
+					plus.webview.currentWebview().close("slide-out-right");
+						}
+						if(e.index == 2) {
+							//打印事件
+							var v = plus.webview.getWebviewById("sales_add_2.html");
+							v.evalJS("printInfo()");
+						}
+					});
+				})
 			})
 		</script>
 		<script type="text/javascript">
