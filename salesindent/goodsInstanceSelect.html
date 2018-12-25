@@ -83,12 +83,17 @@
 				</div>
 			</div>
 		</div>
-
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/news.js"></script>
 		<script src="../js/vue.js"></script>
 		<script src="../js/openModel.js"></script>
 		<script type="text/javascript">
+			var loginUser = login.getLogin();
+			var uid = loginUser.id;
+			var sid = loginUser.store.id;
 			mui.init({
 				pullRefresh: {
 					container: '#pullrefresh',
@@ -110,85 +115,81 @@
 				el: ".mui-content",
 				data: {
 					list: "",
-					gName:"",
-					url: n.url+"/"
+					gName: "",
+					url: n.url + "/"
 				},
 				watch: { //搜索
 					gName: function() {
-						getData(cId,this.gName);
+						getData(cId, this.gName);
 					}
 				}
 			});
 			var cId;
-			var sid;
 			mui.plusReady(function() {
-				mui('body').on('tap','.simGoodsInstance',function(){
+				mui('body').on('tap', '.simGoodsInstance', function() {
 					//参数
 					var goodsInstanceId = this.getAttribute("goodsInstanceId");
 					var goodsInstance;
-					for(var i = 0;i<vue.list.length;i++){
-						if(vue.list[i].goodsInstanceId == goodsInstanceId){
+					for(var i = 0; i < vue.list.length; i++) {
+						if(vue.list[i].goodsInstanceId == goodsInstanceId) {
 							goodsInstance = vue.list[i];
 							break;
 						}
 					}
 					//console.log("66"+JSON.stringify(goodsInstance));
-					
-					
-				  	var webview = plus.webview.getWebviewById("goodsCustomerPrice_h.html");
-				  	var webviewId = 1;
-				  	var webviewName = "";
-				  	switch(webviewId){
-				  		case 1://折扣
-				  		webviewName = "goodsInstancePriceRate_h.html";
-				  		break;
-				  		case 2://无折扣
-				  		webviewName = "goodsInstancePriceNoRate_h.html";
-				  		break;
-				  	}
-				    if(!webview){
-				    	webview = plus.webview.create(webviewName,webviewName,{top:0},{
-				    		"goodsInstance":JSON.stringify(goodsInstance)
-				    		}
-				    	);
-				    }
-				    webview.show("slide-in-right");
-				}) 
-				
+
+					var webview = plus.webview.getWebviewById("goodsCustomerPrice_h.html");
+					var webviewId = 1;
+					var webviewName = "";
+					switch(webviewId) {
+						case 1: //折扣
+							webviewName = "goodsInstancePriceRate_h.html";
+							break;
+						case 2: //无折扣
+							webviewName = "goodsInstancePriceNoRate_h.html";
+							break;
+					}
+					if(!webview) {
+						webview = plus.webview.create(webviewName, webviewName, {
+							top: 0
+						}, {
+							"goodsInstance": JSON.stringify(goodsInstance)
+						});
+					}
+					webview.show("slide-in-right");
+				})
+
 				var self = plus.webview.currentWebview();
 				cId = self.cid;
-				sid=self.sid;
 				//根据用户cid查询pid客户类型
-				mui.ajax(n.url+'/Customer/queryByIdResultPid',{
-					data:{
-						id:self.cid
-						
+				mui.ajax(n.url + '/Customer/queryByIdResultPid', {
+					data: {
+						id: self.cid,
+						sid: sid
 					},
-					dataType:'json',//服务器返回json格式数据
-					type:'post',//HTTP请求类型
-					timeout:10000,//超时时间设置为10秒；
-					success:function(data){
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
 						pId = data;
 						//console.log("入口id"+pId);
 					},
-					error:function(xhr,type,errorThrown){
-						
+					error: function(xhr, type, errorThrown) {
+
 					}
 				});
 				getData("");
 			})
 
-			
-			
 			//数据初始化
 			function getData(gName) {
-			   	//获取cId 和pId（必须获取防止pId下拉刷新后，出现undefined）
+				//获取cId 和pId（必须获取防止pId下拉刷新后，出现undefined）
 				////getWebviewById("goodsInstanceSelect_h.html");
 				mui.ajax(n.url + '/goods/queryGoodsInstanceVoList', {
 					data: {
 						cId: cId,
 						gName: gName,
-						sid:sid
+						sid: sid
 					},
 					dataType: 'json', //服务器返回json格式数据
 					type: 'post', //HTTP请求类型
@@ -205,6 +206,7 @@
 					}
 				});
 			}
+
 			function changeData(data) {
 				//用户类型
 				var goodsInstanceArr = [];
@@ -222,9 +224,7 @@
 						goodsInstanceArr.push(goodsInstance);
 						goodsInstance = {};
 					}
-					
-					
-					
+
 					//名称单品新名称
 					if(data[i].standardName)
 						goodsInstance.name = data[i].goodsName + "-" + data[i].standardName;
@@ -236,34 +236,33 @@
 					goodsInstance.url = data[i].url;
 					//单位名称
 					goodsInstance.bitName = data[i].bitName;
-					
+
 					//单品价格
 					if(data[i].money) { //有报价
 						goodsInstance.price = data[i].money;
-						goodsInstance.ptype = -1;//报价
+						goodsInstance.ptype = -1; //报价
 						goodsInstance.priceName = "报价";
 					} else if(!data[i].money) { //无报价
 						//获取默认价格
-						if(data[i].defaultPrice == 1){
+						if(data[i].defaultPrice == 1) {
 							goodsInstance.price = data[i].price;
 							goodsInstance.ptype = data[i].ptype;
-						goodsInstance.priceName = data[i].priceName;
-						}else if(data[i].ptype == pId){//用户类型id
+							goodsInstance.priceName = data[i].priceName;
+						} else if(data[i].ptype == pId) { //用户类型id
 							goodsInstance.price = data[i].price;
 							goodsInstance.ptype = data[i].ptype;
-						goodsInstance.priceName = data[i].priceName;
+							goodsInstance.priceName = data[i].priceName;
 						}
 					}
 					//最后一次
-					if(i == data.length-1){
+					if(i == data.length - 1) {
 						goodsInstanceArr.push(goodsInstance);
 					}
-						
+
 				}
 				console.log(JSON.stringify(goodsInstanceArr));
 				return goodsInstanceArr;
 			}
-			
 		</script>
 	</body>
 

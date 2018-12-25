@@ -16,34 +16,39 @@
 		</header>
 		<script src="../js/mui.min.js"></script>
 		<script type="text/javascript">
-			mui.init({
-				subpages: [{
-					url: 'salesindent_add_sales_goods_2.html',
-					id: 'salesindent_add_sales_goods_2.html',
-					styles: {
-						top: "45px"
-					},
-					extras: {
-						goods:plus.webview.currentWebview().goods
-					}
-				}]
+			mui.ready(function() {
+				mui.back = function() {
+					plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("hidejp()");
+					plus.webview.currentWebview().hide("slide-out-right");
+				}
 			});
-			
-			 mui.ready(function () {
-			   	mui.back=function () {
-			   		plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("hidejp()");
-					 plus.webview.currentWebview().hide("slide-out-right");
-			   	}
-			 });
-			mui.plusReady(function () {
-			    document.querySelector(".mui-title").innerHTML=plus.webview.currentWebview().goods.user2;
-				mui('.mui-bar').on('tap','.mui-icon-checkmarkempty',function(){
-					 var goods=plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("getGoodsInfo()");
-					 plus.webview.currentWebview().hide("slide-out-right");
-				}) 
+			mui.plusReady(function() {
+				mui.init({
+					subpages: [{
+						url: 'salesindent_add_sales_goods_2.html',
+						id: 'salesindent_add_sales_goods_2.html',
+						styles: {
+							top: "45px"
+						},
+						extras: {
+							goods: plus.webview.currentWebview().goods
+						}
+					}]
+				});
+
+				document.querySelector(".mui-title").innerHTML = plus.webview.currentWebview().goods.user2;
+				mui('.mui-bar').on('tap', '.mui-icon-checkmarkempty', function() {
+					var goods = plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("getGoodsInfo()");
+					plus.webview.currentWebview().hide("slide-out-right");
+				})
+
+			/*	function getgoods() {
+					plus.webview.getWebviewById("salesindent_add_sales_goods_2.html").evalJS("setgoods('" + JSON.stringify(plus.webview.currentWebview().goods) + "')")
+				}*/
 			});
-			function setH1(name){
-				document.querySelector(".mui-title").innerHTML=name;
+
+			function setH1(name) {
+				document.querySelector(".mui-title").innerHTML = name;
 			}
 		</script>
 	</body>

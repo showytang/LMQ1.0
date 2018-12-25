@@ -373,7 +373,7 @@
 				console.log("二维码扫到了:" + x);
 				mui.ajax(n.url + "/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice", {
 					data: {
-						gInId: x,
+						gInId: 14,
 						sId: sid,
 						cId: v.cid
 					},
@@ -394,6 +394,7 @@
 							json.price = data.money;
 						}
 						json.money = json.takeinmoney;
+						json.url=data.url;
 						console.log(JSON.stringify(json))
 						getgoodsInfo(json);
 					},
@@ -419,8 +420,14 @@
 			//客户传值
 			function getclientId(data) {
 				console.log(JSON.stringify(data));
+				if(v.cid==data.id){
+					return;
+				}
 				v.cid = data.id;
 				v.cname = data.name;
+				v.salesindentdetails=[];
+				sumCount();
+				v.deposi=0.0;
 			}
 			//商品传值
 			function getgoodsInfo(data) {

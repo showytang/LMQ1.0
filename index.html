@@ -459,15 +459,15 @@
 								<div class="lmq-footer-circle">
 									<span class="mui-icon mui-icon-search"></span>
 								</div>
-								<div>查看订单</div>
+								<div>销售单</div>
 							</div>
-							<div class="lmq-footer-menu addsale">
+							<div class="lmq-footer-menu addsales">
 								<div class="lmq-footer-circle">
 									<span class="mui-icon mui-icon-compose"></span>
 								</div>
-								<div>开单</div>
+								<div>出货</div>
 							</div>
-							<div class="lmq-footer-menu">
+							<div class="lmq-footer-menu addgoods">
 								<div class="lmq-footer-circle">
 									<span class="mui-icon mui-icon-plus"></span>
 								</div>
@@ -576,7 +576,8 @@
 				error: function(xhr, type, errorThrown) {}
 			});
 			var name = JSON.stringify(atuser[0].defaultStore.name)
-			document.querySelector(".cp_head").innerHTML = name;
+			var zz = /\"/g;
+			document.querySelector(".cp_head").innerHTML = name.replace(zz,"");
 		});
 
 	}
@@ -624,6 +625,28 @@
 	var menuListName = ["a", "goodsManage_h", "User_admin", "report"];
 	mui.plusReady(function() {
 		initTab();
+		mui('body').on('tap', '.viewsales', function(e) {
+			//plus.webview.create("sales/sales_list_headerAndtab.html", "index/sales/sales_list_headerAndtab.html", {}, {}).show("none")
+			//var wv=plus.webview.getWebviewById("sales_list_headerAndtab.html");
+			var url = "sales/sales_list_headerAndtab.html";
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById(url);
+					if(vw) {
+						vw.evalJS("F5()");
+						vw.show("slide-in-right");
+						return;
+					}
+					vw = plus.webview.create(url, url, {}, {});
+					vw.show("slide-in-right");
+			
+		});
+		mui('body').on('tap', '.addsales', function(e) {
+			plus.webview.create("sales/sales_add_1.html", "index/sales/sales_add_1.html", {}, {}).show("none")
+		});
+		mui('body').on('tap', '.addgoods', function(e) {
+			plus.webview.create("goods/goodsAdd_h.html", "index/goods/goodsAdd_h.html", {}, {}).show("none")
+		});
 		/*cpp*/
 		mui('body').on('tap', '#cp_inserttype', function(e) {
 			plus.webview.create("insertType.html", "insertType.html", {}, {}).show("none")

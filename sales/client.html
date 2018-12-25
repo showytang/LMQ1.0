@@ -21,6 +21,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title" id="head_title">客户</h1>
 			<a class="add" data_client="add_client.html" data_supplier="add_supplier.html" data_cargo_client="cargo_client_add.html"></a>
+			<a id="menu" style="font-size: 17px;padding-top:15px" class="mui-action-menu mui-icon mui-pull-right">清空</a>
 		</header>
 		<div class="mui-content">
 			<!--<div id="slider" class="mui-slider">-->
@@ -189,6 +190,7 @@
 						timeout: 10000, //超时时间设置为10秒；
 						success: function(data) {
 							//上一个页面想要拿到这个对象  需要为上一个一面添加方法getclientId(obj)
+							console.log(JSON.stringify(data));
 							var webviewid = plus.webview.currentWebview().opener().id;
 							var webview=plus.webview.getWebviewById(webviewid)
 							webview.evalJS("getclientId("+JSON.stringify(data)+")")
@@ -197,7 +199,15 @@
 						error: function(xhr, type, errorThrown) {}
 					});
 				})
-
+				mui('body').on('tap','#menu',function(){
+					var data={};
+					data.id=-1;
+					data.name="零售客户";
+				  var webviewid = plus.webview.currentWebview().opener().id;
+							var webview=plus.webview.getWebviewById(webviewid)
+							webview.evalJS("getclientId("+JSON.stringify(data)+")")
+							plus.webview.currentWebview().hide()
+				}) 
 			})
 		</script>
 	</body>
