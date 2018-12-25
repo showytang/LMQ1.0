@@ -156,7 +156,7 @@
 			mui.plusReady(function() {
 
 				queryById(plus.webview.currentWebview().pid);
-
+				
 			});
 			var v = new Vue({
 				el: ".mui-content",
@@ -165,27 +165,7 @@
 					url:n.url+"/"
 				},
 				methods: {
-					/*updateInfo: function(index) {
-						console.log(index);
-						lmqModel.open(this.Salesindent.id, [{
-							title: "价格",
-							type: "text",
-							bit: "元",
-							name: "price",
-							placeholder: "统一输入价格"
-						}, {
-							title: "库存",
-							type: "text",
-							bit: "件",
-							name: "count",
-							placeholder: "统一输入价格"
-						}], function() { //取消回调
-							alert("啦啦");
-						}, function(data) { //确定回调
-							alert(JSON.stringify(data));
-						});
-
-					}*/
+					
 				}
 			});
 			//通过ajax查询出信息并赋值vue对象
@@ -210,6 +190,19 @@
 
 					}
 				});
+			}
+			
+			function printInfo(){
+				var url = "sales_printInfo.html";
+					//创建并判断是否存在列表内容窗体
+					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
+					var vw = plus.webview.getWebviewById(url);
+					if(vw) {
+						vw.show("slide-in-right");
+						return;
+					}
+					vw = plus.webview.create(url, url, {}, {data:v.Sales});
+					vw.show("slide-in-right");
 			}
 			
 		</script>
