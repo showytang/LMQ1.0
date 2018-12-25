@@ -86,7 +86,7 @@
 											<div class="mui-indexed-list-empty-alert">没有数据</div>
 											<ul class="mui-table-view data_content item1mobile1">
 												<div id="#" v-for="(obj,index) in list">
-													<li data-group="A" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+													<li v-bind:data-group="obj.acronymname" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
 													<li v-bind:data-tags="obj1.englishname" v-bind:data-value="obj.acronymname" v-for="(obj1,index) in obj.list" v-bind:data-id="obj1.id" v-bind:data-name="obj1.name" class="mui-table-view-cell mui-indexed-list-item" name="show_client.html">
 														<a href="#picture">
 															<!--没有联系人 客户名称就是客户名称 否则就显示联系人-->
@@ -146,7 +146,7 @@
 										<div class="mui-indexed-list-empty-alert">没有数据</div>
 										<ul class="mui-table-view data_content item2mobile">
 											<div id="#" v-for="(obj,index) in list">
-												<li data-group="obj.acronymname" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
+												<li v-bind:data-group="obj.acronymname" class="mui-table-view-divider mui-indexed-list-group">{{obj.acronymname}}</li>
 												<li v-bind:data-tags="obj1.englishname" v-bind:data-id="obj1.id" v-bind:data-name="obj1.name" v-for="(obj1,index) in obj.list" class="mui-table-view-cell mui-indexed-list-item" name="supplier_menu.html">
 													<a href="#supplier">
 														<span>{{obj1.name}}</span>
