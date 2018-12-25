@@ -512,6 +512,13 @@
 			var db = yield new DB("LMQ");
 			//获取当前使用的用户
 			var atuser = yield db.index("user", "active", "true"); //获取当前登入用户
+			if (!atuser || atuser.length == 0) {
+				mui.alert("登录用户超时，请重新登录.", function() {
+					plus.webview.create("admin.html", "admin.html").show("none");
+				});
+				return;
+			}
+			
 			var alluser = yield db.get("user"); //获取全部登入用户
 			v.list = alluser;
 			/*ajax发送登入的用户到服务端 以JSON格式*/
