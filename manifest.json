@@ -220,7 +220,9 @@
 					"User_admin.html",
 					"a.html",
 					"goodsManage_h.html",
-					"setting.html"
+					"setting.html",
+					"report.html",
+					"admin.html"
 				],
 				"priority": 0
 			},
@@ -369,7 +371,10 @@
 					"js/jquery.min.js",
 					"css/cargo_client_add.html.css",
 					"css/mui.min.css",
-					"js/cargo_client_add.js"
+					"js/cargo_client_add.js",
+					"js/echarts.js",
+					"js/bootstrap.min.js",
+					"css/bootstrap.min.css"
 				],
 				"refer": [
 					"customer/client_supplier.html",
@@ -528,6 +533,29 @@
 			"admin.html": {
 				"resources": [
 					"css/mui.min.css"
+				],
+				"refer": [
+					"register.html"
+				],
+				"priority": 0
+			},
+			"report.html": {
+				"resources": [
+					"js/tzx.js",
+					"js/jquery-1.12.4.js",
+					"css/mui.min.css"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"register.html": {
+				"resources": [
+					"js/mui.picker.js",
+					"js/mui.poppicker.js",
+					"js/city.data.js",
+					"css/mui.poppicker.css",
+					"css/mui.picker.css",
+					"js/city.data-3.js"
 				],
 				"refer": [],
 				"priority": 0
