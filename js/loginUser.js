@@ -1,7 +1,7 @@
 var login = {
 	getLogin : function(){
 		
-		return {id:1,store:{id:1}};
+		return {id:1,store:{id:1,name:'宇宙第一店'}};
 		
 		async(function*() { //同步
 			var db = yield new DB("LMQ");
