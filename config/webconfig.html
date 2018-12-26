@@ -18,12 +18,20 @@
 		<div class="mui-content">
 			<form class="mui-input-group">
 				<div class="mui-input-row">
-					<label>IP地址</label>
+					<label>数据地址</label>
 					<input type="text" name="ip" class="mui-input-clear" placeholder="请输入IP">
 				</div>
 				<div class="mui-input-row">
-					<label>端口号</label>
+					<label>数据端口</label>
 					<input type="text" name="port" class="mui-input-clear" placeholder="请输入端口号">
+				</div>
+				<div class="mui-input-row">
+					<label>打印地址</label>
+					<input type="text" name="printip" class="mui-input-clear" placeholder="请输入IP">
+				</div>
+				<div class="mui-input-row">
+					<label>打印端口</label>
+					<input type="text" name="printport" class="mui-input-clear" placeholder="请输入端口号">
 				</div>
 			</form>
 		</div>
@@ -39,12 +47,22 @@
 				if(localStorage.getItem("webport")){
 					mui('[name=port]')[0].value = localStorage.getItem("webport");
 				}
+				if(localStorage.getItem("printurl")){
+					mui('[name=ip]')[0].value = localStorage.getItem("printurl");
+				}
+				if(localStorage.getItem("printport")){
+					mui('[name=port]')[0].value = localStorage.getItem("printport");
+				}
 				mui('body').on('tap','.mui-icon-checkmarkempty',function(){
 					var v = mui('[name=ip]')[0].value;
 					var p = mui('[name=port]')[0].value;
+					var pv = mui('[name=printip]')[0].value;
+					var pp = mui('[name=printport]')[0].value;
 					if(v && p){
 						localStorage.setItem("weburl",v);
 						localStorage.setItem("webport",p);
+						localStorage.setItem("printurl",pv);
+						localStorage.setItem("printport",pp);
 						mui.alert('配置成功','提示','重新登陆',function (e) {
 							var webview = plus.webview.getWebviewById("admin.html");
 							if(webview){

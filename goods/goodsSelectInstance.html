@@ -49,6 +49,7 @@
 			mui.ready(function() {
 				//所要查询的商品id数据
 			 	var goodsIds = plus.webview.currentWebview().goodsIds;
+				console.log(n.url)
 				mui.ajax(n.url + '/goods/queryGoodsAboutPrinter', {
 					data: {
 						goodsIds:goodsIds
@@ -99,10 +100,32 @@
 					goodsInstanceArr.push(goodsInstance);
 				}
 				console.log("打印JSON"+JSON.stringify(goodsInstanceArr));
+				var mask = mui.createMask(function () {
+					
+				})
+				mask.show();
+				plus.nativeUI.showWaiting("正在打印...");
+				console.log(n.printurl);
+				mui.ajax(n.printurl+"/print/1",{
+					data:JSON.stringify(goodsInstanceArr),
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					headers:{'Content-Type':'application/json'},
+					processData:false,
+					success:function(data){
+							plus.nativeUI.closeWaiting();
+							plus.webview.getWebviewById("goodsSelectInstance_h.html").close("slide-out-right");
+							plus.webview.currentWebview().close("slide-out-right");
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(errorThrown);
+						 plus.nativeUI.closeWaiting();
+						 mui.alert('打印错误','提示','确定',function (e) {
+						 },'div');
+						 mask.close();
+					}
+				});
 				
-				//关闭
-				plus.webview.getWebviewById("goodsSelectInstance_h.html").close("slide-out-right");
-				plus.webview.currentWebview().close("slide-out-right");
 			}
 		</script>
 	</body>
