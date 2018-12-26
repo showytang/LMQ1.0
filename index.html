@@ -388,6 +388,11 @@
 													新增门店类型
 												</a>
 											</li>
+											<li class="mui-table-view-cell" id="cp_web_config">
+												<a style="text-align: center;color: #FF3B30;">
+													网络配置
+												</a>
+											</li>
 										</ul>
 									</div>
 								</div>
@@ -508,11 +513,16 @@
 	window.onload = function() {
 		var height = window.screen.height;
 		document.querySelector(".outo-scroll").style.height = height + "px";
-		indexLogin();
+		reloadIndex();
 	}
-	
 	function reloadIndex(){
-		console.log(1)
+		if(!localStorage.getItem("weburl")){
+			mui.alert("第一次使用，网络尚未配置","提示",function(){
+					plus.webview.create("config/webconfig.html", "config/webconfig.html", {}, {}).show("none")
+					return;
+			});
+			return;
+		}
 		indexLogin();
 		
 		var goods = plus.webview.getWebviewById("goodsManage.html");
@@ -520,6 +530,7 @@
 	}
 
 	function unXer(bb) {
+		console.log(n.url);
 		/*var bb=login.getLogin().store.id;
 		console.log("weiyu"+JSON.stringify(bb))*/
 		mui.ajax(n.url + '/todaySales', {
@@ -640,6 +651,10 @@
 					vw = plus.webview.create(url, url, {}, {});
 					vw.show("slide-in-right");
 			
+		});
+		
+		mui('body').on('tap', '#cp_web_config', function(e) {
+			plus.webview.create("config/webconfig.html", "config/webconfig.html", {}, {}).show("none")
 		});
 		mui('body').on('tap', '.addsales', function(e) {
 			plus.webview.create("sales/sales_add_1.html", "index/sales/sales_add_1.html", {}, {}).show("none")
