@@ -44,7 +44,7 @@
 					var p = mui('[name=port]')[0].value;
 					if(v && p){
 						localStorage.setItem("weburl",v);
-						localStorage.setItem("webport",v);
+						localStorage.setItem("webport",p);
 						mui.alert('配置成功','提示','重新登陆',function (e) {
 							var webview = plus.webview.getWebviewById("admin.html");
 							if(webview){
