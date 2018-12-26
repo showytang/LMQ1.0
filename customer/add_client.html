@@ -120,6 +120,7 @@
 						list:null
 					}
 				})
+				console.log(obj.url)
 				mui.plusReady(function() {
 					/*添加客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
@@ -209,7 +210,7 @@
 						type:'post',//HTTP请求类型
 						timeout:10000,//超时时间设置为10秒；
 						success:function(data){
-							v.list=data
+							v2.list=data
 						},
 						error:function(xhr,type,errorThrown){
 							
