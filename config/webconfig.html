@@ -48,10 +48,10 @@
 					mui('[name=port]')[0].value = localStorage.getItem("webport");
 				}
 				if(localStorage.getItem("printurl")){
-					mui('[name=ip]')[0].value = localStorage.getItem("printurl");
+					mui('[name=printip]')[0].value = localStorage.getItem("printurl");
 				}
 				if(localStorage.getItem("printport")){
-					mui('[name=port]')[0].value = localStorage.getItem("printport");
+					mui('[name=printport]')[0].value = localStorage.getItem("printport");
 				}
 				mui('body').on('tap','.mui-icon-checkmarkempty',function(){
 					var v = mui('[name=ip]')[0].value;
