@@ -47,19 +47,16 @@
 				<label>客户名称</label>
 				<input type="text" name="name">
 			</div>
-			<div class="mui-input-row">
+			<div class="mui-input-row" id="customerlevel">
 				<label>客户级别</label>
 				<select class="select">
-					<option value="1">黄金VIP</option>
-					<option value="2">白银VIP</option>
-					<option value="3">青铜VIP</option>
+					<option v-for="(obj,index) in list" v-bind:value="obj.id">{{obj.name}}</option>
 				</select>
 			</div>
-			<div class="mui-input-row">
+			<div class="mui-input-row" id="pricetype">
 				<label>折扣级别</label>
 				<select class="pid">
-					<option value="1">零售商</option>
-					<option value="2">批发商</option>
+					<option v-for="(obj,index) in list" v-bind:value="obj.id">{{obj.name}}</option>
 				</select>
 			</div>
 			<div class="mui-input-row">
@@ -103,6 +100,7 @@
 		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../js/vue.js" ></script>
 		<script type="text/javascript">
 			(function($, doc) {
 				console.log(obj)
@@ -110,6 +108,19 @@
 				var loginUser = login.getLogin();
 				console.log(JSON.stringify(loginUser));
 				var sid = loginUser.store.id;
+				var v=new Vue({
+					el:"#customerlevel",
+					data:{
+						list:null
+					}
+				})
+				var v2=new Vue({
+					el:"#pricetype",
+					data:{
+						list:null
+					}
+				})
+				console.log(obj.url)
 				mui.plusReady(function() {
 					/*添加客户*/
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
@@ -177,6 +188,34 @@
 							}
 						});
 					})
+					mui.ajax(obj.url+'/Customer/queryCustomerlevelBySid',{
+						data:{
+							sid:sid
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							v.list=data
+						},
+						error:function(xhr,type,errorThrown){
+							
+						}
+					});
+					mui.ajax(obj.url+'/goods/queryPriceTypeBySid',{
+						data:{
+							sid:sid
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						success:function(data){
+							v2.list=data
+						},
+						error:function(xhr,type,errorThrown){
+							
+						}
+					});
 				})
 				mui.ready(function() {
 					/*三级联动*/

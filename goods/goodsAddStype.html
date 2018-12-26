@@ -113,7 +113,7 @@
 			</div>
 			<div class="mui-input-row nameSec">
 				<label>名称</label>
-				<input type="text" class="mui-input-clear" placeholder="请输入类目名称">
+				<input id="newStypeName" type="text" class="mui-input-clear" placeholder="请输入类目名称">
 			</div>
 			<!--规格部分-->
 			<div id="standardTop">
@@ -155,7 +155,6 @@
 			mui.init();
 			var oldStandard;
 			mui.ready(function() {
-				console.log(n.url+"/goods/queryALLStandardByTid");
 				mui('body').on('tap', '.LastStypeSec', function() {
 					var webview = plus.webview.create("goodsSelectStype_h.html", "goodsSelectStype_h.html", {}, {});
 					webview.show("slide-in-right");
@@ -168,13 +167,19 @@
 				//}) 
 				//规格值输入
 				mui('body').on('change','.simStandard input',function(){
+					console.log(JSON.stringify(vue.list));
 					for(var i = 0;i<vue.list.length;i++){
 					  	for(var j=0;j<vue.list[i].sInList.length;j++){
 					  		if(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId")
 					  			||
 					  			vue.list[i].sInList[j].standardAndId == this.getAttribute("standardAndId")
-					  			){
+					  			&&
+					  			(vue.list[i].sInList[j].standardAndId!=null && this.getAttribute("standardAndId") !=null)
+					  		){
 					  			vue.list[i].sInList[j].name = this.value;
+				  				//console.log(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId"));
+				  				console.log(vue.list[i].sInList[j].standardAndId);
+				  				console.log(this.getAttribute("standardAndId"));
 				  				return;
 					  		}	
 					  	}
@@ -186,6 +191,8 @@
 				  	if(vue.list[i].id == this.getAttribute("data-standardId")
 				  	||
 				  	vue.list[i].standardAndId == this.getAttribute("standardAndId")
+				  	&&
+					(vue.list[i].standardAndId!=null && this.getAttribute("standardAndId") !=null)
 				  	){
 				  		vue.list[i].name = this.value;
 				  		return;
@@ -205,7 +212,6 @@
 				var typeObj = eval('('+d+')');
 				tId = typeObj.typeId;
 				var nq = document.querySelector(".stypeName");
-				stypeName = typeObj.typeName;
 				nq.innerText = typeObj.typeName;
 				nq.setAttribute("data-typeId",typeObj.typeId);
 				//根据类目查询属性值
@@ -303,7 +309,8 @@
 						return;
 					//不能重复添加名称相同的规格值
 					for(var i = 0;i<vue.list.length;i++){
-						if(vue.list[i].id == this.parentElement.getAttribute("data-standardId")
+						if(
+						(vue.list[i].id == this.parentElement.getAttribute("data-standardId") && vue.list[i].id!=null && this.parentElement.getAttribute("data-standardId") !=null)
 						||
 						vue.list[i].standardAndId == this.parentElement.previousElementSibling.value
 						){
@@ -365,11 +372,18 @@
 				mui('body').on('tap','.StandardCloseBtn',function(e){
 					//删除数据
 				  	for(var i = 0;i<vue.list.length;i++){
-				  		if(vue.list[i].id == this.getAttribute("data-standardId")){
+				  		if(vue.list[i].id == this.getAttribute("data-standardId")
+				  		   &&
+				  		   vue.list[i].id !=null && this.getAttribute("data-standardId") !=null
+				  		){
 				  			deleteStandardId.push(vue.list[i].id)
 				  			vue.list.splice(i,1);
 				  			if(deleteStandardId[deleteStandardId.length-1] == null)
 				  				deleteStandardId.splice(deleteStandardId.length-1,0);
+				  			return;
+				  		}else if(vue.list[i].standardAndId == this.nextElementSibling.getAttribute("standardAndId")){
+				  			vue.list.splice(i,1);
+				  			return;
 				  		}
 				  	}
 				  	
@@ -379,11 +393,17 @@
 					for(var i = 0;i<vue.list.length;i++){
 				  		if(vue.list[i].id == this.getAttribute("data-standardId")){
 				  			for(var j=0;j<vue.list[i].sInList.length;j++){
-				  				if(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId")){
+				  				if(vue.list[i].sInList[j].id == this.getAttribute("data-standardInsId")
+				  				&&vue.list[i].sInList[j].id!=null && this.getAttribute("data-standardInsId") !=null
+				  				){
 				  					deleteStandardInId.push(vue.list[i].sInList[j].id);
 				  					vue.list[i].sInList.splice(j,1);
 				  					if(deleteStandardInId[deleteStandardInId.length-1] == null)
 				  						deleteStandardInId.splice(deleteStandardInId.length-1,0);
+				  					return;
+				  				}else if(vue.list[i].sInList[j].standardAndId === this.previousElementSibling.getAttribute("standardAndId")){
+				  					vue.list[i].sInList.splice(j,1);
+				  					return;
 				  				}
 				  			}
 				  		}
@@ -436,7 +456,7 @@
 			}
 			function addStype(){
 				//类目名称为空判断
-				if(stypeName.trim().length == 0){
+				if(document.querySelector("#newStypeName").value.length == 0){
 					plus.nativeUI.toast("温馨提示：类目名称不能为空");
 					return;
 				}
@@ -447,6 +467,11 @@
 				standardVO.deleteStandardInId = deleteStandardInId;
 				standardVO.oldStandard = eval(oldStandard);
 				standardVO.newStandard = vue.list;
+				console.log("新类目名称为"+document.querySelector("#newStypeName").value);
+				standardVO.newStypeName = document.querySelector("#newStypeName").value;
+				/*console.log(JSON.stringify(standardVO));
+				return;*/
+				
 				mui.ajax(n.url+'/goods/addStype',{
 					data:standardVO,
 					dataType:'json',//服务器返回json格式数据
@@ -454,6 +479,14 @@
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；
 					success:function(data){
+						//刷新类目数据
+						var webview = plus.webview.getWebviewById("goodsStype.html");
+						if(webview!=null)
+							webview.evalJS("getData()");
+						//关闭子
+						plus.webview.currentWebview().close("slide-out-right");
+						//关闭父
+						plus.webview.currentWebview().opener().close("slide-out-right");
 						
 					},
 					error:function(xhr,type,errorThrown){

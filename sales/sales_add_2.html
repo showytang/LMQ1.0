@@ -285,7 +285,16 @@
 				document.querySelector("#count").innerHTML = v.salesdetails.length;
 
 			}
-
+			function printInfo(){
+				var json = n.getParam(".mui-content");
+				json.count = document.querySelector("[name='count']").innerHTML;
+				json.money = v.money;
+				json.sid = sid;
+				json.cname=v.cname;
+				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
+				console.log(JSON.stringify(json) + "我传过来的");
+				
+			}
 			function addAjax() {
 				var json = n.getParam(".mui-content");
 				json.count = document.querySelector("[name='count']").innerHTML;
@@ -293,6 +302,7 @@
 				json.sid = sid;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
 				json.status = 2;
+				json.uid=uid;
 				console.log(JSON.stringify(json) + "我传过来的");
 				sumCount();
 				mui.ajax(n.url + "/s/addSales", {

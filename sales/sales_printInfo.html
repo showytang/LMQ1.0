@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>打印</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a style="font-size: 1.5em;" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="sname"></h1>
+		</header>
+		<div class="mui-content">
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>客户</label>
+								<input type="hidden" name="cid" v-bind:value="Sales.cid" />
+								<input type="text"  disabled="disabled" v-bind:value="Sales.cname" />
+							</div>
+				
+					</li>
+				<li class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>单据编号</label>
+								<input type="text" name='user1' disabled="disabled" v-bind:value="Sales.user1" />
+							</div>
+						</a>
+					</li>
+					<li v-if="Sales.user2" class="mui-table-view-cell">
+						<a class="mui-navigate">
+							<div class="mui-input-row ">
+								<label>订单号</label>
+								<input name="user2" type="text" disabled="disabled" v-bind:value="Sales.user2" />
+							</div>
+						</a>
+					</li>
+					
+					<li class="mui-table-view-cell">
+						<div class="mui-input-row">
+							<label>日期</label>
+							<input name="time" type="date"  disabled="disabled" v-bind:value="Sales.stime" />
+						</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-row">
+								<div class="mui-col-xs-3"><span >商品</span></div>
+								<div class="mui-col-xs-3"><span >数量</span></div>
+								<div class="mui-col-xs-3"><span >单价</span></div>
+								<div class="mui-col-xs-3"><span >小计</span></div>
+						</div>
+					</li>
+					<li class="mui-table-view-cell" v-for="(s,index) in Sales.salesdetails" v-on:click="updateInfo(index)">
+							<div class="mui-row">
+								<div class="mui-col-xs-3"><span name="name">{{s.user2}}</span></div>
+								<div class="mui-col-xs-3"><span name="count">{{s.count}}</span></div>
+								<div class="mui-col-xs-3"><span name="money">{{(s.count*s.takeinmoney).toFixed(2)}}</span></div>
+								<div class="mui-col-xs-3"><span name="takeinmoney">{{s.takeinmoney.toFixed(2)}}</span></div>
+							</div>
+					</li>
+					<li class="mui-table-view-cell">
+						<div class="mui-row">
+								<div class="mui-col-xs-3"><span >合计</span></div>
+								<div class="mui-col-xs-3"><span >{{Sales.salesdetails.length}}</span></div>
+								<div class="mui-col-xs-3"><span ></span></div>
+								<div class="mui-col-xs-3"><span >{{Sales.user5}}</span></div>
+						</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>商品价格</label>
+								<input type="number"  disabled="disabled" v-bind:value="Sales.money" />
+							</div>
+					</li>
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>折扣</label>
+								<input type="text"  disabled="disabled" v-model="discount" />
+							</div>
+					</li>
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>应收</label>
+								<input type="number"  disabled="disabled" v-bind:value="Sales.user5" />
+							</div>
+					</li>
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>实收</label>
+								<input type="number"  disabled="disabled" v-bind:value="Sales.takeinmoney" />
+							</div>
+					</li>
+					
+					<li class="mui-table-view-cell">
+							<div class="mui-input-row ">
+								<label>{{Sales.balance<=0?'余额':'欠款'}}</label>
+								<input type="number"  disabled="disabled" v-bind:value="Sales.balance" />
+							</div>
+					</li>
+					
+			</ul>
+		</div>
+
+	</body>
+
+	<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/news.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/filtrare_time.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
+<script type="text/javascript">
+	var loginUser = login.getLogin();
+	var uid = loginUser.id;
+	var sid = loginUser.store.id;
+	var sname = loginUser.store.name;
+	var v = new Vue({
+		el: ".mui-content",
+		data: {
+			Sales: plus.webview.currentWebview().data,
+			sname: loginUser.store.name,
+			discount:0,
+			url: n.url + "/"
+		}
+	});
+	mui.init({
+		swipeBack: true //启用右滑关闭功能 
+	});
+	mui.ready(function() {
+
+	})
+	mui.plusReady(function() {
+		v.discount=parseFloat(v.Sales.money)/parseFloat(v.Sales.user5)*100+"%";
+		document.querySelector("#sname").innerHTML=sname;
+		console.log("aaa"+JSON.stringify(v.Sales));
+		
+	})
+</script>
