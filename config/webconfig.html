@@ -21,6 +21,10 @@
 					<label>IP地址</label>
 					<input type="text" name="ip" class="mui-input-clear" placeholder="请输入IP">
 				</div>
+				<div class="mui-input-row">
+					<label>端口号</label>
+					<input type="text" name="port" class="mui-input-clear" placeholder="请输入端口号">
+				</div>
 			</form>
 		</div>
 
@@ -32,10 +36,15 @@
 				if(localStorage.getItem("weburl")){
 					mui('[name=ip]')[0].value = localStorage.getItem("weburl");
 				}
+				if(localStorage.getItem("webport")){
+					mui('[name=port]')[0].value = localStorage.getItem("webport");
+				}
 				mui('body').on('tap','.mui-icon-checkmarkempty',function(){
 					var v = mui('[name=ip]')[0].value;
-					if(v){
+					var p = mui('[name=port]')[0].value;
+					if(v && p){
 						localStorage.setItem("weburl",v);
+						localStorage.setItem("webport",v);
 						mui.alert('配置成功','提示','重新登陆',function (e) {
 							var webview = plus.webview.getWebviewById("admin.html");
 							if(webview){
@@ -47,7 +56,7 @@
 							
 						},'div')
 					}else{
-						mui.toast('ip地址不能为空!');
+						mui.toast('ip地址或端口不能为空!');
 					}
 				}) 
 				

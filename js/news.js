@@ -4,7 +4,7 @@ var n = {
 //	url:"http://192.168.43.52:8080",
 	// url:"http://192.168.43.175:8080",
 	// url:"http://172.20.10.5:8080",
-	url:"http://"+localStorage.getItem("weburl")+":80",
+	url:"http://"+localStorage.getItem("weburl")+":"+localStorage.getItem("webport"),
 	//url: "http://100.71.170.138:8080",
 	//获取参数
 	getParam: function(selector) {
