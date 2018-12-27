@@ -90,7 +90,6 @@
 				json.user2 = vue.goodsInstance.name;
 				json.primePrice = vue.goodsInstance.primePrice; 
 				json.url = vue.goodsInstance.url;
-				json.primePrice=5000;
 				console.log(JSON.stringify(json));
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().opener().id).evalJS("getgoodsInfo(" + JSON.stringify(json) + ")");
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().id).close();
