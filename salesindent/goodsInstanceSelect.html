@@ -21,7 +21,10 @@
 				font-size: 0.7em;
 				line-height: 1.2em;
 			}
-			
+			.primePrice{
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
 			.goodsNum {
 				font-size: 0.7em;
 				line-height: 1.2em;
@@ -74,7 +77,8 @@
 								<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+gIn.url">
 								<div class="mui-col-xs-9 mui-row">
 									<span class="mui-col-xs-12 goodsTitle">{{gIn.name}}</span>
-									<span class="mui-col-xs-6 goodsPrice">{{gIn.priceName}}：￥{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
+									<span class="mui-col-xs-12 primePrice">商品价格：￥:{{gIn.primePrice.toFixed(2)}}/{{gIn.bitName}}</span>
+									<span class="mui-col-xs-6 goodsPrice">{{gIn.priceName}}：￥:{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
 									<!--<span class="mui-col-xs-12 goodsNum">9台</span>-->
 								</div>
 							</a>
@@ -236,7 +240,9 @@
 					goodsInstance.url = data[i].url;
 					//单位名称
 					goodsInstance.bitName = data[i].bitName;
-
+					//一口价（商品价格）
+					goodsInstance.primePrice = data[i].primePrice;
+					
 					//单品价格
 					if(data[i].money) { //有报价
 						goodsInstance.price = data[i].money;

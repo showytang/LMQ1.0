@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">数据配置</h1>
+			<a style="font-size: 2.2em;padding-top:5px" class="mui-action-menu mui-icon mui-icon-checkmarkempty mui-pull-right"></a>
+
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>数据地址</label>
+					<input type="text" name="ip" class="mui-input-clear" placeholder="请输入IP">
+				</div>
+				<div class="mui-input-row">
+					<label>数据端口</label>
+					<input type="text" name="port" class="mui-input-clear" placeholder="请输入端口号">
+				</div>
+				<div class="mui-input-row">
+					<label>打印地址</label>
+					<input type="text" name="printip" class="mui-input-clear" placeholder="请输入IP">
+				</div>
+				<div class="mui-input-row">
+					<label>打印端口</label>
+					<input type="text" name="printport" class="mui-input-clear" placeholder="请输入端口号">
+				</div>
+			</form>
+		</div>
+
+
+		<script src="../js/mui.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.ready(function () {
+				if(localStorage.getItem("weburl")){
+					mui('[name=ip]')[0].value = localStorage.getItem("weburl");
+				}
+				if(localStorage.getItem("webport")){
+					mui('[name=port]')[0].value = localStorage.getItem("webport");
+				}
+				if(localStorage.getItem("printurl")){
+					mui('[name=printip]')[0].value = localStorage.getItem("printurl");
+				}
+				if(localStorage.getItem("printport")){
+					mui('[name=printport]')[0].value = localStorage.getItem("printport");
+				}
+				mui('body').on('tap','.mui-icon-checkmarkempty',function(){
+					var v = mui('[name=ip]')[0].value;
+					var p = mui('[name=port]')[0].value;
+					var pv = mui('[name=printip]')[0].value;
+					var pp = mui('[name=printport]')[0].value;
+					if(v && p){
+						localStorage.setItem("weburl",v);
+						localStorage.setItem("webport",p);
+						localStorage.setItem("printurl",pv);
+						localStorage.setItem("printport",pp);
+						mui.alert('配置成功','提示','重新登陆',function (e) {
+							var webview = plus.webview.getWebviewById("admin.html");
+							if(webview){
+								webview.show("none");
+								return;
+							}else{
+								plus.webview.create("../admin.html", "admin.html").show("none");
+							}
+							
+						},'div')
+					}else{
+						mui.toast('ip地址或端口不能为空!');
+					}
+				}) 
+				
+			})
+		</script>
+	</body>
+
+</html>

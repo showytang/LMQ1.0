@@ -21,6 +21,10 @@
 				font-size: 0.7em;
 				line-height: 1.2em;
 			}
+			.primePrice{
+				font-size: 0.7em;
+				line-height: 1.2em;
+			}
 			
 			.goodsNum {
 				font-size: 0.7em;
@@ -73,8 +77,9 @@
 							<a href="javascript:;" v-bind:goodsInstanceId="gIn.goodsInstanceId" class="mui-row simGoodsInstance">
 								<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+gIn.url">
 								<div class="mui-col-xs-9 mui-row">
-									<span class="mui-col-xs-12 goodsTitle">{{gIn.name}}</span>
-									<span class="mui-col-xs-6 goodsPrice">{{gIn.priceName}}：￥{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
+									<span class="mui-col-xs-12 goodsTitle">商品名称：{{gIn.name}}</span>
+									<span class="mui-col-xs-12 primePrice">商品价格：￥：{{gIn.primePrice.toFixed(2)}}/{{gIn.bitName}}</span>
+									<span class="mui-col-xs-6 goodsPrice" v-if="gIn.price!=null">{{gIn.priceName}}：￥:{{gIn.price.toFixed(2)}}/{{gIn.bitName}}</span>
 									<!--<span class="mui-col-xs-12 goodsNum">9台</span>-->
 								</div>
 							</a>
@@ -158,6 +163,11 @@
 				var self = plus.webview.currentWebview();
 				cId = self.cid;
 				sid=self.sid;
+				console.log(self.cid);
+				if(cId ==-1){
+					getData("");
+					return;
+				}
 				//根据用户cid查询pid客户类型
 				mui.ajax(n.url+'/Customer/queryByIdResultPid',{
 					data:{
@@ -169,12 +179,12 @@
 					success:function(data){
 						pId = data;
 						//console.log("入口id"+pId);
+						getData("");
 					},
 					error:function(xhr,type,errorThrown){
 						
 					}
 				});
-				getData("");
 			})
 
 			
@@ -235,22 +245,27 @@
 					goodsInstance.url = data[i].url;
 					//单位名称
 					goodsInstance.bitName = data[i].bitName;
+					//一口价（商品价格）
+					goodsInstance.primePrice = data[i].primePrice;
 					
-					//单品价格
-					if(data[i].money) { //有报价
-						goodsInstance.price = data[i].money;
-						goodsInstance.ptype = -1;//报价
-						goodsInstance.priceName = "报价";
-					} else if(!data[i].money) { //无报价
-						//获取默认价格
-						if(data[i].defaultPrice == 1){
-							goodsInstance.price = data[i].price;
-							goodsInstance.ptype = data[i].ptype;
-						goodsInstance.priceName = data[i].priceName;
-						}else if(data[i].ptype == pId){//用户类型id
-							goodsInstance.price = data[i].price;
-							goodsInstance.ptype = data[i].ptype;
-						goodsInstance.priceName = data[i].priceName;
+					//零售客户
+					if(cId != -1){
+						//单品价格
+						if(data[i].money) { //有报价
+							goodsInstance.price = data[i].money;
+							goodsInstance.ptype = -1;//报价
+							goodsInstance.priceName = "报价";
+						} else if(!data[i].money) { //无报价
+							//获取默认价格
+							if(data[i].defaultPrice == 1){
+								goodsInstance.price = data[i].price;
+								goodsInstance.ptype = data[i].ptype;
+							goodsInstance.priceName = data[i].priceName;
+							}else if(data[i].ptype == pId){//用户类型id
+								goodsInstance.price = data[i].price;
+								goodsInstance.ptype = data[i].ptype;
+							goodsInstance.priceName = data[i].priceName;
+							}
 						}
 					}
 					//最后一次

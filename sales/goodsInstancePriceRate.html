@@ -24,17 +24,20 @@
 				<input type="text" disabled="disabled" v-bind:value="goodsInstance.bitName" class="mui-input-clear"  placeholder="">
 			</div>
 			<div class="mui-input-row">
-				<label>单价(￥)</label>
-				<input type="number" name="price" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" placeholder="">
+				<label>商品价格(￥)</label>
+				<input type="number" name="price" class="mui-input-clear" v-bind:value="goodsInstance.primePrice.toFixed(2)" placeholder="">
 			</div>
 			<div class="mui-input-row">
 				<label>折扣（%）</label>
-				<input type="number" name="rateNumber" class="mui-input-clear" value="100.00" placeholder="">
+				<input type="number" v-if="goodsInstance.price!=null" name="rateNumber" class="mui-input-clear" v-bind:value="(goodsInstance.price/goodsInstance.primePrice*100).toFixed(2)" placeholder="">
+				<input type="number" v-if="goodsInstance.price==null" name="rateNumber" class="mui-input-clear" v-bind:value="(goodsInstance.primePrice/goodsInstance.primePrice*100).toFixed(2)" placeholder="">
 			</div>
 			<div class="mui-input-row">
 				<label>折后额(￥)</label>
-				<input type="number" name="salePrice" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" placeholder="">
+				<input type="number" v-if="goodsInstance.price!=null" name="salePrice" class="mui-input-clear" v-bind:value="goodsInstance.price.toFixed(2)" placeholder="">
+				<input type="number" v-if="goodsInstance.price==null" name="salePrice" class="mui-input-clear" v-bind:value="goodsInstance.primePrice.toFixed(2)" placeholder="">
 			</div>
+			
 			<div class="mui-input-row">
 				<label>备注</label>
 				<input type="text" class="mui-input-clear" value="" placeholder="">
@@ -56,9 +59,10 @@
 			    		rateNumber:'',
 			    		salePrice:''
 			    	}
+				    
 			    })
 			    //价格折扣核算
-			    mui('body').on('change','[name=price],[name=rateNumber]',function(){
+			    mui('body').on('change','[name=rateNumber]',function(){
 			      var rateNumber = document.querySelector("[name=rateNumber]");
 			      var salePrice = document.querySelector("[name=salePrice]");
 			      var price = document.querySelector("[name=price]");
@@ -72,8 +76,7 @@
 			      var rateNumber = document.querySelector("[name=rateNumber]");
 			      var salePrice = document.querySelector("[name=salePrice]");
 			      var price = document.querySelector("[name=price]");
-			      price.value = (salePrice.value / rateNumber.value *100).toFixed(2);
-			      price.value = (price.value *1).toFixed(2);
+			      rateNumber.value = (salePrice.value / price.value * 100).toFixed(2);
 			      vue.goodsInstance.price = price.value;
 			      salePrice.value = (salePrice.value * 1).toFixed(2);
 			      vue.salePrice = (salePrice.value * 1).toFixed(2);
@@ -86,11 +89,11 @@
 				var json={};
 				json.user1=vue.goodsInstance.goodsInstanceId
 				json.count=document.querySelector("[name='count']").value;
-				json.takeinmoney=vue.goodsInstance.price;
+				json.takeinmoney=document.querySelector("[name=salePrice]").value;
 				json.money=json.count*json.takeinmoney;
 				json.gname=vue.goodsInstance.name;
 				json.url=vue.goodsInstance.url;
-				json.primePrice=5000;
+				json.primePrice=vue.goodsInstance.primePrice;
 				json.sumPrime=json.primePrice*json.count;
 				console.log(JSON.stringify(json));
 				plus.webview.getWebviewById(plus.webview.currentWebview().opener().opener().opener().opener().id).evalJS("getgoodsInfo(" + JSON.stringify(json) + ")");
