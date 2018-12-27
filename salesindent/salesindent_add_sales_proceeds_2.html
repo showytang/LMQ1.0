@@ -12,6 +12,10 @@
 		<div class="mui-content">
 			<form class="mui-input-group">
 				<div class="mui-input-row">
+					<label>商品总价格</label>
+					<input type="number" v-model="priemSum" name="moeny" placeholder="" disabled="disabled">
+				</div>
+				<div class="mui-input-row">
 					<label>折后应收款</label>
 					<input type="number" v-model="user5" onfocus="user5Focus()" onblur="user5Blur()" name="user5" placeholder="">
 				</div>
@@ -45,6 +49,7 @@
 					takeinmoney: 0,
 					money: 0,
 					balance: 0,
+					priemSum:0,
 					user5key: false,
 					user6key: false,
 					takeinmoneykey: false
@@ -67,6 +72,7 @@
 					takeinmoney: function(val) {
 						if(this.takeinmoneykey) {
 							this.balance = this.user5 - val;
+							this.takeinmoney=val;
 						}
 					}
 				}
@@ -80,16 +86,18 @@
 				v.sales = sales;
 				v.user5 = sales.takeinmoney;
 				v.money = sales.takeinmoney;
+				v.priemSum=sales.money;
 				v.takeinmoney = sales.takeinmoney;
 				console.log("这是传过来的" + salesinfo);
 			}
 
 			function ajaxSubmit(status) {
 				var json = v.sales;
-				json.money=v.takeinmoney;
-				json.takeinmoney = v.money;
+				json.money=v.priemSum;
+				json.takeinmoney = v.takeinmoney;
 				json.user5 = v.user5;
 				json.status = status;
+				console.log(v.user5+","+v.takeinmoney)
 				console.log("传入数据" + JSON.stringify(json));
 				
 				mui.ajax(n.url + "/s/addSales", {
@@ -99,13 +107,29 @@
 					timeout: 10000, //超时时间设置为10秒；
 					contentType: "application/json",
 					success: function(data) {
-						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
-						//隐藏详情表
-						plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
-						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close();
-						plus.webview.getWebviewById("salesindent_add_sales_1.html").hide();
-						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
-					},
+						var btnArray = ['取消', '确认'];
+						mui.confirm('是否进入打印预览', '', btnArray, function(e) {
+						if(e.index == 0) {
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+							//隐藏详情表
+							plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+							plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close();
+							plus.webview.getWebviewById("salesindent_add_sales_1.html").hide();
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
+							return;
+						} else {
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+							//隐藏详情表
+							plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+							plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).close();
+							plus.webview.getWebviewById("salesindent_add_sales_1.html").hide();
+							var url = "sales_printInfo.html";
+							vw = plus.webview.create(url, url, {}, {info:json});
+							vw.show("slide-in-right");
+						}
+					});
+					
+				},
 					error: function(xhr, type, errorThrown) {}
 				});
 			}
