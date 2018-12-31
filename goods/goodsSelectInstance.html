@@ -82,7 +82,9 @@
 				var selectArr = document.querySelectorAll("div.mui-active");//mui-table-view-cell
 				
 				for (var i=0;i<selectArr.length;i++) {
-					var temParent = selectArr[i].parentElement.parentElement;
+					var temParent = selectArr[i].parentElement;
+					console.log(temParent.innerHTML);
+					console.log("/n/r");
 					var goodsInstance = {};
 					//商品名称
 					goodsInstance.goodsName = temParent.querySelector("[name=goodsName]").value;
