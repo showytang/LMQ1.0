@@ -55,7 +55,7 @@
 							<div class="mui-input-row ">
 								<label>客户</label>
 								<input type="hidden" name="cid" v-bind:value="Salesindent.cid" />
-								<input type="text" readonly="readonly" v-bind:value="Salesindent.cname" />
+								<input type="text" name="cname" disabled="disabled" v-bind:value="Salesindent.cname" />
 							</div>
 						</a>
 					</li>
@@ -83,8 +83,9 @@
 										<div style="text-align: right;" class="mui-col-xs-6">金额:<span name="money">{{s.count*s.takeinmoney}}</span></div>
 									</div>
 									<div class="mui-row">
-										<div class="mui-col-xs-6">数量:<span name="count">{{s.count}}</span></div>
-										<div style="text-align: right;" class="mui-col-xs-6">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
+										<div class="mui-col-xs-4">数量:<span name="count">{{s.count}}</span></div>
+										<div class="mui-col-xs-4">原价:<span name="user3">{{s.primePrice}}</span></div>
+										<div style="text-align: right;" class="mui-col-xs-4">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
 									</div>
 								</div>
 							</div>
@@ -102,6 +103,14 @@
 			</div>
 			<div class="mui-card">
 				<ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+							<a class="mui-navigate">
+								<div class="mui-input-row ">
+									<label>商品总金额</label>
+									<input type="text" name="money" readonly="readonly" v-bind:value="Salesindent.money" />
+								</div>
+							</a>
+						</li>
 					<li class="mui-table-view-cell">
 						<a class="mui-navigate-right">
 							<div class="mui-input-row ">
@@ -208,13 +217,13 @@
 				});
 				
 				//触摸客户
-				mui('body').on('tap', '#customer', function() {
+				/*mui('body').on('tap', '#customer', function() {
 					//创建并判断是否存在列表内容窗体
 					//plus.webview.getWebviewById(plus.webview.currentWebview().id).hide("slide-out-left");
 					var vw = plus.webview.getWebviewById("client.html");
 					vw = plus.webview.create("client.html", "client.html", {}, {});
 					vw.show("slide-in-right");
-				});
+				});*/
 			});
 
 			mui.ready(function() {
@@ -231,12 +240,15 @@
 				},
 				methods:{
 					sumCount:function(){
-						var li=document.querySelector("#OA_task_1").querySelectorAll(".mui-table-view-cell");
+						//var li=document.querySelector("#OA_task_1").querySelectorAll(".mui-table-view-cell");
 						var sum=0;
-						for(var i=0;i<li.length;i++){
+						var priemSum=0;
+						for(var i=0;i<this.Salesindent.salesindentdetails.length;i++){
 							console.log(i);
 							sum+=this.Salesindent.salesindentdetails[i].count*this.Salesindent.salesindentdetails[i].takeinmoney;
+							priemSum+=this.Salesindent.salesindentdetails[i].count*this.Salesindent.salesindentdetails[i].primePrice;
 						};
+						v.Salesindent.money=priemSum;
 						v.Salesindent.user2=sum;
 					}
 				}
@@ -305,7 +317,7 @@
 				json.uid = uid;
 				json.status = status;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-table-view-cell");
-				console.log("我被调用了")
+				console.log("我被调用了"+JSON.stringify(json))
 				plus.webview.getWebviewById("salesindent_add_sales_proceeds_2.html").evalJS("setInfo('"+JSON.stringify(json)+"')");
 			}
 			//被父窗体调用提交收款
@@ -317,7 +329,6 @@
 				json.sid = sid;
 				json.uid = uid;
 				json.status = status;
-				json.money=v.Salesindent.user2;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-table-view-cell");
 				console.log(json.money);
 				console.log("传入数据" + JSON.stringify(json));
@@ -328,11 +339,25 @@
 					timeout: 10000, //超时时间设置为10秒；
 					contentType: "application/json",
 					success: function(data) {
-						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
-						//开始关闭窗体
-						plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
-						plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).hide();
-						plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
+						var btnArray = ['取消', '确认'];
+						mui.confirm('是否进入打印预览', '', btnArray, function(e) {
+						if(e.index == 0) {
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+							//开始关闭窗体
+							plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+							plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).hide();
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").show();
+							return;
+						} else {
+							plus.webview.getWebviewById("salesindent/salesindent_list_headerAndtab.html").evalJS("F5()");
+							//开始关闭窗体
+							plus.webview.getWebviewById("salesindent_list_info_unfinished_1.html").hide();
+							plus.webview.getWebviewById(plus.webview.currentWebview().opener().id).hide();
+							var url = "sales_printInfo.html";
+							vw = plus.webview.create(url, url, {}, {info:json});
+							vw.show("slide-in-right");
+						}
+					});
 					},
 					error: function(xhr, type, errorThrown) {}
 				});
@@ -362,6 +387,7 @@
 						console.log(v.Salesindent.salesindentdetails[i].user2+":"+data.user2+"你好");
 						v.Salesindent.salesindentdetails[i].user2=data.user2;
 						v.Salesindent.salesindentdetails[i].url=data.url;
+						v.Salesindent.salesindentdetails[i].primePrice=data.primePrice;
 						v.sumCount();
  						key = false;
 						return;
@@ -370,6 +396,7 @@
 				if(key) {
 					console.log(JSON.stringify(data))
 					v.Salesindent.salesindentdetails.push(data);
+					console.log(JSON.stringify(v.Salesindent.salesindentdetails));
 					v.sumCount();
 				}
 			}

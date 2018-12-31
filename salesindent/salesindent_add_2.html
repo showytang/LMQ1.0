@@ -75,8 +75,9 @@
 											<div style="text-align: right;" class="mui-col-xs-6">金额:<span name="money">{{s.money}}</span></div>
 										</div>
 										<div class="mui-row">
-											<div class="mui-col-xs-6">数量:<span name="count">{{s.count}}</span></div>
-											<div style="text-align: right;" class="mui-col-xs-6">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
+											<div class="mui-col-xs-4">数量:<span name="count">{{s.count}}</span></div>
+											<div class="mui-col-xs-4">原价:<span name="user3">{{s.primePrice}}</span></div>
+											<div style="text-align: right;" class="mui-col-xs-4">单价:<span name="takeinmoney">{{s.takeinmoney}}</span></div>
 										</div>
 									</div>
 								</div>
@@ -94,6 +95,14 @@
 				</div>
 				<div class="mui-card">
 					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate">
+								<div class="mui-input-row ">
+									<label>商品实际总金额</label>
+									<input type="text" readonly="readonly" name="money" v-model="money"/>
+								</div>
+							</a>
+						</li>
 						<li class="mui-table-view-cell">
 							<a class="mui-navigate">
 								<div class="mui-input-row ">
@@ -150,7 +159,8 @@
 					deposi: 0.0,
 					pid: null,
 					pname: null,
-					url:n.url+"/"
+					url:n.url+"/",
+					money:null
 				},
 				watch: {
 					deposi: function() {
@@ -393,6 +403,7 @@
 						if(data.money) {
 							json.price = data.money;
 						}
+						json.primePrice=data.primePrice;
 						json.money = json.takeinmoney;
 						json.url=data.url;
 						console.log(JSON.stringify(json))
@@ -439,6 +450,7 @@
 						v.salesindentdetails[i].takeinmoney = data.takeinmoney;
 						v.salesindentdetails[i].money = data.takeinmoney * v.salesindentdetails[i].count;
 						v.salesindentdetails[i].url=data.url;
+						v.salesindentdetails[i].primePrice = data.primePrice;
 						sumCount();
 						key = false;
 						return;
@@ -467,11 +479,15 @@
 
 			function sumCount() {
 				var sum = 0;
+				var sumPrime=0;
 				for(var i = 0; i < v.salesindentdetails.length; i++) {
 					console.log(v.salesindentdetails[i].money);
 					sum = sum - (-v.salesindentdetails[i].money);
+					sumPrime = sumPrime - (-v.salesindentdetails[i].primePrice*v.salesindentdetails[i].count);
+
 				};
 				console.log(sum);
+				v.money=sumPrime;
 				document.querySelector("#user2").innerHTML = sum;
 				document.querySelector("#count").innerHTML = v.salesindentdetails.length;
 

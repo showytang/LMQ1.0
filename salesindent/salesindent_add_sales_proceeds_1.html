@@ -28,6 +28,7 @@
 			});
 			mui.plusReady(function () {
 			    mui('.mui-bar').on('tap','.mui-icon-checkmarkempty',function(){
+			    	console.log(123)
 			      plus.webview.getWebviewById("salesindent_add_sales_proceeds_2.html").evalJS("ajaxSubmit(0)");
 			    }) 
 			})

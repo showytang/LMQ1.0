@@ -14,7 +14,6 @@
 			<h1 class="mui-title" id="sname"></h1>
 		</header>
 		<div class="mui-content">
-
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
 							<div class="mui-input-row ">
@@ -22,7 +21,6 @@
 								<input type="hidden" name="cid" v-bind:value="Sales.cid" />
 								<input type="text"  disabled="disabled" v-bind:value="Sales.cname" />
 							</div>
-				
 					</li>
 				<li class="mui-table-view-cell">
 						<a class="mui-navigate">
@@ -44,7 +42,7 @@
 					<li class="mui-table-view-cell">
 						<div class="mui-input-row">
 							<label>日期</label>
-							<input name="time" type="date"  disabled="disabled" v-bind:value="Sales.stime" />
+							<input name="time" type="date"  disabled="disabled" v-bind:value="Sales.user4" />
 						</div>
 					</li>
 					<li class="mui-table-view-cell">
@@ -57,11 +55,10 @@
 					</li>
 					<li class="mui-table-view-cell" v-for="(s,index) in Sales.salesdetails" v-on:click="updateInfo(index)">
 							<div class="mui-row">
-								<div class="mui-col-xs-3"><span name="name">{{s.user2}}</span></div>
-								<div class="mui-col-xs-3"><span name="count">{{s.count}}</span></div>
-								<div class="mui-col-xs-3"><span name="takeinmoney">{{s.takeinmoney.toFixed(2)}}</span></div>
-								<div class="mui-col-xs-3"><span name="money">{{(s.count*s.takeinmoney).toFixed(2)}}</span></div>
-								
+								<div class="mui-col-xs-3"><span name="">{{s.user2}}</span></div>
+								<div class="mui-col-xs-3"><span name="">{{s.count}}</span></div>
+								<div class="mui-col-xs-3"><span name="">{{s.takeinmoney}}</span></div>
+								<div class="mui-col-xs-3"><span name="">{{s.money}}</span></div>
 							</div>
 					</li>
 					<li class="mui-table-view-cell">
@@ -98,13 +95,12 @@
 							</div>
 					</li>
 					
-					<li class="mui-table-view-cell">
+					<!--<li class="mui-table-view-cell">
 							<div class="mui-input-row ">
 								<label>{{Sales.balance<=0?'余额':'欠款'}}</label>
 								<input type="number"  disabled="disabled" v-bind:value="Sales.balance" />
 							</div>
-					</li>
-					
+					</li>-->
 			</ul>
 		</div>
 
@@ -127,7 +123,7 @@
 	var v = new Vue({
 		el: ".mui-content",
 		data: {
-			Sales: plus.webview.currentWebview().data,
+			Sales: plus.webview.currentWebview().info,
 			sname: loginUser.store.name,
 			discount:0,
 			url: n.url + "/"
@@ -140,9 +136,8 @@
 
 	})
 	mui.plusReady(function() {
-		v.discount=parseFloat(v.Sales.user5)/parseFloat(v.Sales.takeinmoney)*100+"%";
+		v.discount=parseFloat(v.Sales.takeinmoney)/parseFloat(v.Sales.user5)*100+"%";
 		document.querySelector("#sname").innerHTML=sname;
-		console.log("aaa"+JSON.stringify(v.Sales));
-		
+		console.log("aaaaa"+JSON.stringify(v.Sales));
 	})
 </script>
