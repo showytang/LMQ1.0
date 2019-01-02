@@ -178,9 +178,9 @@
 			//商品数量
 			salesdetails.count=v.Sales.salesdetails[i].count;
 			//单价
-			salesdetails.takeinmoney=v.Sales.salesdetails[i].takeinmoney;
+			salesdetails.takeinmoney=v.Sales.salesdetails[i].takeinmoney.toFixed(2);
 			//小计
-			salesdetails.money=v.Sales.salesdetails[i].money;
+			salesdetails.money=salesdetails.count*salesdetails.takeinmoney;
 			newjson.salesdetails.push(salesdetails);
 		}
 		console.log(JSON.stringify(newjson));
