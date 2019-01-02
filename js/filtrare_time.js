@@ -74,12 +74,18 @@ function getMonthEndDate() {
 //获得上月开始时间
 function getLastMonthStartDate() {
 	var lastMonthStartDate = new Date(nowYear, lastMonth, 1);
+	if(lastMonth=11){
+		lastMonthStartDate = new Date(nowYear-1, lastMonth, 1);
+	}
 	return formatDate(lastMonthStartDate);
 }
 
 //获得上月结束时间
 function getLastMonthEndDate() {
 	var lastMonthEndDate = new Date(nowYear, lastMonth, getMonthDays(lastMonth));
+	if(lastMonth=11){
+		lastMonthEndDate = new Date(nowYear-1, lastMonth, getMonthDays(lastMonth));
+	}
 	return formatDate(lastMonthEndDate);
 }
 //获得昨天开始时间
