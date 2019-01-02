@@ -120,6 +120,7 @@
 	var uid = loginUser.id;
 	var sid = loginUser.store.id;
 	var sname = loginUser.store.name;
+	var newjson={};
 	var v = new Vue({
 		el: ".mui-content",
 		data: {
@@ -139,5 +140,43 @@
 		v.discount=parseFloat(v.Sales.takeinmoney)/parseFloat(v.Sales.user5)*100+"%";
 		document.querySelector("#sname").innerHTML=sname;
 		console.log("aaaaa"+JSON.stringify(v.Sales));
+		//用户名称
+		newjson.cname=v.Sales.cname;
+		//用户id
+		newjson.cid=v.Sales.cid;
+		//销售订单编号
+		newjson.xsdd=v.Sales.user2;
+		//销售编号
+		newjson.xsd=v.Sales.user1;
+		//商品实际金额
+		newjson.money=v.Sales.money;
+		//应收
+		newjson.receivable=v.Sales.user5;
+		//实收
+		newjson.takeinmoney=v.Sales.takeinmoney;
+		//日期
+		newjson.time=v.Sales.user4;
+		//sid
+		newjson.sid=v.Sales.sid;
+		//siId
+		newjson.siId=v.Sales.siId;
+		//支付类型
+		newjson.pid=v.Sales.pid;
+		//支付名称
+		newjson.pname=v.Sales.pname;
+		newjson.salesdetails=[];
+		for(var i=0;i<v.Sales.salesdetails.length;i++){
+			var salesdetails={};
+			//商品名称
+			salesdetails.gname=v.Sales.salesdetails[i].user2;
+			//商品数量
+			salesdetails.count=v.Sales.salesdetails[i].count;
+			//单价
+			salesdetails.takeinmoney=v.Sales.salesdetails[i].takeinmoney;
+			//小计
+			salesdetails.money=v.Sales.salesdetails[i].money;
+			newjson.salesdetails.push(salesdetails);
+		}
+		console.log(JSON.stringify(newjson));
 	})
 </script>
