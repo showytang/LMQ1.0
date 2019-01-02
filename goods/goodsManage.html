@@ -10,7 +10,7 @@
 			* {
 				margin: 0px;
 				padding: 0px;
-				/*border: 1px solid #000000;*/
+			/*	border: 1px solid #000000;*/
 			}
 			
 			#addGoodBtn {
@@ -27,7 +27,6 @@
 			.goodsTitle {
 				font-size: 0.85em;
 				word-break: normal;
-				width: 100%;
 				white-space: pre-wrap;
 				/*word-wrap : break-word ;*/
 				overflow: hidden;
@@ -64,16 +63,21 @@
 					<div>
 						<ul class="mui-table-view">
 							<li class="mui-table-view-cell mui-media" v-for="(l,index) in list">
-								<a href="javascript:;" class="mui-row simGoods" v-bind:data-goodsId="l.gId">
-									<img class="mui-pull-left simImg mui-col-xs-4" v-bind:src="url+l.url">
-									<div class="mui-col-xs-9 mui-row">
-										<span class="mui-col-xs-12 goodsTitle">{{l.name}}</span>
-										<span class="mui-col-xs-5 goodsPrice" v-for="(priceList,index) in l.priceList">
+								<a href="javascript:;" class="mui-row simGoods mui-transitioning" v-bind:data-goodsId="l.gId">
+									<div class="mui-row mui-slider-handle">
+										<img class="mui-pull-left simImg mui-col-xs-3" v-bind:src="url+l.url">
+										<span class="mui-col-xs-9 goodsTitle">{{l.name}}</span>
+										<span class="mui-col-xs-4 goodsPrice" v-for="(priceList,index) in l.priceList">
 											<span v-if="priceList.name">{{priceList.name}}</span>
 										<span v-else="priceList.id">{{priceList.id}}</span> :￥{{priceList.price}}
 										</span>
-										<span class="mui-col-xs-12 goodsNum">{{l.totalCount}}{{l.bitName}}</span>
+										<span class="mui-col-xs-8 goodsNum">{{l.totalCount}}{{l.bitName}}</span>
 									</div>
+									<!--删除按钮-->
+									<div class="mui-slider-right mui-col-xs-2">
+										<a v-bind:data-goodsId="l.gId" class="deleteBtn mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
+									</div>
+									<!--删除按钮-->
 								</a>
 								<div v-bind:data-goodsId="l.gId" style="display: none;" class="mui-switch mui-switch-mini" data-switch="4" style="transition-duration: 0.2s;">
 									<div class="mui-switch-handle" style="transition-duration: 0.2s; transform: translate(0px, 0px);"></div>
@@ -141,14 +145,17 @@
 					});
 					webview.show("slide-in-right");
 				})
+				//删除商品
+				mui('body').on('tap','.deleteBtn',function(){
+				  //有条件的删除
+				  
+				  alert(this.getAttribute("data-goodsId"));
+				  
+				  //重新刷新li
+				  
+				}) 
 				
-				/*//选中打印selectBtn
-				mui('body').on('tap', '#selectBtn', function() {
-					
-				})*/
 				//打开打印
-				
-				
 				mui('body').on('tap', '.mui-switch', function() {
 					this.classList.toggle("mui-active");
 				})

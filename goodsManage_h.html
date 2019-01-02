@@ -24,8 +24,12 @@
 			<input type="search" class="mui-input-clear" v-model="goodsName" placeholder="请输入货物名称或货物关键字">
 			</div>
 		</header>
+		<script src="js/news.js"></script>
 		<script src="js/mui.min.js"></script>
 		<script src="js/vue.js"></script>
+		<script src="js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			mui.init({//子页面
 				subpages: [{
@@ -69,8 +73,28 @@
 						cancel: "取消"
 					}, function(e) {
 						if(e.index == 1) { //添加商品
-							var webview = plus.webview.create("goods/goodsAdd_h.html", "goodsAdd_h.html", {}, {});
-							webview.show("slide-in-right");
+							var loginUser = login.getLogin()
+							var sid = loginUser.store.id;
+							//权限判断
+							mui.ajax(n.url+'/goods/isAddEdit',{
+								data:{
+									sId:sid
+								},
+								dataType:'json',//服务器返回json格式数据
+								type:'post',//HTTP请求类型
+								timeout:10000,//超时时间设置为10秒；
+								success:function(data){
+									if(data==1){
+										var webview = plus.webview.create("goods/goodsAdd_h.html", "goodsAdd_h.html", {}, {});
+										webview.show("slide-in-right");
+									}else{
+										plus.nativeUI.toast("温馨提示：主门店才能添加商品");
+									}
+								},
+								error:function(xhr,type,errorThrown){
+									
+								}
+							});
 						} else if(e.index == 2) { //打印
 							var webview = plus.webview.getWebviewById("goodsManage.html");
 							if(webview!=null){
