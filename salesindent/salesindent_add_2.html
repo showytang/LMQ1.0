@@ -383,7 +383,7 @@
 				console.log("二维码扫到了:" + x);
 				mui.ajax(n.url + "/goods/querySimGoodsInstanceVoAboutDefPriceAndPrice", {
 					data: {
-						gInId: 14,
+						gInId: x,
 						sId: sid,
 						cId: v.cid
 					},
@@ -488,9 +488,12 @@
 				};
 				console.log(sum);
 				v.money=sumPrime;
-				document.querySelector("#user2").innerHTML = sum;
-				document.querySelector("#count").innerHTML = v.salesindentdetails.length;
-
+				if(document.querySelector("#user2")){
+					document.querySelector("#user2").innerHTML = sum;
+					document.querySelector("#count").innerHTML = v.salesindentdetails.length;
+					
+				}
+				
 			}
 		</script>
 
