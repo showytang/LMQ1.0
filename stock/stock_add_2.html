@@ -330,11 +330,17 @@
 					return;
 				}
 				var json = n.getParam(".mui-content");
-				json.allcount = document.querySelector("[name='allcount']").innerHTML;
+				
 				json.allprice = document.querySelector("[name='allprice']").innerHTML;
 				json.sid = sid;
 				json.uid=uid;
 				json.stockdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
+				var sum=0;
+				for(var i=0;i<json.stockdetails.length;i++){
+					sum=sum-(-json.stockdetails[i].count);
+					console.log("数量："+sum);
+				}
+				json.allcount=sum;
 				console.log(JSON.stringify(json));
 
 				mui.ajax(n.url + "/stock/addSales", {
