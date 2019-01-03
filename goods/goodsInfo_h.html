@@ -14,9 +14,13 @@
 			<h1 class="mui-title">商品详情</h1>
 			<span class="mui-icon mui-icon-compose mui-pull-right" id="editBtn"></span>
 		</header>
+		<script src="../js/news.js"></script>
 		<script src="../js/mui.min.js"></script>
+		<script src="../js/table/db.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/table/async.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/loginUser.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			mui.init({//子页面
+			mui.init({ //子页面
 				subpages: [{
 					url: 'goodsInfo.html',
 					id: 'goodsInfo.html',
@@ -25,34 +29,54 @@
 						bottom: "0px",
 					},
 					extras: {
-						gId:plus.webview.currentWebview().gId
+						gId: plus.webview.currentWebview().gId
 					}
 				}]
 			});
-			mui.plusReady(function () {
-			    //修改界面打开
-			    mui('body').on('tap','#editBtn',function(){
-			      var webview = plus.webview.getWebviewById("goodsInfo.html");
-			      if(webview != null){
-			   	    webview.evalJS("editBtn('')");
-			   	  }
-			    }) 
+			mui.plusReady(function() {
+				//修改界面打开
+				mui('body').on('tap', '#editBtn', function() {
+					var loginUser = login.getLogin();
+					var sid = loginUser.store.id;
+					//权限判断
+					mui.ajax(n.url + '/goods/isAddEdit', {
+						data: {
+							sId: sid
+						},
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						timeout: 10000, //超时时间设置为10秒；
+						success: function(data) {
+							if(data == 1) {
+								var webview = plus.webview.getWebviewById("goodsInfo.html");
+								if(webview != null) {
+									webview.evalJS("editBtn('')");
+								}
+							} else {
+								plus.nativeUI.toast("温馨提示：主门店才能修改商品");
+							}
+						},
+						error: function(xhr, type, errorThrown) {
+
+						}
+					});
+				})
 			})
-			
+
 			//返回重写
-			 mui.ready(function () {
-			   	mui.back=function () {
-			   	    //子页面销毁
-			   	    var webview = plus.webview.getWebviewById("goodsInfo.html");
-			   	    if(webview != null){
-			   	    	webview.close();
-			   	    }
-			   	    var webview = plus.webview.currentWebview();
-			   	    if(webview != null){
-			   	    	webview.close("slide-out-right");
-			   	    }
-			   	}
-			  })
+			mui.ready(function() {
+				mui.back = function() {
+					//子页面销毁
+					var webview = plus.webview.getWebviewById("goodsInfo.html");
+					if(webview != null) {
+						webview.close();
+					}
+					var webview = plus.webview.currentWebview();
+					if(webview != null) {
+						webview.close("slide-out-right");
+					}
+				}
+			})
 		</script>
 	</body>
 
