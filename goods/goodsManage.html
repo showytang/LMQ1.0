@@ -148,11 +148,31 @@
 				//删除商品
 				mui('body').on('tap','.deleteBtn',function(){
 				  //有条件的删除
-				  
-				  alert(this.getAttribute("data-goodsId"));
-				  
-				  //重新刷新li
-				  
+				  mui.ajax(n+url+'/goods/deleteGoods',{
+				  	data:{
+				  		gId:this.getAttribute("data-goodsId")
+				  	},
+				  	dataType:'json',//服务器返回json格式数据
+				  	type:'post',//HTTP请求类型
+				  	timeout:10000,//超时时间设置为10秒；
+				  	success:function(data){
+				  		if(data == 200){
+				  			//删除成功
+				  			//刷新列表
+				  			plus.nativeUI.toast("温馨提示：商品删除成功");
+				  			getData("");
+				  		}else if(data == -1){
+				  			//无法删除
+				  			plus.nativeUI.toast("温馨提示：无法删除已经销售或者已经订货或者存在进货的商品");
+				  		}else if(data == 0){
+				  			//可以删除商品，但是删除失败
+				  			consolo.log("可以删除商品，但是删除失败")
+				  		}
+				  	},
+				  	error:function(xhr,type,errorThrown){
+				  		
+				  	}
+				  });
 				}) 
 				
 				//打开打印
