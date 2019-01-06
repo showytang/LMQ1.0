@@ -317,7 +317,11 @@
 				}
 				var json = n.getParam(".mui-content");
 				json.salesindentdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
-				json.count = document.querySelector("#count").innerHTML;
+				var count=0;
+				for(var i=0;i<json.salesindentdetails.length;i++){
+					count=count-(-json.salesindentdetails[i].count);
+				}
+				json.count =count;
 				json.user2 = document.querySelector("[name='user2']").innerHTML;
 				json.sid = sid;
 				console.log(JSON.stringify(json) + "插卡");

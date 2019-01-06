@@ -310,13 +310,17 @@
 			//获得提交数据
 			function getInfoByProceeds(){
 				var json = n.getParam(".mui-content");
-				json.count = document.querySelector("[name='count']").innerHTML;
 				json.takeinmoney = document.querySelector("[name='takeinmoney']").innerHTML;
 				json.user5=document.querySelector("[name='takeinmoney']").innerHTML;
 				json.sid = sid;
 				json.uid = uid;
 				json.status = status;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-table-view-cell");
+				var count=0;
+				for(var i=0;i<json.salesdetails.length;i++){
+					count=count-(-json.salesdetails[i].count);
+				}
+				json.count =count;
 				console.log("我被调用了"+JSON.stringify(json))
 				plus.webview.getWebviewById("salesindent_add_sales_proceeds_2.html").evalJS("setInfo('"+JSON.stringify(json)+"')");
 			}

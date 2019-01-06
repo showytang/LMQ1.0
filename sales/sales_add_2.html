@@ -287,13 +287,17 @@
 			}
 			function printInfo(){
 				var json = n.getParam(".mui-content");
-				json.count = document.querySelector("[name='count']").innerHTML;
+				
 				json.money = v.money;
 				json.sid = sid;
 				json.cname=v.cname;
 				json.salesdetails = n.getSpanParam("#OA_task_1", ".mui-slider-handle");
+				var count=0;
+				for(var i=0;i<json.salesdetails.length;i++){
+					count=count-(-json.salesdetails[i].count);
+				}
+				json.count =count;
 				console.log(JSON.stringify(json) + "我传过来的");
-				
 			}
 			function addAjax() {
 				var json = n.getParam(".mui-content");
