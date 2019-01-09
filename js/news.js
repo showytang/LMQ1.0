@@ -63,6 +63,9 @@ var n = {
 	verify: function(el) { /*验证input是否为空*/
 		var parents = document.querySelectorAll(el)
 		for(var i = 0; i < parents.length; i++) {
+			if(parents[i].getAttribute("name")=="remark"){
+				return true;
+			}
 			if(parents[i].value === "") {
 				return false;
 			}

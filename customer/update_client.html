@@ -146,7 +146,7 @@
 						mui.toast("请输入客户的完整信息");
 						return;
 					}
-					alert(val)
+				/*	alert(val)*/
 					if(val === "") {
 						mui.toast("请输入客户的完整信息");
 						return;
@@ -188,7 +188,7 @@
 					for(var item in t) {
 						param[item] = t[item]
 					}
-					alert(JSON.stringify(param))
+					/*alert(JSON.stringify(param))*/
 					mui.ajax(obj.url + '/Customer/updateCustomerById', {
 						data: param,
 						dataType: 'json', //服务器返回json格式数据
