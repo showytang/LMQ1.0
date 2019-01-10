@@ -109,15 +109,15 @@
 			}
 			var current="chartIncome.html";
 			mui.ready(function () {
-				this.condition.date=6
-				this.condition.startdate="2017-1-1"
-				this.condition.enddate="2017-2-5"
+				this.condition.date=3
+				// this.condition.startdate="2019-1-1"
+				// this.condition.enddate="2019-2-1"
 				this.condition.storeid=tzx.getLogin().store.id
 				query()
-				showtcondition()	//显示时间段-条件  所有报表通用
 			})
 			//查询数据
 			function query(cid,gid){
+				showtcondition()	//显示时间段-条件  所有报表通用
 				mui.ajax(tzx.getURL()+'chartIncome',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
@@ -142,6 +142,7 @@
 						})
 						console.log("尾部无效数据："+num)
 						d.splice(d.length-num,num)	//删除尾部无限的值
+						d1.splice(d1.length-num,num)	//删除尾部无限的值---如有需要此条可以注释
 						console.log(d)
 						console.log(d1)
 						if (d) {
