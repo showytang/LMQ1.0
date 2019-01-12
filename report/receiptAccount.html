@@ -85,7 +85,7 @@
 					totaladdMoney:0,
 					totalbackMoneyy:0,
 					totalfinalMoney:0,
-					name:'abc',
+					name:null,
 					initMoney:0
 				},
 					methods: {
@@ -97,15 +97,37 @@
 					}
 			})
 			mui.ready(function () {
-				this.condition.customer=4
+				// this.condition.customer=4
 				// this.condition.date=0
 				this.condition.storeid=login.getLogin().store.id
-				query()
+				getFirstCustomeridSupplier()//先查找顾客id在调用查询
 			})
 			//查询数据
 			function query(){
 				showtcondition()	//显示时间段-条件  所有报表通用
-				mui.ajax(tzx.getURL()+'receiptAccount',{
+				//验证是否选择客户
+				if(condition.customer==0){
+					alert("请选择客户")
+				}else{
+					mui.ajax(tzx.getURL()+'receiptAccount',{
+						data:this.condition,
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:10000,//超时时间设置为10秒；
+						// headers:{'Content-Type':'application/json'},	              
+						success:function(data){
+							console.log(data)
+							v.lr=data
+							total()
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(type);
+						}
+					});
+				}
+			}
+			function getFirstCustomeridSupplier(){
+				mui.ajax(tzx.getURL()+'getFirstCustomeridSupplier',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
 					type:'post',//HTTP请求类型
@@ -113,8 +135,8 @@
 					// headers:{'Content-Type':'application/json'},	              
 					success:function(data){
 						console.log(data)
-						v.lr=data
-						total()
+						this.condition.customer=data[0].id
+						query()
 					},
 					error:function(xhr,type,errorThrown){
 						console.log(type);
@@ -144,7 +166,6 @@
 				}
 				
 			})
-
 			
 		</script>
 	</body>
