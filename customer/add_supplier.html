@@ -124,7 +124,7 @@
 						for(var item in t) {
 							param[item] = t[item]
 						}
-						alert(JSON.stringify(param))
+						/*alert(JSON.stringify(param))*/
 						mui.ajax(obj.url + '/Supplier/insertSupplier', {
 							data: param,
 							dataType: 'json', //服务器返回json格式数据
@@ -155,6 +155,9 @@
 							
 						}
 					});
+					document.querySelector("[name=name]").onchange=function(){
+						document.querySelector("[name=contacts]").value=this.value
+					}
 				})
 				mui.ready(function() {
 					mui.init()

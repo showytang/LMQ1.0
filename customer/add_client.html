@@ -126,6 +126,7 @@
 					mui('body').on('tap', '.mui-icon-checkmarkempty', function() {
 						document.activeElement.blur();
 						var val = document.querySelector("[name=bigAddres]").innerHTML
+						var remark=document.querySelector("[name=remark]").innerHTML
 						if(obj.verify(".mui-content input") == false) {
 							mui.toast("请输入客户的完整信息");
 							return;
@@ -171,7 +172,7 @@
 						for(var item in t) {
 							param[item] = t[item]
 						}
-						alert(JSON.stringify(param))
+						/*alert(JSON.stringify(param))*/
 						mui.ajax(obj.url + '/Customer/addCustomer', {
 							data: param,
 							dataType: 'json', //服务器返回json格式数据
@@ -216,6 +217,9 @@
 							
 						}
 					});
+					document.querySelector("[name=name]").onchange=function(){
+						document.querySelector("[name=contactsname]").value=this.value
+					}
 				})
 				mui.ready(function() {
 					/*三级联动*/
