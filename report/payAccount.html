@@ -63,6 +63,15 @@
 				this.condition.goodsid=c.goodsid
 				this.condition.userid=c.userid
 				// alert(JSON.stringify(this.condition))
+				query()
+			}
+			//将时间段条件的中文显示到顶部条件位置
+			function showtcondition(){
+				if(this.condition.date!=6){
+					document.querySelector(".tcondition li:last-child").innerText=tzx.timeName[this.condition.date]
+				}else{
+					document.querySelector(".tcondition li:last-child").innerText=this.condition.startdate+" ~ "+this.condition.enddate
+				}
 			}
 			
 			var current="payAccount.html";
@@ -85,6 +94,7 @@
 			})
 			//查询数据
 			function query(){
+				showtcondition()
 				mui.ajax(tzx.getURL()+'payAccount',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
