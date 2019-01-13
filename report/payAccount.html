@@ -49,7 +49,7 @@
 		</div>
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
-			var condition={date:"0",startdate:"2017-1-1",enddate:"2017-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
+			var condition={date:"0",startdate:"2017-1-1",enddate:"2020-1-1",customer:"0",supplier:"0",storeid:"1",order:"0",goodstype:"0",goodsid:"0",userid:"0"}
 			function setcondition(c){
 				console.log("数据:"+c)
 				this.condition.date=c.date
@@ -82,19 +82,23 @@
 					totaladdMoney:0,
 					totalbackMoneyy:0,
 					totalfinalMoney:0,
-					name:'abc',
+					name:null,
 					initMoney:0
 				}
 			})
 			mui.ready(function () {
-				this.condition.supplier=1
+				// this.condition.supplier=2
 				this.condition.date=0
 				this.condition.storeid=login.getLogin().store.id
-				query()
+				getFirstCustomeridSupplier()//先查找供应商id在调用查询
 			})
 			//查询数据
 			function query(){
 				showtcondition()
+				//验证是否选择供应商
+				if(condition.supplier==0){
+					alert("请选择供应商")
+				}
 				mui.ajax(tzx.getURL()+'payAccount',{
 					data:this.condition,
 					dataType:'json',//服务器返回json格式数据
@@ -105,6 +109,23 @@
 						console.log(data)
 						v.lr=data
 						total()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(type);
+					}
+				});
+			}
+			function getFirstCustomeridSupplier(){
+				mui.ajax(tzx.getURL()+'getFirstCustomeridSupplier',{
+					data:this.condition,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:10000,//超时时间设置为10秒；
+					// headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						console.log(data)
+						this.condition.supplier=data[1].id
+						query()
 					},
 					error:function(xhr,type,errorThrown){
 						console.log(type);
