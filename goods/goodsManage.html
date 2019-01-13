@@ -148,7 +148,7 @@
 				//删除商品
 				mui('body').on('tap','.deleteBtn',function(){
 				  //有条件的删除
-				  mui.ajax(n+url+'/goods/deleteGoods',{
+				  mui.ajax(n.url+'/goods/deleteGoods',{
 				  	data:{
 				  		gId:this.getAttribute("data-goodsId")
 				  	},

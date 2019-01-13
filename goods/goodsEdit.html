@@ -223,9 +223,11 @@
 			   				el:".mui-content",
 			   				data:{
 			   					goods:data,
-			   					url:n.url
+			   					url:n.url+"/"
 			   				}
 			   			})
+			   			
+			   			console.log("图片地址"+n.url+data.imgUrl);
 			   		},
 			   		error:function(xhr,type,errorThrown){
 			   			
