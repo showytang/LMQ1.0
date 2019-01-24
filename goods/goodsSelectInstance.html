@@ -108,7 +108,7 @@
 				mask.show();
 				plus.nativeUI.showWaiting("正在打印...");
 				console.log(n.printurl);
-				mui.ajax(n.printurl+"/print/1",{
+				mui.ajax(n.printurl+"/printGoods",{
 					data:JSON.stringify(goodsInstanceArr),
 					type:'post',//HTTP请求类型
 					timeout:10000,//超时时间设置为10秒；

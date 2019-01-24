@@ -177,6 +177,25 @@
 			salesdetails.money=v.Sales.salesdetails[i].money;
 			newjson.salesdetails.push(salesdetails);
 		}
+		mui.ajax(n.printurl+"/printOrder",{
+			data:JSON.stringify(newjson),
+			type:'post',//HTTP请求类型
+			timeout:10000,//超时时间设置为10秒；
+			headers:{'Content-Type':'application/json'},
+			processData:false,
+			success:function(data){
+					plus.nativeUI.closeWaiting();
+					//plus.webview.getWebviewById("goodsSelectInstance_h.html").close("slide-out-right");
+					//plus.webview.currentWebview().close("slide-out-right");
+			},
+			error:function(xhr,type,errorThrown){
+				console.log(errorThrown);
+				 plus.nativeUI.closeWaiting();
+				 mui.alert('打印错误','提示','确定',function (e) {
+				 },'div');
+				 mask.close();
+			}
+		});
 		console.log(JSON.stringify(newjson));
 	})
 </script>
